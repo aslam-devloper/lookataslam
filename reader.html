@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="blush">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reader — Just a Little While Apart (Vol 1)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@600;700;800;900&family=Pacifico&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body {
+      cursor: auto;
+    }
+    .reader-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 2.5px solid var(--border);
+    }
+    .reader-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.3rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .reader-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .reader-select {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 6px 14px;
+      border-radius: 50px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+      box-shadow: 2px 2px 0 var(--shadow);
+    }
+    .font-size-btn {
+      padding: 4px 10px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 50px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 2px 2px 0 var(--shadow);
+    }
+    .reader-container {
+      max-width: 760px;
+      margin: 40px auto 80px;
+      padding: 0 24px;
+    }
+    .reader-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 2px dashed var(--border);
+    }
+    .novel-series-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .novel-chapter-title {
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.25;
+    }
+    .novel-chapter-num {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-top: 6px;
+      font-weight: 700;
+    }
+    .reader-content {
+      font-family: 'Lora', Georgia, serif;
+      font-size: var(--novel-font-size, 1.15rem);
+      line-height: 1.85;
+      color: var(--text);
+    }
+    .reader-content p {
+      margin-bottom: 1.5em;
+      text-indent: 1.5em;
+    }
+    .reader-content p:first-of-type {
+      text-indent: 0;
+    }
+    .reader-pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 50px;
+      padding-top: 24px;
+      border-top: 2.5px solid var(--border);
+      gap: 16px;
+    }
+    .progress-bar-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: var(--pop);
+      z-index: 201;
+      width: 0%;
+      transition: width 0.1s;
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar-wrap" id="progressBar"></div>
+
+<nav class="reader-nav">
+  <a href="index.html" class="reader-logo">&larr; lookataslam</a>
+
+  <div class="reader-controls">
+    <select id="chapterSelect" class="reader-select" aria-label="Select Chapter"></select>
+
+    <div class="theme-switcher" id="themeSwitcher" aria-label="Choose Theme">
+      <button class="theme-btn active" data-theme-btn="blush" title="Blush">Blush</button>
+      <button class="theme-btn" data-theme-btn="midnight" title="Midnight">Midnight</button>
+      <button class="theme-btn" data-theme-btn="forest" title="Forest">Forest</button>
+      <button class="theme-btn" data-theme-btn="honey" title="Honey">Honey</button>
+    </div>
+
+    <button id="fontDown" class="font-size-btn" title="Decrease font size">A-</button>
+    <button id="fontUp" class="font-size-btn" title="Increase font size">A+</button>
+  </div>
+</nav>
+
+<main class="reader-container">
+  <header class="reader-header">
+    <div class="novel-series-title">Just a Little While Apart &middot; Volume 1</div>
+    <div class="novel-chapter-num" id="chapterNum">Chapter 1</div>
+    <h1 class="novel-chapter-title" id="chapterTitle">A Dart of Marriage</h1>
+  </header>
+
+  <article class="reader-content" id="readerText">
+    <!-- Chapter paragraphs injected by JS -->
+  </article>
+
+  <nav class="reader-pagination" aria-label="Chapter navigation">
+    <button id="prevBtn" class="btn btn-outline">&larr; Previous</button>
+    <span id="pageIndicator" style="font-weight:800; font-size:0.9rem;">1 / 10</span>
+    <button id="nextBtn" class="btn btn-fill">Next &rarr;</button>
+  </nav>
+</main>
+
+<script src="chapters-data.js"></script>
+<script>
+  let currentChapterIdx = 0;
+  let currentFontSize = 1.15;
+
+  // Themes
+  const themeButtons = document.querySelectorAll('[data-theme-btn]');
+  const savedTheme = localStorage.getItem('lookataslam-theme') || 'blush';
+  setTheme(savedTheme);
+
+  themeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const t = btn.getAttribute('data-theme-btn');
+      if (t) setTheme(t);
+    });
+  });
+
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('lookataslam-theme', t);
+    themeButtons.forEach(b => b.classList.toggle('active', b.getAttribute('data-theme-btn') === t));
+  }
+
+  // Populate Select Dropdown
+  const select = document.getElementById('chapterSelect');
+  if (typeof CHAPTERS !== 'undefined') {
+    CHAPTERS.forEach((ch, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `Ch ${idx + 1}: ${ch.title}`;
+      select.appendChild(opt);
+    });
+  }
+
+  function renderChapter(idx) {
+    if (idx < 0 || idx >= CHAPTERS.length) return;
+    currentChapterIdx = idx;
+    const ch = CHAPTERS[idx];
+
+    document.getElementById('chapterNum').textContent = `Chapter ${idx + 1}`;
+    document.getElementById('chapterTitle').textContent = ch.title;
+    document.getElementById('pageIndicator').textContent = `${idx + 1} / ${CHAPTERS.length}`;
+    select.value = idx;
+
+    const container = document.getElementById('readerText');
+    container.innerHTML = '';
+    ch.paragraphs.forEach(p => {
+      const pElem = document.createElement('p');
+      pElem.textContent = p;
+      container.appendChild(pElem);
+    });
+
+    document.getElementById('prevBtn').disabled = (idx === 0);
+    document.getElementById('prevBtn').style.opacity = (idx === 0) ? '0.5' : '1';
+    document.getElementById('nextBtn').disabled = (idx === CHAPTERS.length - 1);
+    document.getElementById('nextBtn').style.opacity = (idx === CHAPTERS.length - 1) ? '0.5' : '1';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  select.addEventListener('change', (e) => {
+    renderChapter(parseInt(e.target.value, 10));
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentChapterIdx > 0) renderChapter(currentChapterIdx - 1);
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentChapterIdx < CHAPTERS.length - 1) renderChapter(currentChapterIdx + 1);
+  });
+
+  // Font size buttons
+  document.getElementById('fontUp').addEventListener('click', () => {
+    if (currentFontSize < 1.6) {
+      currentFontSize += 0.08;
+      document.getElementById('readerText').style.setProperty('--novel-font-size', `${currentFontSize}rem`);
+    }
+  });
+
+  document.getElementById('fontDown').addEventListener('click', () => {
+    if (currentFontSize > 0.9) {
+      currentFontSize -= 0.08;
+      document.getElementById('readerText').style.setProperty('--novel-font-size', `${currentFontSize}rem`);
+    }
+  });
+
+  // Reading Progress Bar
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = total > 0 ? (window.scrollY / total) * 100 : 0;
+    document.getElementById('progressBar').style.width = `${progress}%`;
+  });
+
+  // Initial render
+  if (typeof CHAPTERS !== 'undefined' && CHAPTERS.length > 0) {
+    renderChapter(0);
+  }
+</script>
+</body>
+</html>

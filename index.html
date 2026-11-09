@@ -1,204 +1,310 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="blush">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lookataslam — MOHAMMAD ASLAM</title>
-  <meta name="description" content="Official author site of Mohammad Aslam. Just a Little While Apart — a romance novel about two strangers building a life together." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="google-site-verification" content="googleb341e73163b4c57b" />
+  <title>lookataslam — Mohammad Aslam</title>
+  <meta name="description" content="Mohammad Aslam writes slow burn romance. First novel: Just a Little While Apart. Vol 1 free on Wattpad forever."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <!-- ✦ NAVBAR ✦ -->
-  <nav class="navbar">
-    <div class="nav-brand">lookataslam</div>
-    <ul class="nav-links">
-      <li><a href="#story">The Story</a></li>
-      <li><a href="#volumes">Volumes</a></li>
-      <li><a href="#author">About</a></li>
-      <li><a href="https://www.wattpad.com/user/lookataslam" target="_blank" class="nav-cta">Read Free ✨</a></li>
-    </ul>
-    <button class="hamburger" id="hamburger">☰</button>
-  </nav>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo">lookataslam</a>
 
-  <!-- ✦ HERO ✦ -->
-  <section class="hero">
-    <div class="hero-bg-blobs">
-      <div class="blob blob-1"></div>
-      <div class="blob blob-2"></div>
-      <div class="blob blob-3"></div>
+  <div class="theme-switcher" id="themeSwitcher" aria-label="choose theme">
+    <button class="theme-btn active" data-theme-btn="blush" title="Blush">Blush</button>
+    <button class="theme-btn" data-theme-btn="midnight" title="Midnight">Midnight</button>
+    <button class="theme-btn" data-theme-btn="forest" title="Forest">Forest</button>
+    <button class="theme-btn" data-theme-btn="honey" title="Honey">Honey</button>
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#shelf">novels</a></li>
+    <li><a href="#about">about</a></li>
+    <li><a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener">wattpad</a></li>
+    <li><a href="reader.html" class="nav-read-btn">read free &rarr;</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="open menu">&#9776;</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <!-- paper plane -->
+  <svg class="paper-plane" aria-hidden="true" viewBox="0 0 60 36">
+    <polygon points="0,18 60,0 42,18 60,36" fill="currentColor"/>
+    <line x1="0" y1="18" x2="42" y2="18" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <line x1="42" y1="18" x2="52" y2="28" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Novelist &middot; India</div>
+    <h1 class="hero-name">MOHAMMAD<br/>ASLAM</h1>
+    <p class="hero-line">writes slow burn romance<br/>at two in the morning.</p>
+    <div class="hero-btns">
+      <a href="#shelf" class="btn btn-fill">see the shelf</a>
+      <a href="reader.html" class="btn btn-outline">read vol 1 free &rarr;</a>
     </div>
-    <div class="hero-content">
-      <div class="hero-text">
-        <div class="eyebrow-tag">✦ a novel by MOHAMMAD ASLAM</div>
-        <h1 class="hero-title">Just a Little<br/><span class="accent">While Apart</span></h1>
-        <p class="hero-desc">
-          What happens when two strangers are asked to build a lifetime together?<br/>
-          Marriage is a strange beginning.
+  </div>
+
+  <div class="hero-deco" aria-hidden="true">
+    <div class="book-stack">
+      <div class="stack-book sb1"></div>
+      <div class="stack-book sb2"></div>
+      <div class="stack-book sb3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKSHELF -->
+<section class="shelf-section" id="shelf">
+  <div class="container">
+    <div class="shelf-header reveal">
+      <span class="eyebrow">the shelf</span>
+      <h2 class="shelf-title">one finished.<br/>more on the way.</h2>
+      <p class="shelf-hint">pick up a book &darr;</p>
+    </div>
+
+    <div class="bookshelf reveal" id="bookshelf">
+      <!-- JALWA -->
+      <div class="book" id="book-jalwa" data-book="jalwa"
+           role="button" tabindex="0" aria-label="Just a Little While Apart — click to open">
+        <div class="book-inner">
+          <div class="book-spine">
+            <span class="spine-title">Just a Little While Apart</span>
+            <span class="spine-author">ASLAM</span>
+            <span class="spine-vol">VOL 1</span>
+          </div>
+          <div class="book-face">
+            <img src="assets/cover.png" alt="Just a Little While Apart" class="face-img"
+                 onerror="this.src='assests/cover.png'"/>
+            <div class="face-fallback">JALWA</div>
+          </div>
+        </div>
+        <div class="book-shadow"></div>
+      </div>
+
+      <!-- MYSTERY 1 -->
+      <div class="book book-m1 book-locked" id="book-m1" data-book="locked"
+           role="button" tabindex="0" aria-label="Coming soon">
+        <div class="book-inner">
+          <div class="book-spine">
+            <span class="spine-title">&mdash; &mdash; &mdash;</span>
+            <span class="spine-author">ASLAM</span>
+          </div>
+        </div>
+        <div class="book-shadow"></div>
+      </div>
+
+      <!-- TINY LEANING (decorative) -->
+      <div class="book book-deco" aria-hidden="true">
+        <div class="book-inner"><div class="book-spine"></div></div>
+      </div>
+
+      <!-- MYSTERY 2 -->
+      <div class="book book-m2 book-locked" id="book-m2" data-book="locked"
+           role="button" tabindex="0" aria-label="Coming soon">
+        <div class="book-inner">
+          <div class="book-spine">
+            <span class="spine-title">&mdash; &mdash; &mdash;</span>
+            <span class="spine-author">ASLAM</span>
+          </div>
+        </div>
+        <div class="book-shadow"></div>
+      </div>
+
+      <!-- MYSTERY 3 -->
+      <div class="book book-m3 book-locked" id="book-m3" data-book="locked"
+           role="button" tabindex="0" aria-label="Coming soon">
+        <div class="book-inner">
+          <div class="book-spine">
+            <span class="spine-title">&mdash; &mdash; &mdash;</span>
+          </div>
+        </div>
+        <div class="book-shadow"></div>
+      </div>
+
+      <div class="shelf-plank" aria-hidden="true">
+        <div class="plank-shine"></div>
+      </div>
+    </div><!-- /bookshelf -->
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <div class="modal-box" id="modalBox" role="dialog" aria-modal="true" aria-label="Book details">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+
+    <!-- JALWA content -->
+    <div id="modalJalwa" class="modal-content">
+      <div class="modal-cover-side">
+        <div class="modal-cover-wrap">
+          <img src="assets/cover.png" alt="Just a Little While Apart cover"
+               onerror="this.src='assests/cover.png'"/>
+          <span class="modal-free-badge">FREE</span>
+        </div>
+      </div>
+      <div class="modal-info">
+        <div class="modal-genre">Romance &middot; Slice of Life &middot; Drama &middot; Comedy</div>
+        <h3 class="modal-title">Just a Little While Apart</h3>
+        <p class="modal-blurb">
+          Naba and Ma'un get married on a Thursday. By Friday they're sharing a bathroom, 
+          a kitchen, and the deeply uncomfortable project of learning to exist near each other. 
+          It goes about as smoothly as you'd expect &mdash; which is to say, not at all, 
+          and also kind of perfectly.
         </p>
-        <div class="hero-buttons">
-          <a href="https://www.wattpad.com/user/lookataslam" target="_blank" class="btn btn-primary">📖 Read Vol 1 — Free</a>
-          <a href="#volumes" class="btn btn-ghost">See All Volumes →</a>
-        </div>
-        <div class="hero-tags">
-          <span class="tag">Romance</span>
-          <span class="tag">Slice of Life</span>
-          <span class="tag">Comedy</span>
-          <span class="tag">Drama</span>
-          <span class="tag">Islamic Fiction</span>
-        </div>
-      </div>
-      <div class="hero-cover">
-        <div class="cover-wrapper">
-          <div class="cover-shadow"></div>
-          <img src="assets/cover.jpg" alt="Just a Little While Apart — Cover" class="cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
-          <div class="cover-placeholder">
-            <span>📚</span>
-            <p>Just a Little<br/>While Apart</p>
-            <small>Vol. 1</small>
+        <div class="modal-vols">
+          <div class="mv mv-free">
+            <span class="mv-num">Vol 1</span>
+            <span class="mv-name">The End of the Beginning</span>
+            <span class="mv-tag free">Free</span>
           </div>
-          <div class="cover-badge">FREE</div>
-        </div>
-        <div class="floating-stars">
-          <span class="star s1">⭐</span>
-          <span class="star s2">✨</span>
-          <span class="star s3">💫</span>
-        </div>
-      </div>
-    </div>
-    <div class="hero-scroll-hint">scroll down ↓</div>
-  </section>
-
-  <!-- ✦ STORY BLURB ✦ -->
-  <section class="story-section" id="story">
-    <div class="container">
-      <div class="section-label">✦ the story</div>
-      <h2 class="section-title">Two strangers.<br/>One nikah. <span class="accent">Zero manual.</span></h2>
-      <div class="blurb-cards">
-        <div class="clay-card blurb-card">
-          <div class="card-emoji">💍</div>
-          <h3>Ma'un</h3>
-          <p>21. Overthinks everything to tribunal-level detail. Genuinely sincere at his core. Has a black watch-strap habit he never explains to anyone.</p>
-        </div>
-        <div class="clay-card blurb-card highlight-card">
-          <div class="card-emoji">🌸</div>
-          <h3>Naba</h3>
-          <p>19. Speaks in short sentences. Deflects with clinical precision. The rare moments her warmth breaks through — they hit hard.</p>
-        </div>
-        <div class="clay-card blurb-card">
-          <div class="card-emoji">🏠</div>
-          <h3>Their Story</h3>
-          <p>An arranged marriage. A shared apartment. A calico kitten named Cookie. And two people slowly learning that lightness always replaces the dark.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ✦ VOLUMES ✦ -->
-  <section class="volumes-section" id="volumes">
-    <div class="container">
-      <div class="section-label">✦ the series</div>
-      <h2 class="section-title">Just a Little While Apart</h2>
-      <p class="section-sub">Five volumes. One journey.</p>
-      <div class="volumes-grid">
-
-        <!-- VOL 1 -->
-        <div class="clay-card vol-card vol-free">
-          <div class="vol-number">Vol. 1</div>
-          <div class="vol-title">The End of the Beginning</div>
-          <div class="vol-chapters">Chapters 1–10 · ~24,000 words</div>
-          <p class="vol-desc">Ma'un and Naba meet, marry, and begin the impossible project of becoming a home for each other. Comedy, chaos, and a calico kitten included.</p>
-          <div class="vol-status free">FREE on Wattpad</div>
-          <a href="https://www.wattpad.com/user/lookataslam" target="_blank" class="btn btn-primary vol-btn">Read Now →</a>
-        </div>
-
-        <!-- VOL 2 -->
-        <div class="clay-card vol-card vol-locked">
-          <div class="vol-number">Vol. 2</div>
-          <div class="vol-title">The Anatomy of a Burnt Kettle</div>
-          <div class="vol-chapters">Chapters 11–20 · Coming Soon</div>
-          <p class="vol-desc">The honeymoon phase is over. Now comes the real work — learning each other's silences, secrets, and the weight of things left unsaid.</p>
-          <div class="vol-status locked">🔒 Coming Soon</div>
-          <div class="vol-notify">Drop a follow on Wattpad to get notified</div>
-        </div>
-
-        <!-- VOL 3 -->
-        <div class="clay-card vol-card vol-locked">
-          <div class="vol-number">Vol. 3</div>
-          <div class="vol-title">Something Borrowed, Something Blue</div>
-          <div class="vol-chapters">Chapters 21–30 · In Planning</div>
-          <p class="vol-desc">Old wounds surface. New alliances form. And one conversation changes everything Ma'un thought he knew about the person sleeping beside him.</p>
-          <div class="vol-status locked">🔒 In Planning</div>
-        </div>
-
-        <!-- VOL 4 -->
-        <div class="clay-card vol-card vol-locked">
-          <div class="vol-number">Vol. 4</div>
-          <div class="vol-title">The Distance Between Stars</div>
-          <div class="vol-chapters">Chapters 31–40 · In Planning</div>
-          <p class="vol-desc">When something tries to pull them apart, they discover just how quietly and completely they have become necessary to each other.</p>
-          <div class="vol-status locked">🔒 In Planning</div>
-        </div>
-
-        <!-- VOL 5 -->
-        <div class="clay-card vol-card vol-locked">
-          <div class="vol-number">Vol. 5</div>
-          <div class="vol-title">Still Here</div>
-          <div class="vol-chapters">Chapters 41–50 · In Planning</div>
-          <p class="vol-desc">The final volume. Where every thread finds its answer. Where two people who started as strangers remember they were always meant to be a home.</p>
-          <div class="vol-status locked">🔒 In Planning</div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ✦ ABOUT AUTHOR ✦ -->
-  <section class="author-section" id="author">
-    <div class="container author-container">
-      <div class="author-doodle-side">
-        <div class="author-avatar">
-          <div class="avatar-circle">
-            <span class="avatar-emoji">✍️</span>
+          <div class="mv mv-lock">
+            <span class="mv-num">Vol 2</span>
+            <span class="mv-name">The Anatomy of a Burnt Kettle</span>
+            <span class="mv-tag soon">Coming soon</span>
           </div>
-          <div class="author-code-tag">&gt; aslam.exe --writer</div>
+          <div class="mv mv-lock">
+            <span class="mv-num">Vol 3&ndash;5</span>
+            <span class="mv-name">In planning</span>
+            <span class="mv-tag soon">Later</span>
+          </div>
         </div>
-        <div class="author-checklist clay-card">
-          <div class="check-item done">✅ Write</div>
-          <div class="check-item">☐ Code</div>
-          <div class="check-item">☐ Study</div>
-          <div class="check-item">☐ Sleep...?</div>
-        </div>
-      </div>
-      <div class="author-text">
-        <div class="section-label">✦ the author</div>
-        <h2 class="section-title">MOHAMMAD ASLAM</h2>
-        <p>I have a lot of stories in my head. Figured it was time to put at least one of them on paper.</p>
-        <p>I'm new to writing, so I'm still figuring things out. <em>Just a Little While Apart</em> is my first project — a story I genuinely care about and am writing as honestly as I can.</p>
-        <p>I write slow burns. I write characters who can't say what they mean. I write the quiet moments between the big ones, because I think that's where life actually lives.</p>
-        <p>Thanks for stopping by. ♡</p>
-        <div class="author-links">
-          <a href="https://www.wattpad.com/user/lookataslam" target="_blank" class="social-pill wattpad">📖 Wattpad</a>
-          <a href="https://www.instagram.com/aslam.unfiltered/" target="_blank" class="social-pill insta">📸 Instagram</a>
+        <div class="modal-actions">
+          <a href="reader.html" class="btn btn-fill">Read in browser</a>
+          <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="btn btn-outline">Wattpad &rarr;</a>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ✦ FOOTER ✦ -->
-  <footer class="footer">
-    <div class="footer-brand">lookataslam</div>
-    <p class="footer-quote">"Lightness always replaces the dark. And this was only the end of the beginning."</p>
-    <div class="footer-links">
-      <a href="https://www.wattpad.com/user/lookataslam" target="_blank">Wattpad</a>
-      <a href="https://www.instagram.com/aslam.unfiltered/" target="_blank">Instagram</a>
+    <!-- LOCKED content -->
+    <div id="modalLocked" class="modal-content modal-locked" style="display:none">
+      <div class="locked-visual">
+        <div class="locked-q">?</div>
+      </div>
+      <div class="modal-info">
+        <h3 class="modal-title">not yet.</h3>
+        <p class="modal-blurb">
+          This one is still being drafted. Follow on Wattpad 
+          to get notified the moment it goes live.
+        </p>
+        <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="btn btn-fill">follow on wattpad</a>
+      </div>
     </div>
-    <p class="footer-copy">© 2026 Mohammad Aslam · Made with way too many cups of tea ☕</p>
-  </footer>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="container about-wrap">
+    <div class="about-side reveal">
+      <div class="about-avatar">
+        <span>A</span>
+      </div>
+      <div class="about-code-tag">&gt; aslam.exe --writer</div>
+      <div class="clay-card about-checklist">
+        <div class="cl cl-done">[x] write</div>
+        <div class="cl">[ ] code</div>
+        <div class="cl">[ ] study</div>
+        <div class="cl">[ ] sleep...?</div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <span class="eyebrow">about</span>
+      <h2 class="about-name">MOHAMMAD ASLAM</h2>
+      <p>I write slow burn romance &mdash; the kind where nothing happens for eight chapters and then something small happens and it means everything.</p>
+      <p>I'm based in India. I write in Urdu-flavoured English because that's how the conversations in my head actually sound. First language for feelings: Urdu. First language for sarcasm: also Urdu.</p>
+      <p>My first novel is out. Volume 1 is free on Wattpad, permanently. The rest will get there eventually. I'm working on it.</p>
+      <div class="about-links">
+        <a href="https://www.instagram.com/lookataslam/" target="_blank" rel="noopener" class="social-pill pill-insta">Instagram @lookataslam</a>
+        <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="social-pill pill-wattpad">Wattpad</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">lookataslam</div>
+  <p class="footer-quote">"Lightness always replaces the dark."</p>
+  <nav class="footer-nav" aria-label="footer links">
+    <a href="https://www.instagram.com/lookataslam/" target="_blank" rel="noopener">instagram</a>
+    <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener">wattpad</a>
+    <a href="reader.html">read</a>
+    <a href="#shelf">novels</a>
+  </nav>
+  <p class="footer-copy">&copy; 2026 Mohammad Aslam</p>
+</footer>
+
+<!-- COOKIE THE CAT (Watching Cursor) -->
+<div class="cookie-wrap" id="cookieWrap" title="Cookie" role="img" aria-label="Cookie the cat">
+  <svg id="cookieCat" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="cel"><circle cx="43" cy="51" r="5.5"/></clipPath>
+      <clipPath id="cer"><circle cx="57" cy="51" r="5.5"/></clipPath>
+    </defs>
+    <!-- tail -->
+    <path class="cookie-tail" d="M70 82 Q90 68 84 52 Q80 44 74 51"
+          fill="none" stroke="#2d2d2d" stroke-width="3" stroke-linecap="round"/>
+    <!-- body -->
+    <ellipse cx="50" cy="78" rx="27" ry="19" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2.5"/>
+    <ellipse cx="62" cy="74" rx="11" ry="8" fill="#f4a261" opacity="0.75"/>
+    <ellipse cx="37" cy="80" rx="9" ry="7" fill="#2d2d2d" opacity="0.3"/>
+    <!-- head -->
+    <circle cx="50" cy="51" r="23" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2.5"/>
+    <ellipse cx="39" cy="47" rx="10" ry="8" fill="#f4a261" opacity="0.65"/>
+    <!-- ears -->
+    <polygon points="30,34 23,19 41,28" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2"/>
+    <polygon points="32,31 27,21 39,27" fill="#ffb3c6"/>
+    <polygon points="70,34 77,19 59,28" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2"/>
+    <polygon points="68,31 73,21 61,27" fill="#ffb3c6"/>
+    <!-- eye whites -->
+    <circle cx="43" cy="51" r="6.5" fill="white" stroke="#2d2d2d" stroke-width="2"/>
+    <circle cx="57" cy="51" r="6.5" fill="white" stroke="#2d2d2d" stroke-width="2"/>
+    <!-- pupils (clipped, animated by JS following cursor) -->
+    <g clip-path="url(#cel)">
+      <g id="pupilL">
+        <circle cx="43" cy="51" r="3.5" fill="#2d2d2d"/>
+        <circle cx="44.5" cy="49.5" r="1.2" fill="white"/>
+      </g>
+    </g>
+    <g clip-path="url(#cer)">
+      <g id="pupilR">
+        <circle cx="57" cy="51" r="3.5" fill="#2d2d2d"/>
+        <circle cx="58.5" cy="49.5" r="1.2" fill="white"/>
+      </g>
+    </g>
+    <!-- nose -->
+    <polygon points="50,58 47.5,61 52.5,61" fill="#ffb3c6" stroke="#2d2d2d" stroke-width="1"/>
+    <!-- mouth -->
+    <path d="M47.5,61 Q50,65 52.5,61" fill="none" stroke="#2d2d2d" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- whiskers -->
+    <line x1="22" y1="59" x2="40" y2="60" stroke="#2d2d2d" stroke-width="1" opacity="0.55"/>
+    <line x1="22" y1="63" x2="40" y2="62" stroke="#2d2d2d" stroke-width="1" opacity="0.55"/>
+    <line x1="60" y1="60" x2="78" y2="59" stroke="#2d2d2d" stroke-width="1" opacity="0.55"/>
+    <line x1="60" y1="62" x2="78" y2="63" stroke="#2d2d2d" stroke-width="1" opacity="0.55"/>
+    <!-- paws -->
+    <ellipse cx="38" cy="95" rx="10" ry="5.5" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2"/>
+    <ellipse cx="62" cy="95" rx="10" ry="5.5" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2"/>
+    <!-- collar -->
+    <path d="M32,65 Q50,72 68,65" fill="none" stroke="#ff6b6b" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="50" cy="68" r="3" fill="#ffd700" stroke="#2d2d2d" stroke-width="1.5"/>
+  </svg>
+  <div class="cookie-label">cookie</div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

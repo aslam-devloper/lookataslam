@@ -1,50 +1,120 @@
-// lookataslam — script.js
+// lookataslam · script.js
 
-// ---- Mobile Nav Toggle ----
+// 1. Mobile Menu
 const hamburger = document.getElementById('hamburger');
-const navLinks  = document.querySelector('.nav-links');
+const navLinks = document.getElementById('navLinks');
 
 hamburger?.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
+  navLinks?.classList.toggle('open');
 });
 
-// Close nav when link clicked
-navLinks?.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => navLinks.classList.remove('open'));
+navLinks?.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => navLinks.classList.remove('open'));
 });
 
-// ---- Scroll-reveal animation ----
-const revealEls = document.querySelectorAll('.clay-card, .hero-text, .author-text');
+// 2. Theme Switching
+const themeButtons = document.querySelectorAll('[data-theme-btn]');
+const currentTheme = localStorage.getItem('lookataslam-theme') || 'blush';
+setTheme(currentTheme);
 
+themeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.getAttribute('data-theme-btn');
+    if (t) setTheme(t);
+  });
+});
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('lookataslam-theme', theme);
+  themeButtons.forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-theme-btn') === theme);
+  });
+}
+
+// 3. Bookshelf Interaction & Modal
+const modalOverlay = document.getElementById('modalOverlay');
+const modalClose = document.getElementById('modalClose');
+const modalJalwa = document.getElementById('modalJalwa');
+const modalLocked = document.getElementById('modalLocked');
+const books = document.querySelectorAll('.book[data-book]');
+
+books.forEach(book => {
+  const handler = () => {
+    const type = book.getAttribute('data-book');
+    if (type === 'jalwa') {
+      if (modalJalwa) modalJalwa.style.display = 'flex';
+      if (modalLocked) modalLocked.style.display = 'none';
+    } else {
+      if (modalJalwa) modalJalwa.style.display = 'none';
+      if (modalLocked) modalLocked.style.display = 'flex';
+    }
+    modalOverlay?.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  book.addEventListener('click', handler);
+  book.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handler();
+    }
+  });
+});
+
+function closeModal() {
+  modalOverlay?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+modalClose?.addEventListener('click', closeModal);
+modalOverlay?.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modalOverlay?.classList.contains('open')) {
+    closeModal();
+  }
+});
+
+// 4. Scroll Reveal
+const revealEls = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
+      entry.target.classList.add('visible');
     }
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.1 });
 
-revealEls.forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(28px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  observer.observe(el);
+revealEls.forEach(el => observer.observe(el));
+
+// 5. Cookie Eye Tracking Cursor
+const pupilL = document.getElementById('pupilL');
+const pupilR = document.getElementById('pupilR');
+const cookieWrap = document.getElementById('cookieWrap');
+
+window.addEventListener('mousemove', (e) => {
+  if (!cookieWrap || !pupilL || !pupilR) return;
+  const rect = cookieWrap.getBoundingClientRect();
+  const eyeCenterX = rect.left + rect.width / 2;
+  const eyeCenterY = rect.top + 50;
+
+  const dx = e.clientX - eyeCenterX;
+  const dy = e.clientY - eyeCenterY;
+  const angle = Math.atan2(dy, dx);
+  const maxOffset = 2.8;
+
+  const offsetX = Math.cos(angle) * maxOffset;
+  const offsetY = Math.sin(angle) * maxOffset;
+
+  pupilL.setAttribute('transform', `translate(${offsetX}, ${offsetY})`);
+  pupilR.setAttribute('transform', `translate(${offsetX}, ${offsetY})`);
 });
 
-// ---- Smooth active nav highlight ----
-const sections = document.querySelectorAll('section[id]');
-const navAnchors = document.querySelectorAll('.nav-links a');
-
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(sec => {
-    if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
-  });
-  navAnchors.forEach(a => {
-    a.style.background = '';
-    if (a.getAttribute('href') === `#${current}`) {
-      a.style.background = 'var(--clay-yellow)';
-    }
-  });
+// Cookie jump on click
+cookieWrap?.addEventListener('click', () => {
+  cookieWrap.classList.remove('jump');
+  void cookieWrap.offsetWidth; // trigger reflow
+  cookieWrap.classList.add('jump');
 });
