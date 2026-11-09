@@ -1,7 +1,6 @@
 {
   "version": 2,
   "name": "lookataslam",
-  "public": true,
   "routes": [
     { "src": "/(.*)", "dest": "/$1" }
   ]
