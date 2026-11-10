@@ -1,5 +1,5 @@
 // Vercel Serverless Function: Multi-Layer Anti-Spam Comments API
-// Enforces strict safety: No links, no handles, no personal phone numbers, no social ID sharing
+// Supports GET, POST, and DELETE (author / local owner deletion)
 
 let memoryComments = [
   {
@@ -22,7 +22,7 @@ const rateLimitMap = new Map();
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
@@ -31,6 +31,7 @@ export default async function handler(req, res) {
 
   const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
 
+  // ── GET: Fetch Comments ──────────────────────────────────────────────────
   if (req.method === 'GET') {
     const chapterId = parseInt(req.query.chapterId ?? '0', 10);
     const filtered = memoryComments
@@ -45,6 +46,7 @@ export default async function handler(req, res) {
     });
   }
 
+  // ── POST: Submit New Comment ─────────────────────────────────────────────
   if (req.method === 'POST') {
     try {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -81,7 +83,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ success: false, error: "Comment exceeds limit of 500 characters." });
       }
 
-      // 5. STRICT FILTER: Links, Domains, Social IDs
+      // 5. Link filtering
       const linkRegex = /(https?:\/\/|www\.|\.com|\.xyz|\.ru|\.biz|\.org|\.io|\.net|bit\.ly|t\.me|telegram|discord\.gg|whatsapp|wa\.me|instagram\.com|snapchat)/i;
       if (linkRegex.test(cleanText) || linkRegex.test(cleanAuthor)) {
         return res.status(400).json({
@@ -90,7 +92,7 @@ export default async function handler(req, res) {
         });
       }
 
-      // 6. STRICT FILTER: Social Media ID Exchange (@handles, ig:, snap:, etc.)
+      // 6. Social ID sharing filtering
       const socialExchangeRegex = /(@[a-zA-Z0-9_\.]{3,}|(ig|insta|snap|discord|telegram|tg|handle|add me|dm me|hit me up|inbox me)[\s:]+[a-zA-Z0-9_\.]{3,})/i;
       if (socialExchangeRegex.test(cleanText) || /@[a-zA-Z0-9_]/.test(cleanAuthor)) {
         return res.status(400).json({
@@ -99,8 +101,7 @@ export default async function handler(req, res) {
         });
       }
 
-      // 7. STRICT FILTER: Phone Numbers / Large Number Sequences (Allows '10/10', '9/10', '5 stars')
-      // Flag sequences of 5+ consecutive digits or spaced digits like '9 8 7 6 5 4 3 2 1 0'
+      // 7. Large Number Sequences
       const phoneDigitsRegex = /(\+?\d[\s\-\.]{0,2}){6,}\d/;
       if (phoneDigitsRegex.test(cleanText)) {
         return res.status(400).json({
@@ -109,7 +110,7 @@ export default async function handler(req, res) {
         });
       }
 
-      // 8. XSS Sanitization
+      // 8. Sanitization
       const sanitizedText = cleanText
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -140,6 +141,27 @@ export default async function handler(req, res) {
 
     } catch (err) {
       return res.status(500).json({ success: false, error: "Failed to process comment submission." });
+    }
+  }
+
+  // ── DELETE: Delete Comment by ID ─────────────────────────────────────────
+  if (req.method === 'DELETE') {
+    try {
+      const { id } = req.query;
+      if (!id) {
+        return res.status(400).json({ success: false, error: "Comment ID is required." });
+      }
+
+      const initialLength = memoryComments.length;
+      memoryComments = memoryComments.filter(c => c.id !== id);
+
+      return res.status(200).json({
+        success: true,
+        message: "Comment removed.",
+        deleted: initialLength !== memoryComments.length
+      });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: "Failed to delete comment." });
     }
   }
 
