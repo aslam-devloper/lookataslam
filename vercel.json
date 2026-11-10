@@ -1,7 +1,4 @@
 {
   "version": 2,
-  "name": "lookataslam",
-  "routes": [
-    { "src": "/(.*)", "dest": "/$1" }
-  ]
+  "name": "lookataslam"
 }

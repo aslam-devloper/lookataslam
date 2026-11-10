@@ -49,7 +49,6 @@
       gap: 10px;
     }
 
-    /* Controls sub-bar (mobile optimized) */
     .topbar-controls {
       display: flex;
       align-items: center;
@@ -104,17 +103,16 @@
       transition: width 0.1s ease-out;
     }
 
-    /* Content Area */
     .reader-container {
       max-width: 680px;
       margin: 0 auto;
-      padding: 40px 20px 100px;
+      padding: 40px 20px 80px;
     }
 
     .reader-header {
       text-align: center;
-      margin-bottom: 40px;
-      padding-bottom: 24px;
+      margin-bottom: 36px;
+      padding-bottom: 20px;
       border-bottom: 1px solid var(--border-subtle);
     }
 
@@ -124,7 +122,16 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--accent);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+    }
+
+    .chapter-meta-details {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
     }
 
     .chapter-heading {
@@ -132,7 +139,7 @@
       font-size: clamp(1.8rem, 4.5vw, 2.5rem);
       font-weight: 600;
       line-height: 1.2;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       letter-spacing: -0.01em;
     }
 
@@ -158,47 +165,28 @@
       text-indent: 0;
     }
 
-    /* Navigation at chapter bottom */
     .reader-footer-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 50px;
+      margin-top: 40px;
       padding-top: 24px;
       border-top: 1.5px solid var(--border-subtle);
       gap: 12px;
     }
 
     @media (max-width: 600px) {
-      .topbar-primary {
-        height: 50px;
-        padding: 0 14px;
-      }
-      .topbar-controls {
-        padding: 6px 14px 8px;
-      }
-      .chapter-dropdown {
-        max-width: 100%;
-        width: 100%;
-      }
-      .reader-container {
-        padding: 24px 16px 80px;
-      }
+      .topbar-primary { height: 50px; padding: 0 14px; }
+      .topbar-controls { padding: 6px 14px 8px; }
+      .chapter-dropdown { max-width: 100%; width: 100%; }
+      .reader-container { padding: 24px 16px 60px; }
       .reader-article {
         font-size: var(--novel-font-size, 1.12rem);
         line-height: 1.78;
       }
-      .reader-article p {
-        margin-bottom: 1.4em;
-        text-indent: 1.2em;
-      }
-      .reader-footer-nav {
-        flex-direction: column;
-        gap: 14px;
-      }
-      .reader-footer-nav .btn {
-        width: 100%;
-      }
+      .reader-article p { margin-bottom: 1.4em; text-indent: 1.2em; }
+      .reader-footer-nav { flex-direction: column; gap: 14px; }
+      .reader-footer-nav .btn { width: 100%; }
     }
   </style>
 </head>
@@ -206,7 +194,7 @@
 
   <div class="reading-progress" id="progressBar"></div>
 
-  <!-- Dedicated Clean Reader Topbar -->
+  <!-- Dedicated Reader Topbar -->
   <header class="reader-topbar">
     <div class="topbar-primary">
       <a href="index.html" class="back-brand">&larr; lookataslam</a>
@@ -220,7 +208,7 @@
       </div>
     </div>
 
-    <!-- Chapter picker & Size Controls -->
+    <!-- Chapter dropdown & controls -->
     <div class="topbar-controls">
       <select id="chapterSelect" class="chapter-dropdown" aria-label="Select Chapter"></select>
 
@@ -237,25 +225,62 @@
       <div class="series-kicker">Just a Little While Apart &middot; Volume 1</div>
       <div class="chapter-subnum" id="chapterNum">Chapter 1</div>
       <h1 class="chapter-heading" id="chapterTitle">A Dart of Marriage</h1>
+      <div class="chapter-meta-details">
+        <span id="readTime">~8 min read</span> &middot;
+        <span id="wordCount">2,043 words</span>
+      </div>
     </header>
 
     <article class="reader-article" id="readerText">
       <!-- Paragraphs rendered by JavaScript -->
     </article>
 
+    <!-- Navigation between chapters -->
     <div class="reader-footer-nav">
-      <button id="prevBtn" class="btn btn-secondary">&larr; Previous</button>
+      <button id="prevBtn" class="btn btn-secondary">&larr; Previous Chapter</button>
       <span id="pageIndicator" style="font-weight: 700; font-size: 0.9rem;">1 / 10</span>
-      <button id="nextBtn" class="btn btn-primary">Next &rarr;</button>
+      <button id="nextBtn" class="btn btn-primary">Next Chapter &rarr;</button>
     </div>
+
+    <!-- ── READER COMMENTS SECTION WITH SPAM PROTECTION ──────────────── -->
+    <section class="comments-section" id="commentsSection">
+      <div class="comments-header">
+        <h3>Reader Thoughts &amp; Discussion</h3>
+        <p>Leave a note or reflection on this chapter.</p>
+      </div>
+
+      <!-- Protected Comment Form -->
+      <form class="comment-form" id="commentForm">
+        <!-- Anti-bot Honeypot Trap (Invisible) -->
+        <input type="text" name="comment_hp" id="commentHp" style="display:none;" tabindex="-1" autocomplete="off" />
+        
+        <div class="comment-form-row">
+          <input type="text" id="commentAuthor" placeholder="Your name (or Anonymous)" maxlength="30" />
+        </div>
+
+        <textarea id="commentText" placeholder="What did you think of this chapter?" maxlength="500" required></textarea>
+
+        <div class="comment-form-actions">
+          <span class="char-count" id="charCount">0 / 500</span>
+          <button type="submit" class="btn btn-primary btn-sm" id="submitCommentBtn">Post Comment</button>
+        </div>
+        <div id="commentFeedback" style="font-size:0.85rem; font-weight:700; margin-top:6px;"></div>
+      </form>
+
+      <!-- Comments List -->
+      <div class="comments-list" id="commentsList">
+        <!-- Comments injected dynamically -->
+      </div>
+    </section>
   </main>
 
   <script src="chapters-data.js"></script>
   <script>
     let currentChapter = 0;
     let fontSizeRem = window.innerWidth <= 600 ? 1.12 : 1.2;
+    let formOpenTime = Date.now();
 
-    // Theme logic
+    // 1. Theme Logic
     const themeButtons = document.querySelectorAll('[data-theme-btn]');
     const savedTheme = localStorage.getItem('lookataslam-theme') || 'warm';
 
@@ -273,7 +298,7 @@
       });
     });
 
-    // Populate chapters
+    // 2. Populate chapters dropdown
     const select = document.getElementById('chapterSelect');
     if (typeof CHAPTERS !== 'undefined') {
       CHAPTERS.forEach((ch, idx) => {
@@ -284,10 +309,16 @@
       });
     }
 
+    // 3. Render Chapter Content & Update Metadata
     function renderChapter(idx) {
       if (idx < 0 || idx >= CHAPTERS.length) return;
       currentChapter = idx;
       const ch = CHAPTERS[idx];
+
+      // Save reading progress to localStorage
+      try {
+        localStorage.setItem('lookataslam-last-chapter', idx);
+      } catch (e) {}
 
       document.getElementById('chapterNum').textContent = `Chapter ${idx + 1}`;
       document.getElementById('chapterTitle').textContent = ch.title;
@@ -296,11 +327,19 @@
 
       const container = document.getElementById('readerText');
       container.innerHTML = '';
+      let totalWords = 0;
+
       ch.paragraphs.forEach(p => {
         const pElem = document.createElement('p');
         pElem.textContent = p;
         container.appendChild(pElem);
+        totalWords += p.split(/\s+/).filter(Boolean).length;
       });
+
+      // Word count & read time
+      const readMinutes = Math.max(1, Math.round(totalWords / 220));
+      document.getElementById('wordCount').textContent = `${totalWords.toLocaleString()} words`;
+      document.getElementById('readTime').textContent = `~${readMinutes} min read`;
 
       document.getElementById('prevBtn').disabled = (idx === 0);
       document.getElementById('prevBtn').style.opacity = (idx === 0) ? '0.35' : '1';
@@ -308,6 +347,18 @@
       document.getElementById('nextBtn').style.opacity = (idx === CHAPTERS.length - 1) ? '0.35' : '1';
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Load comments for this chapter
+      loadComments(idx);
+
+      // Report read metric to backend
+      try {
+        fetch('/api/stats', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chapterId: idx, event: 'read' })
+        }).catch(() => {});
+      } catch (e) {}
     }
 
     select.addEventListener('change', (e) => {
@@ -344,9 +395,124 @@
       document.getElementById('progressBar').style.width = `${progress}%`;
     });
 
+    // ── 4. COMMENTS SYSTEM (BACKEND API + ANTI-SPAM) ─────────────────────
+    async function loadComments(chapterId) {
+      const list = document.getElementById('commentsList');
+      list.innerHTML = '<div style="font-size:0.85rem; color:var(--text-faint);">Loading discussion...</div>';
+
+      try {
+        const res = await fetch(`/api/comments?chapterId=${chapterId}`);
+        const data = await res.json();
+        
+        if (data.comments && data.comments.length > 0) {
+          list.innerHTML = data.comments.map(c => `
+            <div class="comment-item">
+              <div class="comment-top">
+                <span class="comment-author">${escapeHTML(c.author)}</span>
+                <span class="comment-date">${formatRelativeTime(c.timestamp)}</span>
+              </div>
+              <div class="comment-body">${escapeHTML(c.text)}</div>
+            </div>
+          `).join('');
+        } else {
+          list.innerHTML = '<div style="font-size:0.88rem; color:var(--text-muted); font-style:italic;">No comments yet for this chapter. Be the first to share your thoughts!</div>';
+        }
+      } catch (err) {
+        list.innerHTML = '<div style="font-size:0.88rem; color:var(--text-muted); font-style:italic;">Comments are in quiet mode. Leave your thought above!</div>';
+      }
+    }
+
+    const commentForm = document.getElementById('commentForm');
+    const commentText = document.getElementById('commentText');
+    const charCount = document.getElementById('charCount');
+    const commentFeedback = document.getElementById('commentFeedback');
+    const submitCommentBtn = document.getElementById('submitCommentBtn');
+
+    commentText?.addEventListener('input', () => {
+      charCount.textContent = `${commentText.value.length} / 500`;
+    });
+
+    commentForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const author = document.getElementById('commentAuthor')?.value?.trim() || 'Anonymous';
+      const text = commentText?.value?.trim();
+      const hpTrap = document.getElementById('commentHp')?.value || '';
+
+      if (!text || text.length < 3) {
+        commentFeedback.style.color = '#c46243';
+        commentFeedback.textContent = 'Comment is too short.';
+        return;
+      }
+
+      submitCommentBtn.disabled = true;
+      submitCommentBtn.textContent = 'Posting...';
+
+      try {
+        const res = await fetch('/api/comments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chapterId: currentChapter,
+            author,
+            text,
+            hpTrap,
+            formStartTime: formOpenTime
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          commentFeedback.style.color = '#3d6a4a';
+          commentFeedback.textContent = 'Comment posted successfully!';
+          commentText.value = '';
+          charCount.textContent = '0 / 500';
+          loadComments(currentChapter);
+        } else {
+          commentFeedback.style.color = '#c46243';
+          commentFeedback.textContent = data.error || 'Failed to post comment.';
+        }
+      } catch (err) {
+        // Fallback optimistic UI
+        const list = document.getElementById('commentsList');
+        const fallbackEl = document.createElement('div');
+        fallbackEl.className = 'comment-item';
+        fallbackEl.innerHTML = `
+          <div class="comment-top">
+            <span class="comment-author">${escapeHTML(author)}</span>
+            <span class="comment-date">Just now</span>
+          </div>
+          <div class="comment-body">${escapeHTML(text)}</div>
+        `;
+        list.prepend(fallbackEl);
+        commentFeedback.style.color = '#3d6a4a';
+        commentFeedback.textContent = 'Thank you for your comment!';
+        commentText.value = '';
+      } finally {
+        submitCommentBtn.disabled = false;
+        submitCommentBtn.textContent = 'Post Comment';
+      }
+    });
+
+    function escapeHTML(str) {
+      const p = document.createElement('p');
+      p.appendChild(document.createTextNode(str || ''));
+      return p.innerHTML;
+    }
+
+    function formatRelativeTime(iso) {
+      if (!iso) return 'Recently';
+      const diff = Math.floor((Date.now() - new Date(iso)) / 1000);
+      if (diff < 60) return 'Just now';
+      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+      return `${Math.floor(diff / 86400)}d ago`;
+    }
+
     // Initial render
     if (typeof CHAPTERS !== 'undefined' && CHAPTERS.length > 0) {
-      renderChapter(0);
+      const savedCh = parseInt(localStorage.getItem('lookataslam-last-chapter') || '0', 10);
+      renderChapter(!isNaN(savedCh) && savedCh < CHAPTERS.length ? savedCh : 0);
     }
   </script>
 </body>

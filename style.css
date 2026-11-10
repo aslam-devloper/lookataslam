@@ -89,7 +89,7 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
-  cursor: auto !important; /* Standard reliable cursor */
+  cursor: auto !important;
 }
 
 /* ── TYPOGRAPHY ────────────────────────────────────────────────────────── */
@@ -120,6 +120,36 @@ a {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
+}
+
+/* ── RESUME BAR (FRONTEND FEATURE) ─────────────────────────────────────── */
+.resume-bar {
+  background: var(--accent-light);
+  border-bottom: 2px solid var(--border);
+  color: var(--text-main);
+  padding: 10px 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.resume-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.resume-btns {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.icon-dismiss {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  color: var(--text-muted);
 }
 
 /* ── BUTTONS ───────────────────────────────────────────────────────────── */
@@ -409,7 +439,6 @@ a {
   z-index: 2;
 }
 
-/* Individual Book Spine on Shelf */
 .shelf-book {
   cursor: pointer;
   perspective: 800px;
@@ -481,7 +510,6 @@ a {
   color: var(--text-muted);
 }
 
-/* Wood plank */
 .wood-plank {
   height: 24px;
   background: var(--shelf-wood);
@@ -500,7 +528,7 @@ a {
   right: 0;
 }
 
-/* ── BOOK DRAWER (OPENS WHEN BOOK CLICKED) ─────────────────────────────── */
+/* ── BOOK DRAWER ───────────────────────────────────────────────────────── */
 .book-drawer {
   max-width: 860px;
   margin: 36px auto 0;
@@ -540,10 +568,6 @@ a {
   gap: 36px;
 }
 
-.drawer-cover-side {
-  position: relative;
-}
-
 .drawer-cover-side img {
   width: 100%;
   border-radius: 10px;
@@ -562,12 +586,6 @@ a {
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--text-main);
-}
-
-/* Volume rows inside drawer */
-.drawer-volumes h4 {
-  font-size: 1.1rem;
-  margin-bottom: 14px;
 }
 
 .volume-card {
@@ -621,6 +639,51 @@ a {
 
 .vol-actions {
   flex-shrink: 0;
+}
+
+/* ── SUBSCRIBE SECTION ─────────────────────────────────────────────────── */
+.subscribe-section {
+  padding: 60px 0 80px;
+}
+.subscribe-card {
+  background: var(--bg-surface);
+  border: 2.5px solid var(--border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--clay-shadow-lg);
+  padding: 44px;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+.subscribe-card h3 {
+  font-size: 1.85rem;
+  margin-bottom: 10px;
+}
+.subscribe-card p {
+  margin-bottom: 24px;
+  font-size: 1rem;
+}
+.subscribe-form .input-wrap {
+  display: flex;
+  gap: 10px;
+  max-width: 460px;
+  margin: 0 auto;
+}
+.subscribe-form input[type="email"] {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: var(--btn-radius);
+  border: 2px solid var(--border);
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  background: var(--bg-subtle);
+  color: var(--text-main);
+}
+.form-feedback {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 /* ── ABOUT THE AUTHOR ──────────────────────────────────────────────────── */
@@ -698,7 +761,7 @@ a {
   flex-wrap: wrap;
 }
 
-/* ── COOKIE COMPANION CARD (TASTEFUL, NOT CREEPY) ──────────────────────── */
+/* ── COOKIE CARD ───────────────────────────────────────────────────────── */
 .cookie-card {
   background: var(--bg-surface);
   border: 2px solid var(--border);
@@ -724,6 +787,87 @@ a {
 .cookie-info p {
   font-size: 0.82rem;
   line-height: 1.4;
+}
+
+/* ── COMMENTS SYSTEM (FRONTEND + SPAM PROTECTED) ───────────────────────── */
+.comments-section {
+  padding-top: 40px;
+  margin-top: 50px;
+  border-top: 2px solid var(--border-subtle);
+}
+.comments-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+.comment-form {
+  background: var(--bg-surface);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.comment-form-row {
+  display: flex;
+  gap: 12px;
+}
+.comment-form input,
+.comment-form textarea {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  outline: none;
+}
+.comment-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.comment-form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.char-count {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.comment-item {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px;
+}
+.comment-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+.comment-author {
+  font-weight: 700;
+  color: var(--text-main);
+}
+.comment-date {
+  color: var(--text-faint);
+}
+.comment-body {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.5;
 }
 
 /* ── FOOTER ────────────────────────────────────────────────────────────── */
@@ -823,6 +967,13 @@ a {
     width: 100%;
   }
   .vol-actions .btn {
+    width: 100%;
+  }
+  .subscribe-form .input-wrap {
+    flex-direction: column;
+  }
+  .subscribe-form input[type="email"],
+  .subscribe-form button {
     width: 100%;
   }
 }
