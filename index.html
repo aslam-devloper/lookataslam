@@ -1,310 +1,258 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="blush">
+<html lang="en" data-theme="warm">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="google-site-verification" content="googleb341e73163b4c57b" />
   <title>lookataslam — Mohammad Aslam</title>
-  <meta name="description" content="Mohammad Aslam writes slow burn romance. First novel: Just a Little While Apart. Vol 1 free on Wattpad forever."/>
+  <meta name="description" content="Official website of author Mohammad Aslam. Stories, novels, and serial releases including Just a Little While Apart."/>
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+  
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="nav" id="nav">
-  <a href="index.html" class="nav-logo">lookataslam</a>
+  <!-- ── NAVIGATION ──────────────────────────────────────────────────────── -->
+  <header class="site-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo">lookataslam<span>.</span></a>
 
-  <div class="theme-switcher" id="themeSwitcher" aria-label="choose theme">
-    <button class="theme-btn active" data-theme-btn="blush" title="Blush">Blush</button>
-    <button class="theme-btn" data-theme-btn="midnight" title="Midnight">Midnight</button>
-    <button class="theme-btn" data-theme-btn="forest" title="Forest">Forest</button>
-    <button class="theme-btn" data-theme-btn="honey" title="Honey">Honey</button>
-  </div>
+      <div class="nav-actions">
+        <div class="theme-picker" role="radiogroup" aria-label="Theme selection">
+          <button class="theme-pill active" data-theme-btn="warm">Warm</button>
+          <button class="theme-pill" data-theme-btn="night">Night</button>
+          <button class="theme-pill" data-theme-btn="sage">Sage</button>
+        </div>
 
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#shelf">novels</a></li>
-    <li><a href="#about">about</a></li>
-    <li><a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener">wattpad</a></li>
-    <li><a href="reader.html" class="nav-read-btn">read free &rarr;</a></li>
-  </ul>
-  <button class="hamburger" id="hamburger" aria-label="open menu">&#9776;</button>
-</nav>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="#shelf">Novels</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener">Wattpad</a></li>
+          <li><a href="reader.html" class="btn btn-primary btn-sm">Read Online</a></li>
+        </ul>
 
-<!-- HERO -->
-<section class="hero" id="hero">
-  <div class="blobs" aria-hidden="true">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
-  </div>
-
-  <!-- paper plane -->
-  <svg class="paper-plane" aria-hidden="true" viewBox="0 0 60 36">
-    <polygon points="0,18 60,0 42,18 60,36" fill="currentColor"/>
-    <line x1="0" y1="18" x2="42" y2="18" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
-    <line x1="42" y1="18" x2="52" y2="28" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
-  </svg>
-
-  <div class="hero-inner">
-    <div class="hero-eyebrow">Novelist &middot; India</div>
-    <h1 class="hero-name">MOHAMMAD<br/>ASLAM</h1>
-    <p class="hero-line">writes slow burn romance<br/>at two in the morning.</p>
-    <div class="hero-btns">
-      <a href="#shelf" class="btn btn-fill">see the shelf</a>
-      <a href="reader.html" class="btn btn-outline">read vol 1 free &rarr;</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu">&#9776;</button>
+      </div>
     </div>
-  </div>
+  </header>
 
-  <div class="hero-deco" aria-hidden="true">
-    <div class="book-stack">
-      <div class="stack-book sb1"></div>
-      <div class="stack-book sb2"></div>
-      <div class="stack-book sb3"></div>
-    </div>
-  </div>
-</section>
-
-<!-- BOOKSHELF -->
-<section class="shelf-section" id="shelf">
-  <div class="container">
-    <div class="shelf-header reveal">
-      <span class="eyebrow">the shelf</span>
-      <h2 class="shelf-title">one finished.<br/>more on the way.</h2>
-      <p class="shelf-hint">pick up a book &darr;</p>
-    </div>
-
-    <div class="bookshelf reveal" id="bookshelf">
-      <!-- JALWA -->
-      <div class="book" id="book-jalwa" data-book="jalwa"
-           role="button" tabindex="0" aria-label="Just a Little While Apart — click to open">
-        <div class="book-inner">
-          <div class="book-spine">
-            <span class="spine-title">Just a Little While Apart</span>
-            <span class="spine-author">ASLAM</span>
-            <span class="spine-vol">VOL 1</span>
-          </div>
-          <div class="book-face">
-            <img src="assets/cover.png" alt="Just a Little While Apart" class="face-img"
-                 onerror="this.src='assests/cover.png'"/>
-            <div class="face-fallback">JALWA</div>
-          </div>
-        </div>
-        <div class="book-shadow"></div>
-      </div>
-
-      <!-- MYSTERY 1 -->
-      <div class="book book-m1 book-locked" id="book-m1" data-book="locked"
-           role="button" tabindex="0" aria-label="Coming soon">
-        <div class="book-inner">
-          <div class="book-spine">
-            <span class="spine-title">&mdash; &mdash; &mdash;</span>
-            <span class="spine-author">ASLAM</span>
-          </div>
-        </div>
-        <div class="book-shadow"></div>
-      </div>
-
-      <!-- TINY LEANING (decorative) -->
-      <div class="book book-deco" aria-hidden="true">
-        <div class="book-inner"><div class="book-spine"></div></div>
-      </div>
-
-      <!-- MYSTERY 2 -->
-      <div class="book book-m2 book-locked" id="book-m2" data-book="locked"
-           role="button" tabindex="0" aria-label="Coming soon">
-        <div class="book-inner">
-          <div class="book-spine">
-            <span class="spine-title">&mdash; &mdash; &mdash;</span>
-            <span class="spine-author">ASLAM</span>
-          </div>
-        </div>
-        <div class="book-shadow"></div>
-      </div>
-
-      <!-- MYSTERY 3 -->
-      <div class="book book-m3 book-locked" id="book-m3" data-book="locked"
-           role="button" tabindex="0" aria-label="Coming soon">
-        <div class="book-inner">
-          <div class="book-spine">
-            <span class="spine-title">&mdash; &mdash; &mdash;</span>
-          </div>
-        </div>
-        <div class="book-shadow"></div>
-      </div>
-
-      <div class="shelf-plank" aria-hidden="true">
-        <div class="plank-shine"></div>
-      </div>
-    </div><!-- /bookshelf -->
-  </div>
-</section>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
-  <div class="modal-box" id="modalBox" role="dialog" aria-modal="true" aria-label="Book details">
-    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
-
-    <!-- JALWA content -->
-    <div id="modalJalwa" class="modal-content">
-      <div class="modal-cover-side">
-        <div class="modal-cover-wrap">
-          <img src="assets/cover.png" alt="Just a Little While Apart cover"
-               onerror="this.src='assests/cover.png'"/>
-          <span class="modal-free-badge">FREE</span>
-        </div>
-      </div>
-      <div class="modal-info">
-        <div class="modal-genre">Romance &middot; Slice of Life &middot; Drama &middot; Comedy</div>
-        <h3 class="modal-title">Just a Little While Apart</h3>
-        <p class="modal-blurb">
-          Naba and Ma'un get married on a Thursday. By Friday they're sharing a bathroom, 
-          a kitchen, and the deeply uncomfortable project of learning to exist near each other. 
-          It goes about as smoothly as you'd expect &mdash; which is to say, not at all, 
-          and also kind of perfectly.
+  <!-- ── HERO SECTION ────────────────────────────────────────────────────── -->
+  <section class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="tagline-kicker">Author &amp; Novelist</span>
+        <h1>Quiet conversations, slow burns, and <span class="serif">unspoken feelings</span>.</h1>
+        <p class="bio-summary">
+          I write fiction grounded in real silences, domestic chaos, and people figuring out how to build a life together.
         </p>
-        <div class="modal-vols">
-          <div class="mv mv-free">
-            <span class="mv-num">Vol 1</span>
-            <span class="mv-name">The End of the Beginning</span>
-            <span class="mv-tag free">Free</span>
-          </div>
-          <div class="mv mv-lock">
-            <span class="mv-num">Vol 2</span>
-            <span class="mv-name">The Anatomy of a Burnt Kettle</span>
-            <span class="mv-tag soon">Coming soon</span>
-          </div>
-          <div class="mv mv-lock">
-            <span class="mv-num">Vol 3&ndash;5</span>
-            <span class="mv-name">In planning</span>
-            <span class="mv-tag soon">Later</span>
-          </div>
+        <div class="hero-buttons">
+          <a href="#shelf" class="btn btn-primary">Browse Novels</a>
+          <a href="reader.html" class="btn btn-secondary">Read Chapter 1 Free</a>
         </div>
-        <div class="modal-actions">
-          <a href="reader.html" class="btn btn-fill">Read in browser</a>
-          <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="btn btn-outline">Wattpad &rarr;</a>
+      </div>
+
+      <div class="hero-preview">
+        <div class="hero-card">
+          <div class="card-top">
+            <span class="status-badge">Current Release</span>
+            <span class="serif">Vol. 1 Complete</span>
+          </div>
+          <div class="hero-card-meta">
+            <h3>Just a Little While Apart</h3>
+            <p>Two strangers. An arranged nikah. The slow, clumsy reality of becoming a home for each other.</p>
+          </div>
+          <a href="#shelf" class="btn btn-secondary btn-sm" id="jumpToShelfBtn">View on Bookshelf &rarr;</a>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- LOCKED content -->
-    <div id="modalLocked" class="modal-content modal-locked" style="display:none">
-      <div class="locked-visual">
-        <div class="locked-q">?</div>
+  <!-- ── INTERACTIVE BOOKSHELF SECTION ────────────────────────────────────── -->
+  <section class="shelf-section" id="shelf">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">The Bookshelf</span>
+        <h2>Select a book to inspect</h2>
+        <p>Pick a spine off the shelf to open its overview, volume guides, and direct reading options.</p>
       </div>
-      <div class="modal-info">
-        <h3 class="modal-title">not yet.</h3>
-        <p class="modal-blurb">
-          This one is still being drafted. Follow on Wattpad 
-          to get notified the moment it goes live.
+
+      <!-- Wooden Shelf with Book Spine -->
+      <div class="shelf-display">
+        <div class="shelf-books">
+          
+          <!-- Primary Novel Spine -->
+          <div class="shelf-book" id="spineJalwa" tabindex="0" role="button" aria-expanded="true" aria-controls="bookDrawer" aria-label="Just a Little While Apart">
+            <div class="book-spine-3d">
+              <span class="spine-top">NOVEL</span>
+              <span class="spine-mid">JUST A LITTLE WHILE APART</span>
+              <span class="spine-bot">ASLAM</span>
+            </div>
+            <div class="shelf-book-indicator">&uarr; Open Book</div>
+          </div>
+
+        </div>
+
+        <div class="wood-plank">
+          <div class="wood-edge"></div>
+        </div>
+      </div>
+
+      <!-- Expanded Book Drawer (Interactive inspection area) -->
+      <div class="book-drawer" id="bookDrawer" aria-live="polite">
+        <div class="drawer-header">
+          <div class="drawer-title-area">
+            <span class="drawer-genre">Romance &middot; Slice of Life &middot; Drama</span>
+            <h3>Just a Little While Apart</h3>
+          </div>
+          <span class="status-badge">Serial Novel</span>
+        </div>
+
+        <div class="drawer-body-grid">
+          <div class="drawer-cover-side">
+            <img src="assets/cover.png" alt="Just a Little While Apart Book Cover" onerror="this.src='assests/cover.png'"/>
+          </div>
+
+          <div class="drawer-content-side">
+            <p class="drawer-synopsis">
+              What happens when two strangers are asked to build a lifetime together? Marriage is an unexpected beginning. One day, two people are living completely separate lives; the next, they are sharing an apartment, a routine, and the weight of things left unsaid.
+            </p>
+
+            <div class="drawer-volumes">
+              <h4>Volumes &amp; Status</h4>
+
+              <!-- Volume 1 -->
+              <div class="volume-card">
+                <div class="vol-info">
+                  <h5><span class="vol-tag free">Free</span> Volume 1: The End of the Beginning</h5>
+                  <p>Chapters 1 through 10 &middot; ~24,000 words. Complete release.</p>
+                </div>
+                <div class="vol-actions">
+                  <a href="reader.html" class="btn btn-primary btn-sm">Read Online</a>
+                </div>
+              </div>
+
+              <!-- Volume 2 -->
+              <div class="volume-card">
+                <div class="vol-info">
+                  <h5><span class="vol-tag paid">Upcoming</span> Volume 2: The Anatomy of a Burnt Kettle</h5>
+                  <p>Chapters 11 through 20. Domestic life deepens into emotional honesty and past secrets.</p>
+                </div>
+                <div class="vol-actions">
+                  <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Follow on Wattpad</a>
+                </div>
+              </div>
+
+              <!-- Future Volumes -->
+              <div class="volume-card">
+                <div class="vol-info">
+                  <h5><span class="vol-tag paid">Planned</span> Volumes 3 to 5</h5>
+                  <p>The continuation of Ma'un and Naba's 50-chapter story.</p>
+                </div>
+                <div class="vol-actions">
+                  <span class="serif" style="font-size: 0.9rem; color: var(--text-faint);">In Development</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ABOUT SECTION ───────────────────────────────────────────────────── -->
+  <section class="about-section" id="about">
+    <div class="container about-grid">
+      <div class="about-card">
+        <div class="about-avatar-wrapper">
+          <span>A</span>
+        </div>
+        <div class="about-quick-facts">
+          <div class="fact-item">
+            <strong>Pen Name:</strong> <span>lookataslam</span>
+          </div>
+          <div class="fact-item">
+            <strong>Author:</strong> <span>Mohammad Aslam</span>
+          </div>
+          <div class="fact-item">
+            <strong>Focus:</strong> <span>Character-driven contemporary fiction</span>
+          </div>
+          <div class="fact-item">
+            <strong>Location:</strong> <span>India</span>
+          </div>
+        </div>
+
+        <!-- Tasteful Cookie Companion Reference -->
+        <div class="cookie-card">
+          <svg class="cookie-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Cookie the cat illustration">
+            <circle cx="30" cy="30" r="26" fill="#faeade" stroke="#22201d" stroke-width="2.5"/>
+            <!-- ears -->
+            <polygon points="14,18 20,4 28,14" fill="#faeade" stroke="#22201d" stroke-width="2"/>
+            <polygon points="46,18 40,4 32,14" fill="#faeade" stroke="#22201d" stroke-width="2"/>
+            <!-- eyes -->
+            <circle cx="23" cy="28" r="3" fill="#22201d"/>
+            <circle cx="37" cy="28" r="3" fill="#22201d"/>
+            <!-- nose & mouth -->
+            <polygon points="30,34 27,37 33,37" fill="#d97757"/>
+            <path d="M27,38 Q30,42 33,38" stroke="#22201d" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- whiskers -->
+            <line x1="12" y1="34" x2="22" y2="35" stroke="#22201d" stroke-width="1.5"/>
+            <line x1="12" y1="38" x2="22" y2="38" stroke="#22201d" stroke-width="1.5"/>
+            <line x1="48" y1="34" x2="38" y2="35" stroke="#22201d" stroke-width="1.5"/>
+            <line x1="48" y1="38" x2="38" y2="38" stroke="#22201d" stroke-width="1.5"/>
+          </svg>
+          <div class="cookie-info">
+            <h5>Cookie</h5>
+            <p>The calico kitten who quietly adopted Ma'un and Naba in Chapter 6.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-narrative">
+        <span class="section-kicker">About the Writer</span>
+        <h2>Writing the quiet spaces between <span class="serif">big moments</span>.</h2>
+        <p>
+          I write slow-burn fiction because life rarely changes with dramatic speeches. It changes in kitchens late at night, during awkward breakfasts, and in the small choices two people make when they decide not to walk away.
         </p>
-        <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="btn btn-fill">follow on wattpad</a>
+        <p>
+          <em>Just a Little While Apart</em> is my first serial project. Volume 1 is completely free to read, written with care and genuine intention.
+        </p>
+        <div class="about-socials">
+          <a href="https://www.instagram.com/lookataslam/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Instagram @lookataslam</a>
+          <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Wattpad Profile</a>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- ABOUT -->
-<section class="about-section" id="about">
-  <div class="container about-wrap">
-    <div class="about-side reveal">
-      <div class="about-avatar">
-        <span>A</span>
+  <!-- ── FOOTER ──────────────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h4>lookataslam</h4>
+          <p class="serif">"Lightness always replaces the dark."</p>
+        </div>
+        <ul class="footer-links">
+          <li><a href="#shelf">Novels</a></li>
+          <li><a href="reader.html">Reader</a></li>
+          <li><a href="https://www.instagram.com/lookataslam/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener">Wattpad</a></li>
+        </ul>
       </div>
-      <div class="about-code-tag">&gt; aslam.exe --writer</div>
-      <div class="clay-card about-checklist">
-        <div class="cl cl-done">[x] write</div>
-        <div class="cl">[ ] code</div>
-        <div class="cl">[ ] study</div>
-        <div class="cl">[ ] sleep...?</div>
-      </div>
-    </div>
-    <div class="about-text reveal">
-      <span class="eyebrow">about</span>
-      <h2 class="about-name">MOHAMMAD ASLAM</h2>
-      <p>I write slow burn romance &mdash; the kind where nothing happens for eight chapters and then something small happens and it means everything.</p>
-      <p>I'm based in India. I write in Urdu-flavoured English because that's how the conversations in my head actually sound. First language for feelings: Urdu. First language for sarcasm: also Urdu.</p>
-      <p>My first novel is out. Volume 1 is free on Wattpad, permanently. The rest will get there eventually. I'm working on it.</p>
-      <div class="about-links">
-        <a href="https://www.instagram.com/lookataslam/" target="_blank" rel="noopener" class="social-pill pill-insta">Instagram @lookataslam</a>
-        <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="social-pill pill-wattpad">Wattpad</a>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Mohammad Aslam. All rights reserved.</p>
+        <p>Independent Author &middot; India</p>
       </div>
     </div>
-  </div>
-</section>
+  </footer>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-logo">lookataslam</div>
-  <p class="footer-quote">"Lightness always replaces the dark."</p>
-  <nav class="footer-nav" aria-label="footer links">
-    <a href="https://www.instagram.com/lookataslam/" target="_blank" rel="noopener">instagram</a>
-    <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener">wattpad</a>
-    <a href="reader.html">read</a>
-    <a href="#shelf">novels</a>
-  </nav>
-  <p class="footer-copy">&copy; 2026 Mohammad Aslam</p>
-</footer>
-
-<!-- COOKIE THE CAT (Watching Cursor) -->
-<div class="cookie-wrap" id="cookieWrap" title="Cookie" role="img" aria-label="Cookie the cat">
-  <svg id="cookieCat" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <clipPath id="cel"><circle cx="43" cy="51" r="5.5"/></clipPath>
-      <clipPath id="cer"><circle cx="57" cy="51" r="5.5"/></clipPath>
-    </defs>
-    <!-- tail -->
-    <path class="cookie-tail" d="M70 82 Q90 68 84 52 Q80 44 74 51"
-          fill="none" stroke="#2d2d2d" stroke-width="3" stroke-linecap="round"/>
-    <!-- body -->
-    <ellipse cx="50" cy="78" rx="27" ry="19" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2.5"/>
-    <ellipse cx="62" cy="74" rx="11" ry="8" fill="#f4a261" opacity="0.75"/>
-    <ellipse cx="37" cy="80" rx="9" ry="7" fill="#2d2d2d" opacity="0.3"/>
-    <!-- head -->
-    <circle cx="50" cy="51" r="23" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2.5"/>
-    <ellipse cx="39" cy="47" rx="10" ry="8" fill="#f4a261" opacity="0.65"/>
-    <!-- ears -->
-    <polygon points="30,34 23,19 41,28" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2"/>
-    <polygon points="32,31 27,21 39,27" fill="#ffb3c6"/>
-    <polygon points="70,34 77,19 59,28" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2"/>
-    <polygon points="68,31 73,21 61,27" fill="#ffb3c6"/>
-    <!-- eye whites -->
-    <circle cx="43" cy="51" r="6.5" fill="white" stroke="#2d2d2d" stroke-width="2"/>
-    <circle cx="57" cy="51" r="6.5" fill="white" stroke="#2d2d2d" stroke-width="2"/>
-    <!-- pupils (clipped, animated by JS following cursor) -->
-    <g clip-path="url(#cel)">
-      <g id="pupilL">
-        <circle cx="43" cy="51" r="3.5" fill="#2d2d2d"/>
-        <circle cx="44.5" cy="49.5" r="1.2" fill="white"/>
-      </g>
-    </g>
-    <g clip-path="url(#cer)">
-      <g id="pupilR">
-        <circle cx="57" cy="51" r="3.5" fill="#2d2d2d"/>
-        <circle cx="58.5" cy="49.5" r="1.2" fill="white"/>
-      </g>
-    </g>
-    <!-- nose -->
-    <polygon points="50,58 47.5,61 52.5,61" fill="#ffb3c6" stroke="#2d2d2d" stroke-width="1"/>
-    <!-- mouth -->
-    <path d="M47.5,61 Q50,65 52.5,61" fill="none" stroke="#2d2d2d" stroke-width="1.5" stroke-linecap="round"/>
-    <!-- whiskers -->
-    <line x1="22" y1="59" x2="40" y2="60" stroke="#2d2d2d" stroke-width="1" opacity="0.55"/>
-    <line x1="22" y1="63" x2="40" y2="62" stroke="#2d2d2d" stroke-width="1" opacity="0.55"/>
-    <line x1="60" y1="60" x2="78" y2="59" stroke="#2d2d2d" stroke-width="1" opacity="0.55"/>
-    <line x1="60" y1="62" x2="78" y2="63" stroke="#2d2d2d" stroke-width="1" opacity="0.55"/>
-    <!-- paws -->
-    <ellipse cx="38" cy="95" rx="10" ry="5.5" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2"/>
-    <ellipse cx="62" cy="95" rx="10" ry="5.5" fill="#fff5e6" stroke="#2d2d2d" stroke-width="2"/>
-    <!-- collar -->
-    <path d="M32,65 Q50,72 68,65" fill="none" stroke="#ff6b6b" stroke-width="2.5" stroke-linecap="round"/>
-    <circle cx="50" cy="68" r="3" fill="#ffd700" stroke="#2d2d2d" stroke-width="1.5"/>
-  </svg>
-  <div class="cookie-label">cookie</div>
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
