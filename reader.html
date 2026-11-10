@@ -2,7 +2,7 @@
 <html lang="en" data-theme="warm">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
   <title>Reader — Just a Little While Apart (Vol. 1)</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -11,130 +11,194 @@
   <link rel="stylesheet" href="style.css"/>
 
   <style>
-    /* Reader dedicated styles */
-    .reader-navbar {
+    /* Dedicated clean mobile reader styles */
+    .reader-topbar {
       position: sticky;
       top: 0;
       z-index: 100;
       background: var(--nav-bg);
-      backdrop-filter: blur(14px);
-      border-bottom: 2px solid var(--border-subtle);
-      height: 64px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background-color 0.3s;
+    }
+
+    .topbar-primary {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
-    }
-
-    .back-home {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--text-main);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .reader-settings {
-      display: flex;
-      align-items: center;
+      height: 56px;
+      padding: 0 20px;
       gap: 12px;
     }
 
-    .chapter-select {
+    .back-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Controls sub-bar (mobile optimized) */
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px 10px;
+      border-top: 1px dashed var(--border-subtle);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .chapter-dropdown {
       font-family: inherit;
       font-weight: 700;
       font-size: 0.88rem;
       padding: 6px 14px;
       border-radius: var(--btn-radius);
-      border: 2px solid var(--border);
+      border: 1.5px solid var(--border);
       background: var(--bg-surface);
       color: var(--text-main);
       outline: none;
+      max-width: 280px;
+      flex: 1;
+      text-overflow: ellipsis;
+    }
+
+    .reader-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .size-btn {
-      border: 2px solid var(--border);
+      border: 1.5px solid var(--border);
       background: var(--bg-surface);
       color: var(--text-main);
       border-radius: var(--btn-radius);
       padding: 4px 10px;
-      font-weight: 800;
-      font-size: 0.85rem;
+      font-weight: 700;
+      font-size: 0.82rem;
       cursor: pointer;
+      line-height: 1.2;
     }
 
     .reading-progress {
       position: fixed;
       top: 0;
       left: 0;
-      height: 4px;
+      height: 3px;
       background: var(--accent);
       z-index: 101;
       width: 0%;
       transition: width 0.1s ease-out;
     }
 
-    .reader-wrapper {
-      max-width: 720px;
-      margin: 40px auto 100px;
-      padding: 0 24px;
+    /* Content Area */
+    .reader-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px 100px;
     }
 
-    .reader-chapter-meta {
+    .reader-header {
       text-align: center;
       margin-bottom: 40px;
       padding-bottom: 24px;
       border-bottom: 1px solid var(--border-subtle);
     }
 
-    .novel-series-label {
-      font-size: 0.8rem;
+    .series-kicker {
+      font-size: 0.78rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       color: var(--accent);
       margin-bottom: 8px;
     }
 
-    .chapter-headline {
+    .chapter-heading {
       font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-size: clamp(1.8rem, 4.5vw, 2.5rem);
       font-weight: 600;
-      line-height: 1.15;
+      line-height: 1.2;
       margin-bottom: 6px;
+      letter-spacing: -0.01em;
     }
 
-    .chapter-number-label {
-      font-size: 0.95rem;
+    .chapter-subnum {
+      font-size: 0.9rem;
       color: var(--text-muted);
       font-weight: 600;
     }
 
-    .novel-body {
+    .reader-article {
       font-family: 'Newsreader', Georgia, serif;
-      font-size: var(--novel-font-size, 1.25rem);
-      line-height: 1.8;
+      font-size: var(--novel-font-size, 1.2rem);
+      line-height: 1.85;
       color: var(--text-main);
     }
 
-    .novel-body p {
+    .reader-article p {
       margin-bottom: 1.6em;
-      text-indent: 1.6em;
+      text-indent: 1.5em;
     }
 
-    .novel-body p:first-of-type {
+    .reader-article p:first-of-type {
       text-indent: 0;
     }
 
-    .reader-nav-footer {
+    /* Navigation at chapter bottom */
+    .reader-footer-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 50px;
-      padding-top: 30px;
-      border-top: 2px solid var(--border-subtle);
-      gap: 16px;
+      padding-top: 24px;
+      border-top: 1.5px solid var(--border-subtle);
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .topbar-primary {
+        height: 50px;
+        padding: 0 14px;
+      }
+      .topbar-controls {
+        padding: 6px 14px 8px;
+      }
+      .chapter-dropdown {
+        max-width: 100%;
+        width: 100%;
+      }
+      .reader-container {
+        padding: 24px 16px 80px;
+      }
+      .reader-article {
+        font-size: var(--novel-font-size, 1.12rem);
+        line-height: 1.78;
+      }
+      .reader-article p {
+        margin-bottom: 1.4em;
+        text-indent: 1.2em;
+      }
+      .reader-footer-nav {
+        flex-direction: column;
+        gap: 14px;
+      }
+      .reader-footer-nav .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -142,37 +206,44 @@
 
   <div class="reading-progress" id="progressBar"></div>
 
-  <!-- Reader Top Bar -->
-  <nav class="reader-navbar">
-    <a href="index.html" class="back-home">&larr; lookataslam</a>
+  <!-- Dedicated Clean Reader Topbar -->
+  <header class="reader-topbar">
+    <div class="topbar-primary">
+      <a href="index.html" class="back-brand">&larr; lookataslam</a>
 
-    <div class="reader-settings">
-      <select id="chapterSelect" class="chapter-select" aria-label="Select Chapter"></select>
-      
-      <div class="theme-picker" role="radiogroup" aria-label="Theme selection">
-        <button class="theme-pill active" data-theme-btn="warm">Warm</button>
-        <button class="theme-pill" data-theme-btn="night">Night</button>
-        <button class="theme-pill" data-theme-btn="sage">Sage</button>
+      <div class="topbar-right">
+        <div class="theme-picker" role="radiogroup" aria-label="Theme selection">
+          <button class="theme-pill active" data-theme-btn="warm">Warm</button>
+          <button class="theme-pill" data-theme-btn="night">Night</button>
+          <button class="theme-pill" data-theme-btn="sage">Sage</button>
+        </div>
       </div>
-
-      <button id="fontDown" class="size-btn" aria-label="Decrease font size">A-</button>
-      <button id="fontUp" class="size-btn" aria-label="Increase font size">A+</button>
     </div>
-  </nav>
+
+    <!-- Chapter picker & Size Controls -->
+    <div class="topbar-controls">
+      <select id="chapterSelect" class="chapter-dropdown" aria-label="Select Chapter"></select>
+
+      <div class="reader-actions">
+        <button id="fontDown" class="size-btn" aria-label="Decrease font size">A&minus;</button>
+        <button id="fontUp" class="size-btn" aria-label="Increase font size">A&#43;</button>
+      </div>
+    </div>
+  </header>
 
   <!-- Reading Layout -->
-  <main class="reader-wrapper">
-    <header class="reader-chapter-meta">
-      <div class="novel-series-label">Just a Little While Apart &middot; Volume 1</div>
-      <div class="chapter-number-label" id="chapterNum">Chapter 1</div>
-      <h1 class="chapter-headline" id="chapterTitle">A Dart of Marriage</h1>
+  <main class="reader-container">
+    <header class="reader-header">
+      <div class="series-kicker">Just a Little While Apart &middot; Volume 1</div>
+      <div class="chapter-subnum" id="chapterNum">Chapter 1</div>
+      <h1 class="chapter-heading" id="chapterTitle">A Dart of Marriage</h1>
     </header>
 
-    <article class="novel-body" id="readerText">
+    <article class="reader-article" id="readerText">
       <!-- Paragraphs rendered by JavaScript -->
     </article>
 
-    <div class="reader-nav-footer">
+    <div class="reader-footer-nav">
       <button id="prevBtn" class="btn btn-secondary">&larr; Previous</button>
       <span id="pageIndicator" style="font-weight: 700; font-size: 0.9rem;">1 / 10</span>
       <button id="nextBtn" class="btn btn-primary">Next &rarr;</button>
@@ -182,7 +253,7 @@
   <script src="chapters-data.js"></script>
   <script>
     let currentChapter = 0;
-    let fontSizeRem = 1.25;
+    let fontSizeRem = window.innerWidth <= 600 ? 1.12 : 1.2;
 
     // Theme logic
     const themeButtons = document.querySelectorAll('[data-theme-btn]');
@@ -232,9 +303,9 @@
       });
 
       document.getElementById('prevBtn').disabled = (idx === 0);
-      document.getElementById('prevBtn').style.opacity = (idx === 0) ? '0.4' : '1';
+      document.getElementById('prevBtn').style.opacity = (idx === 0) ? '0.35' : '1';
       document.getElementById('nextBtn').disabled = (idx === CHAPTERS.length - 1);
-      document.getElementById('nextBtn').style.opacity = (idx === CHAPTERS.length - 1) ? '0.4' : '1';
+      document.getElementById('nextBtn').style.opacity = (idx === CHAPTERS.length - 1) ? '0.35' : '1';
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -253,14 +324,14 @@
 
     // Font size controls
     document.getElementById('fontUp').addEventListener('click', () => {
-      if (fontSizeRem < 1.6) {
+      if (fontSizeRem < 1.55) {
         fontSizeRem += 0.08;
         document.getElementById('readerText').style.setProperty('--novel-font-size', `${fontSizeRem}rem`);
       }
     });
 
     document.getElementById('fontDown').addEventListener('click', () => {
-      if (fontSizeRem > 1.0) {
+      if (fontSizeRem > 0.95) {
         fontSizeRem -= 0.08;
         document.getElementById('readerText').style.setProperty('--novel-font-size', `${fontSizeRem}rem`);
       }
