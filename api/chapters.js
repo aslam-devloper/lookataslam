@@ -18,7 +18,7 @@ export default function handler(req, res) {
       access: "Free"
     },
     volume2: {
-      title: "The Anatomy of a Burnt Kettle",
+      title: "The World of Two",
       chaptersCount: 10,
       status: "In Progress",
       access: "Paid"
@@ -27,3 +27,4 @@ export default function handler(req, res) {
 
   return res.status(200).json({ success: true, catalog });
 }
+
