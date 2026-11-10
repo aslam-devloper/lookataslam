@@ -171,18 +171,14 @@
       margin-bottom: 1.6em;
       text-indent: 1.5em;
       opacity: 0;
-      transform: translateY(18px);
-      filter: blur(2px);
-      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, transform, filter;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+      will-change: opacity, transform;
     }
 
     .reading-para.para-visible {
       opacity: 1;
       transform: translateY(0);
-      filter: blur(0);
     }
 
     .reading-para:first-of-type {
@@ -694,7 +690,7 @@
             scrollObserver.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.08, rootMargin: '0px 0px 40px 0px' });
+      }, { threshold: 0.05, rootMargin: '0px 0px 200px 0px' });
 
       ch.paragraphs.forEach((p, pIdx) => {
         const pElem = document.createElement('p');
@@ -703,8 +699,8 @@
         container.appendChild(pElem);
         totalWords += p.split(/\s+/).filter(Boolean).length;
 
-        // Immediately reveal first 3 paragraphs for smooth instant reading
-        if (pIdx < 3) {
+        // Immediately reveal top 5 paragraphs so opening is instantaneous
+        if (pIdx < 5) {
           pElem.classList.add('para-visible');
         } else {
           scrollObserver.observe(pElem);
@@ -846,7 +842,7 @@
         toggleCatBtn.textContent = '🐱 Cookie';
       } else {
         cookieFloat.style.display = 'none';
-        toggleCatBtn.textContent = '🐱 Hide Cat';
+        toggleCatBtn.textContent = '🐱 Show Cat';
       }
     });
 
