@@ -91,31 +91,21 @@
         <p>Click any spine to open its overview, volume guides, and direct reading options.</p>
       </div>
 
-      <!-- Wooden Shelf with 3 Book Spines -->
+      <!-- Wooden Shelf with 2 Books: JALWA Series & SABU -->
       <div class="shelf-display">
         <div class="shelf-books">
           
-          <!-- Book 1: JALWA Vol 1 -->
-          <div class="shelf-book active-shelf-book" id="spineJalwa" data-novel="jalwa" tabindex="0" role="button" aria-expanded="true" aria-label="Just a Little While Apart Volume 1">
+          <!-- Book 1: JALWA (Holding Volumes 1 & 2) -->
+          <div class="shelf-book active-shelf-book" id="spineJalwa" data-novel="jalwa" tabindex="0" role="button" aria-expanded="true" aria-label="Just a Little While Apart Series">
             <div class="book-spine-3d" style="background: linear-gradient(135deg, #e38260, #ba5a3d);">
               <span class="spine-top">ROMANCE</span>
-              <span class="spine-mid">JALWA · VOL. 1</span>
-              <span class="spine-bot">ASLAM</span>
+              <span class="spine-mid">JUST A LITTLE WHILE APART</span>
+              <span class="spine-bot">VOLS 1 &amp; 2</span>
             </div>
-            <div class="shelf-book-indicator">&uarr; Vol. 1</div>
+            <div class="shelf-book-indicator">&uarr; JALWA (Vols 1 &amp; 2)</div>
           </div>
 
-          <!-- Book 2: JALWA Vol 2 (Coming Soon Dec 10) -->
-          <div class="shelf-book" id="spineJalwaV2" data-novel="jalwa_v2" tabindex="0" role="button" aria-expanded="false" aria-label="Just a Little While Apart Volume 2">
-            <div class="book-spine-3d" style="background: linear-gradient(135deg, #38d9a9, #0ca678);">
-              <span class="spine-top">DEC 10</span>
-              <span class="spine-mid">THE WORLD OF TWO</span>
-              <span class="spine-bot">VOL. 2</span>
-            </div>
-            <div class="shelf-book-indicator">&uarr; Vol. 2</div>
-          </div>
-
-          <!-- Book 3: SABU (Complete Tragedy) -->
+          <!-- Book 2: SABU (Complete Tragedy) -->
           <div class="shelf-book" id="spineSabu" data-novel="sabu" tabindex="0" role="button" aria-expanded="false" aria-label="The Silly Mistakes of Sabu">
             <div class="book-spine-3d" style="background: linear-gradient(135deg, #445163, #232d39);">
               <span class="spine-top">TRAGEDY</span>
@@ -132,77 +122,86 @@
         </div>
       </div>
 
-      <!-- Book 1 Drawer: JALWA VOL 1 -->
+      <!-- Book 1 Drawer: JUST A LITTLE WHILE APART (VOLUMES 1 & 2) -->
       <div class="book-drawer" id="drawerJalwa" aria-live="polite">
-        <div class="drawer-header">
-          <div class="drawer-title-area">
-            <span class="drawer-genre">Romance &middot; Slice of Life &middot; Healing</span>
-            <h3>Just a Little While Apart (Volume 1)</h3>
-          </div>
-          <span class="status-badge">Complete Volume</span>
+        <!-- Volume Selector Tabs inside the Book -->
+        <div class="vol-tabs-nav" role="tablist" aria-label="Select Volume">
+          <button class="vol-tab-pill active" id="tabBtnVol1" type="button" role="tab" aria-selected="true" onclick="switchJalwaVol('vol1')">Volume 1 &middot; Complete</button>
+          <button class="vol-tab-pill" id="tabBtnVol2" type="button" role="tab" aria-selected="false" onclick="switchJalwaVol('vol2')">Volume 2 &middot; Launches Dec 10</button>
         </div>
 
-        <div class="drawer-body-grid">
-          <div class="drawer-cover-side">
-            <img src="assets/cover.png" alt="Just a Little While Apart Book Cover" onerror="this.src='assests/cover.png'"/>
+        <!-- Volume 1 View -->
+        <div id="jalwaVol1View">
+          <div class="drawer-header">
+            <div class="drawer-title-area">
+              <span class="drawer-genre">Romance &middot; Slice of Life &middot; Healing</span>
+              <h3>Just a Little While Apart &middot; Volume 1</h3>
+            </div>
+            <span class="status-badge">Complete Volume</span>
           </div>
 
-          <div class="drawer-content-side">
-            <p class="drawer-synopsis">
-              What happens when two strangers are asked to build a lifetime together? Marriage is an unexpected beginning. One day, two people are living completely separate lives; the next, they are sharing an apartment, a routine, and the weight of things left unsaid.
-            </p>
+          <div class="drawer-body-grid">
+            <div class="drawer-cover-side">
+              <img src="assets/cover.png" alt="Just a Little While Apart Book Cover" onerror="this.src='assests/cover.png'"/>
+            </div>
 
-            <div class="drawer-volumes">
-              <h4>Volume Details</h4>
-              <div class="volume-card">
-                <div class="vol-info">
-                  <h5><span class="vol-tag free">Free Forever</span> Volume 1: The End of the Beginning</h5>
-                  <p>Chapters 1 through 10 &middot; ~24,000 words. Read complete online or on Wattpad.</p>
-                </div>
-                <div class="vol-actions">
-                  <a href="reader.html?novel=jalwa" class="btn btn-primary btn-sm">Read Volume 1</a>
+            <div class="drawer-content-side">
+              <p class="drawer-synopsis">
+                What happens when two strangers are asked to build a lifetime together? Marriage is an unexpected beginning. One day, two people are living completely separate lives; the next, they are sharing an apartment, a routine, and the weight of things left unsaid.
+              </p>
+
+              <div class="drawer-volumes">
+                <h4>Volume 1 Details</h4>
+                <div class="volume-card">
+                  <div class="vol-info">
+                    <h5><span class="vol-tag free">Free Forever</span> Volume 1: The End of the Beginning</h5>
+                    <p>Chapters 1 through 10 &middot; ~24,000 words. Read complete online or on Wattpad.</p>
+                  </div>
+                  <div class="vol-actions">
+                    <a href="reader.html?novel=jalwa" class="btn btn-primary btn-sm">Read Volume 1</a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Book 2 Drawer: JALWA VOL 2 (SCHEDULED LAUNCH) -->
-      <div class="book-drawer" id="drawerJalwaV2" style="display:none;" aria-live="polite">
-        <div class="drawer-header">
-          <div class="drawer-title-area">
-            <span class="drawer-genre" style="color: #0ca678;">Romance &middot; Domestic Life &middot; Emotional Bonding</span>
-            <h3>Just a Little While Apart (Vol. 2: The World of Two)</h3>
-          </div>
-          <span class="status-badge" style="background:#e6fcf5; color:#0ca678;">Releasing Dec 10, 2026</span>
-        </div>
-
-        <div class="drawer-body-grid">
-          <div class="drawer-cover-side">
-            <img src="assets/volume_2_cover.jpg" alt="Volume 2 Cover: The World of Two" />
+        <!-- Volume 2 View (Releasing Dec 10, 2026) -->
+        <div id="jalwaVol2View" style="display:none;">
+          <div class="drawer-header">
+            <div class="drawer-title-area">
+              <span class="drawer-genre" style="color: #0ca678;">Romance &middot; Domestic Life &middot; Emotional Breakthrough</span>
+              <h3>Just a Little While Apart &middot; Volume 2: The World of Two</h3>
+            </div>
+            <span class="status-badge" style="background:#e6fcf5; color:#0ca678;">Releasing Dec 10, 2026</span>
           </div>
 
-          <div class="drawer-content-side">
-            <p class="drawer-synopsis">
-              The morning after the breakthrough. Ma'un and Naba begin the real work of living together—first dates, new phones, learning each other's silences, and taking quiet responsibility for the home they are creating together.
-            </p>
+          <div class="drawer-body-grid">
+            <div class="drawer-cover-side">
+              <img src="assets/volume_2_cover.jpg" alt="Volume 2 Cover: The World of Two" />
+            </div>
 
-            <div class="drawer-volumes">
-              <h4>Release Schedule (2 Chapters / Week)</h4>
+            <div class="drawer-content-side">
+              <p class="drawer-synopsis">
+                The morning after the breakthrough. Ma'un and Naba begin the real work of living together—first dates, new phones, learning each other's silences, and taking quiet responsibility for the home they are creating together.
+              </p>
 
-              <div class="volume-card">
-                <div class="vol-info">
-                  <h5><span class="vol-tag paid">Launches Dec 10, 2026</span> Chapters 11 to 20</h5>
-                  <p>Releases every Thursday &amp; Sunday at 6:00 PM IST directly in the reader.</p>
-                </div>
-                <div class="vol-actions">
-                  <a href="reader.html?novel=jalwa_v2" class="btn btn-primary btn-sm">View Schedule &amp; Preview</a>
+              <div class="drawer-volumes">
+                <h4>Release Schedule (2 Chapters / Week)</h4>
+                <div class="volume-card">
+                  <div class="vol-info">
+                    <h5><span class="vol-tag paid">Launches Dec 10, 2026</span> Chapters 11 to 20</h5>
+                    <p>Releases every Thursday &amp; Sunday directly in the online reader. Automatic unlock schedule.</p>
+                  </div>
+                  <div class="vol-actions">
+                    <a href="reader.html?novel=jalwa_v2" class="btn btn-primary btn-sm">View Schedule &amp; Preview</a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
 
       <!-- Book 3 Drawer: SABU (Complete Tragedy) -->
@@ -323,18 +322,31 @@
           <li><a href="reader.html?novel=jalwa">JALWA Vol 1</a></li>
           <li><a href="reader.html?novel=jalwa_v2">Vol 2 (Dec 10)</a></li>
           <li><a href="reader.html?novel=sabu">Sabu</a></li>
-          <li><a href="mailto:indedevaslam@outlook.com">indedevaslam@outlook.com</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="mailto:indedevaslam@outlook.com">Contact</a></li>
           <li><a href="https://www.instagram.com/lookataslam/" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener">Wattpad</a></li>
         </ul>
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 Mohammad Aslam. All rights reserved.</p>
-        <p>Author &middot; India &middot; indedevaslam@outlook.com</p>
+        <p>&copy; 2026 Mohammad Aslam. All rights reserved &middot; <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a> &middot; <a href="terms.html" style="color:inherit; text-decoration:underline;">Terms</a></p>
+        <p>Independent Author &middot; India &middot; indedevaslam@outlook.com</p>
       </div>
     </div>
   </footer>
+
+  <!-- ── COOKIE CONSENT BANNER ─────────────────────────────────────────────── -->
+  <aside class="cookie-consent-bar" id="cookieConsentBar" style="display:none;" aria-label="Cookie and Privacy Notice">
+    <div class="cookie-consent-text">
+      <strong>🍪 Reader Privacy &amp; Cookies:</strong> We only store local preferences (your theme, font size, and reading progress) on your device. No ad trackers, ever. Read our <a href="privacy.html">Privacy Policy</a>.
+    </div>
+    <div class="cookie-consent-actions">
+      <button type="button" class="btn btn-secondary btn-sm" id="cookieDeclineBtn">Essential Only</button>
+      <button type="button" class="btn btn-primary btn-sm" id="cookieAcceptBtn">Accept</button>
+    </div>
+  </aside>
 
   <script src="script.js"></script>
 </body>

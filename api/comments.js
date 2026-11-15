@@ -33,9 +33,9 @@ export default async function handler(req, res) {
 
   // ── GET: Fetch Comments ──────────────────────────────────────────────────
   if (req.method === 'GET') {
-    const chapterId = parseInt(req.query.chapterId ?? '0', 10);
+    const chapterId = String(req.query.chapterId ?? '0');
     const filtered = memoryComments
-      .filter(c => c.chapterId === chapterId)
+      .filter(c => String(c.chapterId) === chapterId)
       .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     return res.status(200).json({
@@ -125,7 +125,7 @@ export default async function handler(req, res) {
 
       const newComment = {
         id: "c-" + Date.now() + "-" + Math.random().toString(36).substr(2, 5),
-        chapterId: parseInt(chapterId ?? 0, 10),
+        chapterId: String(chapterId ?? '0'),
         author: sanitizedAuthor,
         text: sanitizedText,
         timestamp: new Date().toISOString()

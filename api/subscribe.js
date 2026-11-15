@@ -100,14 +100,14 @@ export default async function handler(req, res) {
         return res.status(200).json({
           success: true,
           delivered: false,
-          message: "Subscribed! Welcome email queued. (Note: Verify sending domain in Resend if needed)."
+          message: "Thank you for subscribing! You're on the list for new chapter releases."
         });
       }
 
       return res.status(200).json({
         success: true,
         delivered: true,
-        message: "Subscribed! A personal welcome email has been sent to your inbox."
+        message: "Thank you for subscribing! A welcome email is on its way to your inbox."
       });
     }
 
@@ -115,7 +115,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       delivered: false,
-      message: `Subscribed ${cleanEmail}! Automated email delivery will trigger via Resend once live.`
+      message: "Thank you for subscribing! You're on the list for new chapter releases."
     });
 
   } catch (err) {

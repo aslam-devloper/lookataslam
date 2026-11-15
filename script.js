@@ -57,6 +57,30 @@ function selectNovel(novelKey) {
   }
 }
 
+// Volume switcher inside JALWA Book Drawer
+window.switchJalwaVol = function(vol) {
+  const btn1 = document.getElementById('tabBtnVol1');
+  const btn2 = document.getElementById('tabBtnVol2');
+  const view1 = document.getElementById('jalwaVol1View');
+  const view2 = document.getElementById('jalwaVol2View');
+
+  if (vol === 'vol1') {
+    btn1?.classList.add('active');
+    btn1?.setAttribute('aria-selected', 'true');
+    btn2?.classList.remove('active');
+    btn2?.setAttribute('aria-selected', 'false');
+    if (view1) view1.style.display = 'block';
+    if (view2) view2.style.display = 'none';
+  } else {
+    btn2?.classList.add('active');
+    btn2?.setAttribute('aria-selected', 'true');
+    btn1?.classList.remove('active');
+    btn1?.setAttribute('aria-selected', 'false');
+    if (view2) view2.style.display = 'block';
+    if (view1) view1.style.display = 'none';
+  }
+};
+
 spineJalwa?.addEventListener('click', () => selectNovel('jalwa'));
 spineSabu?.addEventListener('click', () => selectNovel('sabu'));
 
@@ -133,3 +157,23 @@ subscribeForm?.addEventListener('submit', async (e) => {
     }
   }
 });
+
+// 6. Cookie Consent Management
+const cookieConsentBar = document.getElementById('cookieConsentBar');
+const cookieAcceptBtn = document.getElementById('cookieAcceptBtn');
+const cookieDeclineBtn = document.getElementById('cookieDeclineBtn');
+
+if (!localStorage.getItem('lookataslam-cookie-consent')) {
+  if (cookieConsentBar) cookieConsentBar.style.display = 'flex';
+}
+
+cookieAcceptBtn?.addEventListener('click', () => {
+  localStorage.setItem('lookataslam-cookie-consent', 'accepted');
+  if (cookieConsentBar) cookieConsentBar.style.display = 'none';
+});
+
+cookieDeclineBtn?.addEventListener('click', () => {
+  localStorage.setItem('lookataslam-cookie-consent', 'essential');
+  if (cookieConsentBar) cookieConsentBar.style.display = 'none';
+});
+
