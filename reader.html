@@ -463,7 +463,39 @@
 
     let scrollObserver = null;
 
-    function renderChapter(idx) {
+    function renderParagraphs(paragraphs, container) {
+      let totalWords = 0;
+      if (scrollObserver) scrollObserver.disconnect();
+
+      scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('para-visible');
+            scrollObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px 200px 0px' });
+
+      paragraphs.forEach((p, pIdx) => {
+        const pElem = document.createElement('p');
+        pElem.className = 'reading-para';
+        pElem.textContent = p;
+        container.appendChild(pElem);
+        totalWords += p.split(/\s+/).filter(Boolean).length;
+
+        if (pIdx < 5) {
+          pElem.classList.add('para-visible');
+        } else {
+          scrollObserver.observe(pElem);
+        }
+      });
+
+      const readMinutes = Math.max(1, Math.round(totalWords / 220));
+      document.getElementById('wordCount').textContent = `${totalWords.toLocaleString()} words`;
+      document.getElementById('readTime').textContent = `~${readMinutes} min read`;
+    }
+
+    async function renderChapter(idx) {
       const novel = NOVELS[activeNovelKey];
       if (idx < 0 || idx >= novel.chapters.length) return;
       currentChapter = idx;
@@ -479,7 +511,7 @@
       const container = document.getElementById('readerText');
       container.innerHTML = '';
 
-      // Check automated release date lock for Volume 2 chapters
+      // Check release date lock for Vol 2 chapters
       const now = new Date();
       if (ch.releaseDate && new Date(ch.releaseDate) > now) {
         container.innerHTML = `
@@ -490,39 +522,31 @@
             <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Email Notification &rarr;</a>
           </div>
         `;
-        document.getElementById('wordCount').textContent = "Scheduled";
+        document.getElementById('wordCount').textContent = 'Scheduled';
         document.getElementById('readTime').textContent = ch.releaseDisplay;
-      } else {
-        // Render unlocked chapter
-        let totalWords = 0;
-        if (scrollObserver) scrollObserver.disconnect();
+        return;
+      }
 
-        scrollObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('para-visible');
-              scrollObserver.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.05, rootMargin: '0px 0px 200px 0px' });
+      // Show loading state
+      container.innerHTML = '<div style="padding:40px 0; text-align:center; color:var(--text-faint); font-size:0.9rem;">Loading chapter...</div>';
+      document.getElementById('wordCount').textContent = '...';
+      document.getElementById('readTime').textContent = '...';
 
-        ch.paragraphs.forEach((p, pIdx) => {
-          const pElem = document.createElement('p');
-          pElem.className = 'reading-para';
-          pElem.textContent = p;
-          container.appendChild(pElem);
-          totalWords += p.split(/\s+/).filter(Boolean).length;
+      try {
+        const res = await fetch(`/api/chapter?novel=${encodeURIComponent(activeNovelKey)}&ch=${idx}`);
+        if (!res.ok) throw new Error('API error ' + res.status);
+        const data = await res.json();
 
-          if (pIdx < 5) {
-            pElem.classList.add('para-visible');
-          } else {
-            scrollObserver.observe(pElem);
-          }
-        });
-
-        const readMinutes = Math.max(1, Math.round(totalWords / 220));
-        document.getElementById('wordCount').textContent = `${totalWords.toLocaleString()} words`;
-        document.getElementById('readTime').textContent = `~${readMinutes} min read`;
+        container.innerHTML = '';
+        if (data.paragraphs && data.paragraphs.length > 0) {
+          renderParagraphs(data.paragraphs, container);
+        } else {
+          container.innerHTML = '<p style="color:var(--text-muted);">Chapter content unavailable.</p>';
+        }
+      } catch (err) {
+        container.innerHTML = '<p style="color:var(--text-muted);">Could not load chapter. Please refresh and try again.</p>';
+        document.getElementById('wordCount').textContent = '';
+        document.getElementById('readTime').textContent = '';
       }
 
       document.getElementById('prevBtn').disabled = (idx === 0);
