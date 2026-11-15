@@ -49,6 +49,15 @@ export default async function handler(req, res) {
     return res.status(404).json({ error: 'Chapter not found.' });
   }
 
+  // Security check: unreleased volume scheduling
+  const LAUNCH_DATE_MS = new Date('2026-12-10T18:00:00+05:30').getTime();
+  if (novelKey === 'jalwa_v2' && now < LAUNCH_DATE_MS) {
+    return res.status(403).json({
+      error: 'Volume 2 officially releases December 10, 2026 at 6:00 PM IST.',
+      releaseDate: '2026-12-10T18:00:00+05:30'
+    });
+  }
+
   const paragraphs = novelContent[chIdx];
 
   return res.status(200).json({

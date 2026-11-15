@@ -83,61 +83,71 @@ const NOVELS = {
         "chapterNumber": 11,
         "title": "The Morning After",
         "releaseDate": "2026-12-10T18:00:00+05:30",
-        "releaseDisplay": "Dec 10, 2026"
+        "releaseDisplay": "Dec 10, 2026",
+        "isFreeHook": true
       },
       {
         "chapterNumber": 12,
         "title": "Going on First Date",
-        "releaseDate": "2026-12-13T18:00:00+05:30",
-        "releaseDisplay": "Dec 13, 2026"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       },
       {
         "chapterNumber": 13,
         "title": "Changing Takes Time",
-        "releaseDate": "2026-12-17T18:00:00+05:30",
-        "releaseDisplay": "Dec 17, 2026"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       },
       {
         "chapterNumber": 14,
         "title": "Forming a Bond",
-        "releaseDate": "2026-12-20T18:00:00+05:30",
-        "releaseDisplay": "Dec 20, 2026"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       },
       {
         "chapterNumber": 15,
         "title": "Forming a Bond (Part 2)",
-        "releaseDate": "2026-12-24T18:00:00+05:30",
-        "releaseDisplay": "Dec 24, 2026"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       },
       {
         "chapterNumber": 16,
         "title": "Forming a Bond (Part 3)",
-        "releaseDate": "2026-12-27T18:00:00+05:30",
-        "releaseDisplay": "Dec 27, 2026"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       },
       {
         "chapterNumber": 17,
         "title": "Forming a Bond (Part 4)",
-        "releaseDate": "2026-12-31T18:00:00+05:30",
-        "releaseDisplay": "Dec 31, 2026"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       },
       {
         "chapterNumber": 18,
         "title": "Final Bond",
-        "releaseDate": "2027-01-03T18:00:00+05:30",
-        "releaseDisplay": "Jan 03, 2027"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       },
       {
         "chapterNumber": 19,
         "title": "New Phone",
-        "releaseDate": "2027-01-07T18:00:00+05:30",
-        "releaseDisplay": "Jan 07, 2027"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       },
       {
         "chapterNumber": 20,
         "title": "Taking Responsibilities",
-        "releaseDate": "2027-01-10T18:00:00+05:30",
-        "releaseDisplay": "Jan 10, 2027"
+        "releaseDate": "2026-12-10T18:00:00+05:30",
+        "releaseDisplay": "Dec 10, 2026",
+        "isPaidBundle": true
       }
     ]
   }
