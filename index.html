@@ -7,7 +7,6 @@
   <title>lookataslam — Mohammad Aslam</title>
   <meta name="description" content="Official author website of Mohammad Aslam. Serial romance, tragic dramas, and stories written in the quiet hours."/>
   
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"/>
@@ -70,14 +69,14 @@
       <div class="hero-preview">
         <div class="hero-card">
           <div class="card-top">
-            <span class="status-badge">Complete Novel</span>
-            <span class="serif">Tragedy · Free</span>
+            <span class="status-badge" style="background:#e8f4fd; color:#1971c2;">Upcoming Release</span>
+            <span class="serif">Dec 10, 2026</span>
           </div>
           <div class="hero-card-meta">
-            <h3>The Silly Mistakes of Sabu</h3>
-            <p>A clerk works forty hours of overtime to protect his family, only to learn how quickly a small shortcut can take everything away.</p>
+            <h3>Just a Little While Apart (Vol. 2)</h3>
+            <p>The World of Two. Chapters 11–20 releasing 2 chapters every week starting December 10, 2026.</p>
           </div>
-          <a href="reader.html?novel=sabu" class="btn btn-secondary btn-sm">Read Complete Story &rarr;</a>
+          <a href="reader.html?novel=jalwa_v2" class="btn btn-secondary btn-sm" id="jumpToVol2Btn">Preview Schedule &rarr;</a>
         </div>
       </div>
     </div>
@@ -92,28 +91,38 @@
         <p>Click any spine to open its overview, volume guides, and direct reading options.</p>
       </div>
 
-      <!-- Wooden Shelf with Multiple Book Spines -->
+      <!-- Wooden Shelf with 3 Book Spines -->
       <div class="shelf-display">
         <div class="shelf-books">
           
-          <!-- Book 1: JALWA -->
-          <div class="shelf-book active-shelf-book" id="spineJalwa" data-novel="jalwa" tabindex="0" role="button" aria-expanded="true" aria-label="Just a Little While Apart">
+          <!-- Book 1: JALWA Vol 1 -->
+          <div class="shelf-book active-shelf-book" id="spineJalwa" data-novel="jalwa" tabindex="0" role="button" aria-expanded="true" aria-label="Just a Little While Apart Volume 1">
             <div class="book-spine-3d" style="background: linear-gradient(135deg, #e38260, #ba5a3d);">
               <span class="spine-top">ROMANCE</span>
-              <span class="spine-mid">JUST A LITTLE WHILE APART</span>
+              <span class="spine-mid">JALWA · VOL. 1</span>
               <span class="spine-bot">ASLAM</span>
             </div>
-            <div class="shelf-book-indicator">&uarr; Inspect</div>
+            <div class="shelf-book-indicator">&uarr; Vol. 1</div>
           </div>
 
-          <!-- Book 2: SABU (Complete Tragedy) -->
+          <!-- Book 2: JALWA Vol 2 (Coming Soon Dec 10) -->
+          <div class="shelf-book" id="spineJalwaV2" data-novel="jalwa_v2" tabindex="0" role="button" aria-expanded="false" aria-label="Just a Little While Apart Volume 2">
+            <div class="book-spine-3d" style="background: linear-gradient(135deg, #38d9a9, #0ca678);">
+              <span class="spine-top">DEC 10</span>
+              <span class="spine-mid">THE WORLD OF TWO</span>
+              <span class="spine-bot">VOL. 2</span>
+            </div>
+            <div class="shelf-book-indicator">&uarr; Vol. 2</div>
+          </div>
+
+          <!-- Book 3: SABU (Complete Tragedy) -->
           <div class="shelf-book" id="spineSabu" data-novel="sabu" tabindex="0" role="button" aria-expanded="false" aria-label="The Silly Mistakes of Sabu">
             <div class="book-spine-3d" style="background: linear-gradient(135deg, #445163, #232d39);">
               <span class="spine-top">TRAGEDY</span>
-              <span class="spine-mid">THE SILLY MISTAKES OF SABU</span>
-              <span class="spine-bot">ASLAM</span>
+              <span class="spine-mid">SILLY MISTAKES OF SABU</span>
+              <span class="spine-bot">COMPLETE</span>
             </div>
-            <div class="shelf-book-indicator">&uarr; Inspect</div>
+            <div class="shelf-book-indicator">&uarr; Sabu</div>
           </div>
 
         </div>
@@ -123,14 +132,14 @@
         </div>
       </div>
 
-      <!-- Book 1 Drawer: JALWA -->
+      <!-- Book 1 Drawer: JALWA VOL 1 -->
       <div class="book-drawer" id="drawerJalwa" aria-live="polite">
         <div class="drawer-header">
           <div class="drawer-title-area">
             <span class="drawer-genre">Romance &middot; Slice of Life &middot; Healing</span>
-            <h3>Just a Little While Apart</h3>
+            <h3>Just a Little While Apart (Volume 1)</h3>
           </div>
-          <span class="status-badge">Serial Novel</span>
+          <span class="status-badge">Complete Volume</span>
         </div>
 
         <div class="drawer-body-grid">
@@ -144,44 +153,59 @@
             </p>
 
             <div class="drawer-volumes">
-              <h4>Volume Releases</h4>
-
+              <h4>Volume Details</h4>
               <div class="volume-card">
                 <div class="vol-info">
                   <h5><span class="vol-tag free">Free Forever</span> Volume 1: The End of the Beginning</h5>
                   <p>Chapters 1 through 10 &middot; ~24,000 words. Read complete online or on Wattpad.</p>
                 </div>
                 <div class="vol-actions">
-                  <a href="reader.html?novel=jalwa" class="btn btn-primary btn-sm">Read Online</a>
+                  <a href="reader.html?novel=jalwa" class="btn btn-primary btn-sm">Read Volume 1</a>
                 </div>
               </div>
-
-              <div class="volume-card">
-                <div class="vol-info">
-                  <h5><span class="vol-tag paid">Next Up</span> Volume 2: The World of Two</h5>
-                  <p>Chapters 11 through 20. Learning each other's routines and navigating what follows.</p>
-                </div>
-                <div class="vol-actions">
-                  <a href="https://www.wattpad.com/user/lookataslam" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Follow on Wattpad</a>
-                </div>
-              </div>
-
-              <div class="volume-card">
-                <div class="vol-info">
-                  <h5><span class="vol-tag paid">Planned</span> Volumes 3 to 5</h5>
-                  <p>Continuing Ma'un and Naba's 50-chapter story.</p>
-                </div>
-                <div class="vol-actions">
-                  <span class="serif" style="font-size: 0.9rem; color: var(--text-faint);">In Development</span>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Book 2 Drawer: SABU (Complete Tragedy) -->
+      <!-- Book 2 Drawer: JALWA VOL 2 (SCHEDULED LAUNCH) -->
+      <div class="book-drawer" id="drawerJalwaV2" style="display:none;" aria-live="polite">
+        <div class="drawer-header">
+          <div class="drawer-title-area">
+            <span class="drawer-genre" style="color: #0ca678;">Romance &middot; Domestic Life &middot; Emotional Bonding</span>
+            <h3>Just a Little While Apart (Vol. 2: The World of Two)</h3>
+          </div>
+          <span class="status-badge" style="background:#e6fcf5; color:#0ca678;">Releasing Dec 10, 2026</span>
+        </div>
+
+        <div class="drawer-body-grid">
+          <div class="drawer-cover-side">
+            <img src="assets/volume_2_cover.jpg" alt="Volume 2 Cover: The World of Two" />
+          </div>
+
+          <div class="drawer-content-side">
+            <p class="drawer-synopsis">
+              The morning after the breakthrough. Ma'un and Naba begin the real work of living together—first dates, new phones, learning each other's silences, and taking quiet responsibility for the home they are creating together.
+            </p>
+
+            <div class="drawer-volumes">
+              <h4>Release Schedule (2 Chapters / Week)</h4>
+
+              <div class="volume-card">
+                <div class="vol-info">
+                  <h5><span class="vol-tag paid">Launches Dec 10, 2026</span> Chapters 11 to 20</h5>
+                  <p>Releases every Thursday &amp; Sunday at 6:00 PM IST directly in the reader.</p>
+                </div>
+                <div class="vol-actions">
+                  <a href="reader.html?novel=jalwa_v2" class="btn btn-primary btn-sm">View Schedule &amp; Preview</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book 3 Drawer: SABU (Complete Tragedy) -->
       <div class="book-drawer" id="drawerSabu" style="display:none;" aria-live="polite">
         <div class="drawer-header">
           <div class="drawer-title-area">
@@ -226,8 +250,8 @@
     <div class="container">
       <div class="subscribe-card">
         <span class="section-kicker">Stay In The Loop</span>
-        <h3>Get notified when new stories drop</h3>
-        <p>No spam or marketing clutter. Just a single note the day new releases go live.</p>
+        <h3>Get notified when Volume 2 goes live</h3>
+        <p>No spam or marketing clutter. Just a personal email note the day new chapters drop.</p>
         
         <form class="subscribe-form" id="subscribeForm" novalidate>
           <input type="text" name="hp_field" id="hpField" style="display:none;" tabindex="-1" autocomplete="off" />
@@ -296,7 +320,8 @@
         </div>
         <ul class="footer-links">
           <li><a href="#shelf">Library</a></li>
-          <li><a href="reader.html?novel=jalwa">JALWA</a></li>
+          <li><a href="reader.html?novel=jalwa">JALWA Vol 1</a></li>
+          <li><a href="reader.html?novel=jalwa_v2">Vol 2 (Dec 10)</a></li>
           <li><a href="reader.html?novel=sabu">Sabu</a></li>
           <li><a href="mailto:indedevaslam@outlook.com">indedevaslam@outlook.com</a></li>
           <li><a href="https://www.instagram.com/lookataslam/" target="_blank" rel="noopener">Instagram</a></li>
