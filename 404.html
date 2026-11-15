@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="warm">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
+  <title>404 — lookataslam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+
+  <style>
+    .notfound-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nf-404-label {
+      font-size: clamp(5rem, 20vw, 10rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--border);
+      opacity: 0.08;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .nf-content {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+    }
+
+    .nf-cookie-wrap {
+      cursor: pointer;
+      display: inline-block;
+      transition: transform 0.2s;
+      margin-bottom: 8px;
+    }
+    .nf-cookie-wrap:hover {
+      transform: scale(1.1) rotate(-4deg);
+    }
+    .nf-cookie-svg {
+      width: 110px;
+      height: 92px;
+    }
+
+    .nf-speech-bubble {
+      display: inline-block;
+      background: var(--bg-surface);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      box-shadow: var(--clay-shadow);
+      position: relative;
+      max-width: 280px;
+      transition: opacity 0.3s;
+    }
+    .nf-speech-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--border);
+    }
+    .nf-speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--bg-surface);
+    }
+
+    .nf-heading {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 500;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .nf-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .nf-btn-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .nf-secret-zone {
+      margin-top: 48px;
+      font-size: 0.75rem;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+    }
+
+    .nf-hidden-quote {
+      display: none;
+      background: var(--bg-surface);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-top: 24px;
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      box-shadow: var(--clay-shadow);
+      text-align: left;
+    }
+    .nf-hidden-quote cite {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      font-style: normal;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .nf-konami-banner {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      cursor: pointer;
+    }
+    .nf-konami-inner {
+      background: var(--bg-surface);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: var(--clay-shadow-lg);
+    }
+    .nf-konami-inner h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+    .nf-konami-inner p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .nf-floating-stars {
+      position: fixed;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @keyframes floatUp {
+      0%   { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(-120px) scale(1.6) rotate(30deg); }
+    }
+
+    .nf-star-particle {
+      position: absolute;
+      font-size: 1.4rem;
+      animation: floatUp 1.2s ease-out forwards;
+    }
+
+    @media (max-width: 480px) {
+      .nf-btn-grid .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="site-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo">lookataslam<span>.</span></a>
+      <div class="nav-actions">
+        <div class="theme-picker" role="radiogroup" aria-label="Theme selection">
+          <button class="theme-pill active" data-theme-btn="warm">Warm</button>
+          <button class="theme-pill" data-theme-btn="night">Night</button>
+          <button class="theme-pill" data-theme-btn="sage">Sage</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BIG GHOST 404 -->
+  <div class="nf-404-label" aria-hidden="true">404</div>
+
+  <main class="notfound-wrap">
+    <div class="nf-content">
+
+      <!-- Cookie reacting -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:24px;">
+        <div class="nf-speech-bubble" id="cookieSpeech">
+          ...I checked everywhere. It's not here. 🐾
+        </div>
+        <div class="nf-cookie-wrap" id="nfCookieBtn" title="Click Cookie!" tabindex="0" role="button" aria-label="Click Cookie the cat">
+          <svg class="nf-cookie-svg" viewBox="0 0 100 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="55" rx="30" ry="22" fill="#fff5ea" stroke="#22201d" stroke-width="2.5"/>
+            <path d="M60 40 Q75 42 70 60 Q55 58 60 40 Z" fill="#d97757" opacity="0.85"/>
+            <path d="M28 48 Q40 50 35 65 Q25 64 28 48 Z" fill="#22201d" opacity="0.3"/>
+            <path id="nfTail" d="M78 58 Q92 50 88 40 Q84 34 76 42" stroke="#22201d" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="50" cy="32" r="22" fill="#fff5ea" stroke="#22201d" stroke-width="2.5"/>
+            <path d="M54 12 Q68 18 64 30 Q50 25 54 12 Z" fill="#d97757" opacity="0.85"/>
+            <polygon points="32,18 24,4 42,12" fill="#fff5ea" stroke="#22201d" stroke-width="2"/>
+            <polygon points="33,16 27,7 40,12" fill="#ffb3c6"/>
+            <polygon points="68,18 76,4 58,12" fill="#fff5ea" stroke="#22201d" stroke-width="2"/>
+            <polygon points="67,16 73,7 60,12" fill="#ffb3c6"/>
+            <g id="nfEyes">
+              <circle cx="43" cy="32" r="3.5" fill="#22201d"/>
+              <circle cx="57" cy="32" r="3.5" fill="#22201d"/>
+              <circle cx="44.5" cy="30.5" r="1.2" fill="#fff"/>
+              <circle cx="58.5" cy="30.5" r="1.2" fill="#fff"/>
+            </g>
+            <polygon points="50,37 47.5,40 52.5,40" fill="#ffb3c6"/>
+            <path d="M47.5 40 Q50 43 52.5 40" stroke="#22201d" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="24" y1="38" x2="38" y2="38" stroke="#22201d" stroke-width="1.2" opacity="0.6"/>
+            <line x1="24" y1="41" x2="38" y2="40" stroke="#22201d" stroke-width="1.2" opacity="0.6"/>
+            <line x1="62" y1="38" x2="76" y2="38" stroke="#22201d" stroke-width="1.2" opacity="0.6"/>
+            <line x1="62" y1="40" x2="76" y2="41" stroke="#22201d" stroke-width="1.2" opacity="0.6"/>
+            <ellipse cx="40" cy="74" rx="9" ry="5" fill="#fff5ea" stroke="#22201d" stroke-width="2"/>
+            <ellipse cx="60" cy="74" rx="9" ry="5" fill="#fff5ea" stroke="#22201d" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+
+      <h1 class="nf-heading">The page you wanted<br/>doesn't live here anymore.</h1>
+      <p class="nf-sub">
+        Maybe it never did. Maybe it got lost like Ma'un's blue shirt.<br/>
+        Either way — Cookie looked. Cookie found nothing. Cookie is disappointed.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="nf-btn-grid">
+        <a href="index.html" class="btn btn-primary">🏠 Take me home</a>
+        <button type="button" class="btn btn-secondary" id="randomChapterBtn">🎲 Random chapter</button>
+        <button type="button" class="btn btn-secondary" id="randomNovelBtn">📖 Surprise me</button>
+        <button type="button" class="btn btn-secondary" id="shakeBtn">🌪 Shake it</button>
+      </div>
+
+      <!-- Hidden quote zone — click secret area to reveal -->
+      <div class="nf-secret-zone">
+        <span id="secretTrigger" title="..." style="cursor:pointer; border-bottom: 1px dashed var(--border-subtle);">
+          psst — something's hiding here
+        </span>
+      </div>
+
+      <div class="nf-hidden-quote" id="hiddenQuote">
+        <div id="hiddenQuoteText"></div>
+        <cite id="hiddenQuoteCite"></cite>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Konami easter egg overlay -->
+  <div class="nf-konami-banner" id="konamiBanner">
+    <div class="nf-konami-inner">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🐾 ✨ 🐾</div>
+      <h2>Cookie unlocked.</h2>
+      <p>You found the Konami code on a 404 page. That's genuinely impressive — or deeply concerning. Either way, Cookie respects it.<br/><br/>
+      <strong>Secret note from the author:</strong> I didn't think anyone would actually try this. Here's a hug. 🤍</p>
+      <br/>
+      <button class="btn btn-primary" onclick="document.getElementById('konamiBanner').style.display='none'">Close (and pretend this never happened)</button>
+    </div>
+  </div>
+
+  <!-- Floating particles container -->
+  <div class="nf-floating-stars" id="particlesContainer"></div>
+
+  <script>
+    // ── Theme ──────────────────────────────────────────────────────────────
+    const themeButtons = document.querySelectorAll('[data-theme-btn]');
+    const savedTheme = localStorage.getItem('lookataslam-theme') || 'warm';
+    function applyTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('lookataslam-theme', t);
+      themeButtons.forEach(b => b.classList.toggle('active', b.getAttribute('data-theme-btn') === t));
+    }
+    applyTheme(savedTheme);
+    themeButtons.forEach(b => b.addEventListener('click', () => applyTheme(b.getAttribute('data-theme-btn'))));
+
+    // ── Novel data (metadata only, no paragraphs) ───────────────────────
+    const RANDOM_CHAPTERS = [
+      { novel: 'jalwa',    ch: 0,  label: 'Ch 1: A Dart of Marriage (JALWA)' },
+      { novel: 'jalwa',    ch: 2,  label: 'Ch 3: A Very Long Week (JALWA)' },
+      { novel: 'jalwa',    ch: 4,  label: 'Ch 5: First Dinner (JALWA)' },
+      { novel: 'jalwa',    ch: 6,  label: 'Ch 7: Cookie Arrives (JALWA)' },
+      { novel: 'jalwa',    ch: 9,  label: 'Ch 10: The Last Day (JALWA)' },
+      { novel: 'sabu',     ch: 1,  label: 'Ch 1: The Wristwatch (Sabu)' },
+      { novel: 'sabu',     ch: 3,  label: 'Ch 3: The Night Shift (Sabu)' },
+      { novel: 'jalwa_v2', ch: 0,  label: 'Ch 11: The World Begins (JALWA Vol 2)' },
+    ];
+
+    // ── Cookie click easter egg ────────────────────────────────────────
+    const cookieBtn = document.getElementById('nfCookieBtn');
+    const speech    = document.getElementById('cookieSpeech');
+    const eyes      = document.getElementById('nfEyes');
+
+    const cookieLines = [
+      "...I checked everywhere. It's not here. 🐾",
+      "Meow? (That means 'wrong page' in cat.)",
+      "I found a sock under the couch. Not helpful.",
+      "Have you tried turning the URL off and on again?",
+      "Ma'un lost his shirt once. I never found it either.",
+      "404 is my least favourite number. After 0.",
+      "I'm going to file a formal complaint with the ceiling.",
+      "This is fine. Everything is fine. 🔥",
+      "I've been sitting here since the page broke. Help.",
+      "If you click me one more time I'm moving to the reader.",
+      "OKAY I'M LEAVING. ...just kidding. Where would I go.",
+      "Chapter 7 is better anyway. Just saying. 👀",
+    ];
+
+    let clickCount = 0;
+    const spawnParticles = (x, y, emojis) => {
+      const container = document.getElementById('particlesContainer');
+      emojis.forEach((em, i) => {
+        const el = document.createElement('span');
+        el.className = 'nf-star-particle';
+        el.textContent = em;
+        el.style.left = (x - 20 + Math.random() * 60) + 'px';
+        el.style.top  = (y - 20) + 'px';
+        el.style.animationDelay = (i * 0.08) + 's';
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 1400);
+      });
+    };
+
+    cookieBtn.addEventListener('click', (e) => {
+      clickCount++;
+      speech.textContent = cookieLines[clickCount % cookieLines.length];
+      spawnParticles(e.clientX, e.clientY, ['🐾', '✨', '🐱', '⭐']);
+
+      // Spin Cookie on 5th click
+      if (clickCount % 5 === 0) {
+        cookieBtn.style.transition = 'transform 0.5s';
+        cookieBtn.style.transform = 'rotate(360deg) scale(1.2)';
+        setTimeout(() => {
+          cookieBtn.style.transform = '';
+          cookieBtn.style.transition = 'transform 0.2s';
+        }, 600);
+      }
+
+      // Secret unlock at exactly 10 clicks
+      if (clickCount === 10) {
+        speech.textContent = "...okay fine, you found it. 🐾✨ Check below.";
+        document.getElementById('secretTrigger').click();
+      }
+    });
+
+    cookieBtn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cookieBtn.click(); }
+    });
+
+    // ── Random chapter button ─────────────────────────────────────────
+    document.getElementById('randomChapterBtn').addEventListener('click', (e) => {
+      const pick = RANDOM_CHAPTERS[Math.floor(Math.random() * RANDOM_CHAPTERS.length)];
+      spawnParticles(e.clientX, e.clientY, ['📖', '✨', '🎲']);
+      speech.textContent = `Opening: ${pick.label}...`;
+      setTimeout(() => {
+        window.location.href = `reader.html?novel=${pick.novel}&ch=${pick.ch}`;
+      }, 800);
+    });
+
+    // ── Surprise novel button ─────────────────────────────────────────
+    const novels = [
+      { url: 'reader.html?novel=jalwa',    name: 'Just a Little While Apart — Vol 1' },
+      { url: 'reader.html?novel=jalwa_v2', name: 'Just a Little While Apart — Vol 2' },
+      { url: 'reader.html?novel=sabu',     name: 'The Silly Mistakes of Sabu' },
+    ];
+    document.getElementById('randomNovelBtn').addEventListener('click', (e) => {
+      const pick = novels[Math.floor(Math.random() * novels.length)];
+      spawnParticles(e.clientX, e.clientY, ['📚', '🌟', '💫']);
+      speech.textContent = `Cookie recommends: ${pick.name}`;
+      setTimeout(() => { window.location.href = pick.url; }, 900);
+    });
+
+    // ── Shake button ──────────────────────────────────────────────────
+    document.getElementById('shakeBtn').addEventListener('click', (e) => {
+      spawnParticles(e.clientX, e.clientY, ['🌪', '⭐', '🐾', '💨', '✨']);
+      document.body.style.animation = 'nfShake 0.5s ease';
+      speech.textContent = "WHOA okay okay okay— 😵";
+      setTimeout(() => { document.body.style.animation = ''; }, 600);
+    });
+
+    // ── Secret quote trigger ──────────────────────────────────────────
+    const HIDDEN_QUOTES = [
+      {
+        text: '"He walked back from the mosque with the sunrise resting warm on his shoulders and the empty street smelling of damp asphalt. He felt light in a way he couldn\'t quite explain—thinking about nothing in particular."',
+        cite: '— Just a Little While Apart, Chapter 1'
+      },
+      {
+        text: '"Fajr. Breakfast. The sound of Naba\'s footsteps descending the stairs. The click of Ma\'un\'s laptop opening at the kitchen table. Cookie relocating from the rug to the windowsill, filing her daily report on the street below."',
+        cite: '— Just a Little While Apart, Chapter 10'
+      },
+      {
+        text: '"Sabu worked because he believed that if he gave enough — enough hours, enough overtime, enough discipline — he could build a wall between his family and all the things that hurt people. He was wrong. But he believed it completely."',
+        cite: '— The Silly Mistakes of Sabu'
+      },
+      {
+        text: '"She adjusted the five-petal white flower pin with a hurried, trembling hand, never once lifting her eyes."',
+        cite: '— Just a Little While Apart, Chapter 1'
+      },
+    ];
+
+    let quoteShown = false;
+    document.getElementById('secretTrigger').addEventListener('click', () => {
+      const quoteEl = document.getElementById('hiddenQuote');
+      if (!quoteShown) {
+        const pick = HIDDEN_QUOTES[Math.floor(Math.random() * HIDDEN_QUOTES.length)];
+        document.getElementById('hiddenQuoteText').textContent = pick.text;
+        document.getElementById('hiddenQuoteCite').textContent = pick.cite;
+        quoteEl.style.display = 'block';
+        quoteShown = true;
+        document.getElementById('secretTrigger').textContent = 'click for another one ↑';
+      } else {
+        const pick = HIDDEN_QUOTES[Math.floor(Math.random() * HIDDEN_QUOTES.length)];
+        document.getElementById('hiddenQuoteText').textContent = pick.text;
+        document.getElementById('hiddenQuoteCite').textContent = pick.cite;
+      }
+    });
+
+    // ── Konami code ───────────────────────────────────────────────────
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let konamiIdx = 0;
+    document.addEventListener('keydown', (e) => {
+      if (e.key === KONAMI[konamiIdx]) {
+        konamiIdx++;
+        if (konamiIdx === KONAMI.length) {
+          document.getElementById('konamiBanner').style.display = 'flex';
+          konamiIdx = 0;
+        }
+      } else {
+        konamiIdx = 0;
+      }
+    });
+
+    // ── Shake keyframe injected ───────────────────────────────────────
+    const shakeStyle = document.createElement('style');
+    shakeStyle.textContent = `
+      @keyframes nfShake {
+        0%,100% { transform: translateX(0); }
+        15%  { transform: translateX(-8px) rotate(-1deg); }
+        30%  { transform: translateX(8px)  rotate(1deg); }
+        45%  { transform: translateX(-6px) rotate(-0.5deg); }
+        60%  { transform: translateX(6px)  rotate(0.5deg); }
+        75%  { transform: translateX(-3px); }
+        90%  { transform: translateX(3px); }
+      }
+    `;
+    document.head.appendChild(shakeStyle);
+
+    // ── Title bar Easter Egg ──────────────────────────────────────────
+    // Tab title changes when user looks away
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        document.title = '🐾 Cookie misses you...';
+      } else {
+        document.title = '404 — lookataslam';
+      }
+    });
+  </script>
+</body>
+</html>
