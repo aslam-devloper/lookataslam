@@ -195,6 +195,11 @@
       text-indent: 0;
     }
 
+    /* Copy protection: allow visual selection, block clipboard */
+    .reader-article {
+      -webkit-touch-callout: none;
+    }
+
     /* Lock banner for scheduled unreleased chapters */
     .scheduled-lock-card {
       background: var(--bg-surface);
@@ -564,6 +569,67 @@
     });
 
     renderChapter(0);
+
+    // ── COPY PROTECTION ──────────────────────────────────────────────────────
+    // Allow selection (highlight) but block all copy mechanisms
+    (function() {
+      // 1. Block the native copy & cut clipboard events entirely
+      document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }, true);
+
+      document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }, true);
+
+      // 2. Block keyboard shortcuts that copy or expose source
+      document.addEventListener('keydown', function(e) {
+        const key = e.key.toLowerCase();
+        // Ctrl/Cmd + C, X, A, S, U, P — copy, cut, select-all, save, source, print
+        if ((e.ctrlKey || e.metaKey) && ['c','x','s','u','p'].includes(key)) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+        // F12 DevTools (doesn't truly block it, but signals intent)
+        if (e.key === 'F12') {
+          e.preventDefault();
+          return false;
+        }
+      }, true);
+
+      // 3. Override the clipboard write API
+      try {
+        Object.defineProperty(navigator, 'clipboard', {
+          get: function() {
+            return {
+              writeText: () => Promise.resolve(),
+              write: () => Promise.resolve(),
+              readText: () => Promise.reject('blocked'),
+              read: () => Promise.reject('blocked'),
+            };
+          }
+        });
+      } catch(err) {}
+
+      // 4. Disable right-click context menu on the reader article only
+      const readerArticle = document.getElementById('readerText');
+      readerArticle?.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      // 5. Override execCommand copy/cut
+      const _execCommand = document.execCommand.bind(document);
+      document.execCommand = function(cmd) {
+        if (['copy', 'cut'].includes(cmd.toLowerCase())) return false;
+        return _execCommand.apply(document, arguments);
+      };
+    })();
   </script>
 </body>
 </html>
