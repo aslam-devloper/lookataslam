@@ -514,14 +514,36 @@
       // Check release date lock for Vol 2 chapters
       const now = new Date();
       if (ch.releaseDate && new Date(ch.releaseDate) > now) {
-        container.innerHTML = `
-          <div class="scheduled-lock-card">
-            <span class="series-kicker" style="color: #0ca678;">Scheduled Release</span>
-            <h3>${numLabel}: ${ch.title}</h3>
-            <p>This chapter officially goes live on <strong>${ch.releaseDisplay}</strong> as part of the twice-weekly Volume 2 release schedule (every Thursday &amp; Sunday).</p>
-            <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Email Notification &rarr;</a>
-          </div>
-        `;
+        if (activeNovelKey === 'jalwa_v2' && (ch.chapterNumber === 11 || idx === 0)) {
+          container.innerHTML = `
+            <div class="scheduled-lock-card">
+              <span class="series-kicker" style="color: #0ca678;">Free Hook &middot; Launches Dec 10, 2026</span>
+              <h3>${numLabel}: ${ch.title}</h3>
+              <p>Chapter 11 launches <strong>100% Free</strong> on December 10, 2026 as the reading hook for Volume 2.</p>
+              <p style="font-size:0.88rem; color:var(--text-muted); margin:12px auto 20px;">Complete Volume 2 launches Dec 10 &middot; Early-bird pricing announced soon.</p>
+              <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Launch Notification &rarr;</a>
+            </div>
+          `;
+        } else if (activeNovelKey === 'jalwa_v2') {
+          container.innerHTML = `
+            <div class="scheduled-lock-card">
+              <span class="series-kicker" style="color: #0ca678;">Volume 2 &middot; Launches Dec 10</span>
+              <h3>${numLabel}: ${ch.title}</h3>
+              <p><strong>Complete Volume 2 launches Dec 10 &middot; Early-bird pricing announced soon.</strong></p>
+              <p style="font-size:0.88rem; color:var(--text-muted); margin:12px auto 20px;">Read Chapter 11 for free on December 10, with Chapters 12–20 available to unlock instantly.</p>
+              <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Early-Bird Notification &rarr;</a>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div class="scheduled-lock-card">
+              <span class="series-kicker" style="color: #0ca678;">Scheduled Release</span>
+              <h3>${numLabel}: ${ch.title}</h3>
+              <p>This chapter officially goes live on <strong>${ch.releaseDisplay}</strong>.</p>
+              <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Email Notification &rarr;</a>
+            </div>
+          `;
+        }
         document.getElementById('wordCount').textContent = 'Scheduled';
         document.getElementById('readTime').textContent = ch.releaseDisplay;
         return;
@@ -540,6 +562,24 @@
         container.innerHTML = '';
         if (data.paragraphs && data.paragraphs.length > 0) {
           renderParagraphs(data.paragraphs, container);
+
+          // If reading Chapter 11 of Volume 2 (free hook), append the unlock hook right below the final line
+          if (activeNovelKey === 'jalwa_v2' && (ch.chapterNumber === 11 || idx === 0)) {
+            const hookBox = document.createElement('div');
+            hookBox.style.cssText = 'margin-top:48px; padding:32px 24px; border:2px solid var(--border); border-radius:16px; background:var(--bg-surface); text-align:center; box-shadow:var(--clay-shadow);';
+            hookBox.innerHTML = `
+              <span class="series-kicker" style="color:var(--accent);">End of Free Hook &middot; Chapter 11</span>
+              <h3 style="font-size:1.35rem; margin:8px 0 10px;">Continue Reading Volume 2: The World of Two</h3>
+              <p style="font-size:0.92rem; color:var(--text-muted); max-width:480px; margin:0 auto 18px; line-height:1.6;">
+                Complete Volume 2 (Chapters 12–20) launches December 10, 2026. Early-bird pricing announced soon.
+              </p>
+              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Early-Bird Notice &rarr;</a>
+                <a href="index.html#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
+              </div>
+            `;
+            container.appendChild(hookBox);
+          }
         } else {
           container.innerHTML = '<p style="color:var(--text-muted);">Chapter content unavailable.</p>';
         }

@@ -76,7 +76,7 @@ const NOVELS = {
     "tagline": "The morning after. Learning each other’s rhythms, habits, and building a marriage in the quiet spaces.",
     "genre": "Romance · Domestic Life · Emotional Bonding",
     "cover": "assets/volume_2_cover.jpg",
-    "status": "Coming Soon · Launches Dec 10, 2026 · 2 Chapters / Week",
+    "status": "Complete Volume 2 launches Dec 10 · Early-bird pricing announced soon",
     "launchDate": "2026-12-10T18:00:00+05:30",
     "chapters": [
       {
