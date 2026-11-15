@@ -49,13 +49,40 @@ export default async function handler(req, res) {
     return res.status(404).json({ error: 'Chapter not found.' });
   }
 
-  // Security check: unreleased volume scheduling
+  // Security check: unreleased volume scheduling & launch day access
   const LAUNCH_DATE_MS = new Date('2026-12-10T18:00:00+05:30').getTime();
-  if (novelKey === 'jalwa_v2' && now < LAUNCH_DATE_MS) {
-    return res.status(403).json({
-      error: 'Volume 2 officially releases December 10, 2026 at 6:00 PM IST.',
-      releaseDate: '2026-12-10T18:00:00+05:30'
-    });
+  const LAUNCH_DAY_24H_END = LAUNCH_DATE_MS + (24 * 60 * 60 * 1000); // 24 hours on launch day
+
+  if (novelKey === 'jalwa_v2') {
+    // Before launch date: strictly locked
+    if (now < LAUNCH_DATE_MS) {
+      return res.status(403).json({
+        error: 'Volume 2 officially releases December 10, 2026 at 6:00 PM IST.',
+        releaseDate: '2026-12-10T18:00:00+05:30'
+      });
+    }
+
+    // Chapter 11 (chIdx 0): Free for 24 hours on launch day
+    const isWithin24Hours = (now >= LAUNCH_DATE_MS && now <= LAUNCH_DAY_24H_END);
+    if (chIdx === 0 && !isWithin24Hours) {
+      // After the first 24 hours, Chapter 11 becomes part of the complete bundle
+      const isBundleUnlocked = req.headers['x-bundle-token'] || req.query.unlocked === 'true';
+      if (!isBundleUnlocked) {
+        return res.status(402).json({
+          error: 'The 24-hour launch day free reading period for Chapter 11 has ended. It is now part of the complete Volume 2 bundle.',
+          bundleRequired: true
+        });
+      }
+    } else if (chIdx > 0) {
+      // Chapters 12-20 are part of the complete paid bundle
+      const isBundleUnlocked = req.headers['x-bundle-token'] || req.query.unlocked === 'true';
+      if (!isBundleUnlocked) {
+        return res.status(402).json({
+          error: 'This chapter is part of the complete Volume 2 paid bundle.',
+          bundleRequired: true
+        });
+      }
+    }
   }
 
   const paragraphs = novelContent[chIdx];

@@ -519,8 +519,8 @@
             <div class="scheduled-lock-card">
               <span class="series-kicker" style="color: var(--accent);">Releasing December 10, 2026</span>
               <h3>${numLabel}: ${ch.title}</h3>
-              <p>Chapter 11 will be <strong>free to read for everyone</strong> on December 10 so you can dive right back in with Ma'un and Naba.</p>
-              <p style="font-size:0.9rem; color:var(--text-muted); margin:12px auto 20px;">The rest of Volume 2 (Chapters 12–20) releases on the same day as a complete paid bundle.</p>
+              <p>Chapter 11 will be <strong>free to read for 24 hours on launch day (Dec 10)</strong> so you can dive right back in with Ma'un and Naba.</p>
+              <p style="font-size:0.9rem; color:var(--text-muted); margin:12px auto 20px;">The complete Volume 2 bundle (Chapters 11–20) releases on December 10.</p>
               <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get an email on Dec 10 &rarr;</a>
             </div>
           `;
@@ -530,7 +530,7 @@
               <span class="series-kicker" style="color: var(--accent);">Volume 2 &middot; Paid Bundle</span>
               <h3>${numLabel}: ${ch.title}</h3>
               <p>Chapters 12 through 20 will be available on <strong>December 10, 2026</strong> as a complete paid bundle.</p>
-              <p style="font-size:0.9rem; color:var(--text-muted); margin:12px auto 20px;">You can read Chapter 11 for free on launch day to get a taste before deciding on the rest of the volume.</p>
+              <p style="font-size:0.9rem; color:var(--text-muted); margin:12px auto 20px;">Chapter 11 will be free for 24 hours on launch day so you can read the opening before deciding on the rest of the volume.</p>
               <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get notified when it drops &rarr;</a>
             </div>
           `;
@@ -556,8 +556,26 @@
 
       try {
         const res = await fetch(`/api/chapter?novel=${encodeURIComponent(activeNovelKey)}&ch=${idx}`);
-        if (!res.ok) throw new Error('API error ' + res.status);
         const data = await res.json();
+
+        if (res.status === 402) {
+          container.innerHTML = `
+            <div class="scheduled-lock-card">
+              <span class="series-kicker" style="color: var(--accent);">Volume 2 &middot; Paid Bundle</span>
+              <h3>${numLabel}: ${ch.title}</h3>
+              <p style="font-size:0.95rem; color:var(--text-muted); margin:12px auto 20px; line-height:1.6;">${data.error || 'This chapter is part of the complete Volume 2 paid bundle.'}</p>
+              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Launch Notification &rarr;</a>
+                <a href="index.html#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
+              </div>
+            </div>
+          `;
+          document.getElementById('wordCount').textContent = 'Bundle';
+          document.getElementById('readTime').textContent = 'Paid Edition';
+          return;
+        }
+
+        if (!res.ok) throw new Error('API error ' + res.status);
 
         container.innerHTML = '';
         if (data.paragraphs && data.paragraphs.length > 0) {

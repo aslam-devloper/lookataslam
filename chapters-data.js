@@ -76,7 +76,7 @@ const NOVELS = {
     "tagline": "The morning after. Learning each other’s rhythms, habits, and building a marriage in the quiet spaces.",
     "genre": "Romance · Domestic Life · Emotional Bonding",
     "cover": "assets/volume_2_cover.jpg",
-    "status": "Complete Paid Bundle · Launches Dec 10, 2026 · Chapter 11 Free on Launch",
+    "status": "Complete Paid Bundle · Launches Dec 10, 2026 · Chapter 11 Free for 24 Hours on Launch Day",
     "launchDate": "2026-12-10T18:00:00+05:30",
     "chapters": [
       {
@@ -84,7 +84,8 @@ const NOVELS = {
         "title": "The Morning After",
         "releaseDate": "2026-12-10T18:00:00+05:30",
         "releaseDisplay": "Dec 10, 2026",
-        "isFreeHook": true
+        "isFreeLaunchDay": true,
+        "freeUntil": "2026-12-11T18:00:00+05:30"
       },
       {
         "chapterNumber": 12,
