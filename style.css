@@ -92,6 +92,22 @@ body {
   cursor: auto !important;
 }
 
+/* Clean text selection without harsh contrast */
+::selection {
+  background: var(--accent-light);
+  color: var(--text-main);
+}
+::-moz-selection {
+  background: var(--accent-light);
+  color: var(--text-main);
+}
+
+/* Ensure no text changes color or gets whitish on hover */
+p:hover, article:hover, .reader-article:hover, .reading-para:hover {
+  color: inherit !important;
+  background: transparent !important;
+}
+
 /* ── TYPOGRAPHY ────────────────────────────────────────────────────────── */
 h1, h2, h3, h4 {
   color: var(--text-main);

@@ -35,32 +35,36 @@ themeButtons.forEach(btn => {
   });
 });
 
-// 3. Bookshelf Interaction: Picking the Book Spreads the Drawer
+// 3. Bookshelf Multi-Novel Selection (JALWA vs SABU)
 const spineJalwa = document.getElementById('spineJalwa');
-const bookDrawer = document.getElementById('bookDrawer');
-const jumpToShelfBtn = document.getElementById('jumpToShelfBtn');
+const spineSabu = document.getElementById('spineSabu');
+const drawerJalwa = document.getElementById('drawerJalwa');
+const drawerSabu = document.getElementById('drawerSabu');
 
-function focusBookDrawer() {
-  if (bookDrawer) {
-    bookDrawer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    bookDrawer.style.transform = 'translateY(-4px)';
-    setTimeout(() => {
-      bookDrawer.style.transform = 'none';
-    }, 300);
+function selectNovel(novelKey) {
+  if (novelKey === 'jalwa') {
+    spineJalwa?.classList.add('active-shelf-book');
+    spineSabu?.classList.remove('active-shelf-book');
+    if (drawerJalwa) drawerJalwa.style.display = 'block';
+    if (drawerSabu) drawerSabu.style.display = 'none';
+    drawerJalwa?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else if (novelKey === 'sabu') {
+    spineSabu?.classList.add('active-shelf-book');
+    spineJalwa?.classList.remove('active-shelf-book');
+    if (drawerSabu) drawerSabu.style.display = 'block';
+    if (drawerJalwa) drawerJalwa.style.display = 'none';
+    drawerSabu?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 }
 
-spineJalwa?.addEventListener('click', focusBookDrawer);
-spineJalwa?.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    focusBookDrawer();
-  }
-});
+spineJalwa?.addEventListener('click', () => selectNovel('jalwa'));
+spineSabu?.addEventListener('click', () => selectNovel('sabu'));
 
-jumpToShelfBtn?.addEventListener('click', (e) => {
-  e.preventDefault();
-  focusBookDrawer();
+spineJalwa?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectNovel('jalwa'); }
+});
+spineSabu?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectNovel('sabu'); }
 });
 
 // 4. Feature: Reading Resume Bar
@@ -83,7 +87,7 @@ try {
   });
 } catch (e) {}
 
-// 5. Feature: Newsletter Subscribe Form (Backend API Integration)
+// 5. Feature: Newsletter Subscribe Form
 const subscribeForm = document.getElementById('subscribeForm');
 const subFeedback = document.getElementById('subFeedback');
 const subBtn = document.getElementById('subBtn');
@@ -119,7 +123,6 @@ subscribeForm?.addEventListener('submit', async (e) => {
       subFeedback.textContent = data.error || "Subscription error. Please try again.";
     }
   } catch (err) {
-    // Graceful offline fallback
     subFeedback.style.color = '#3d6a4a';
     subFeedback.textContent = "Thank you! You have been added to the notification list.";
     if (emailInput) emailInput.value = '';

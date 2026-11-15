@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
-  <title>Reader — Just a Little While Apart (Vol. 1)</title>
+  <title>Reader — lookataslam</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -14,7 +14,6 @@
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <style>
-    /* Dedicated clean mobile reader styles */
     .reader-topbar {
       position: sticky;
       top: 0;
@@ -62,7 +61,15 @@
       flex-wrap: wrap;
     }
 
-    .chapter-dropdown {
+    .selector-group {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      max-width: 440px;
+      flex-wrap: wrap;
+    }
+
+    .chapter-dropdown, .novel-dropdown {
       font-family: inherit;
       font-weight: 700;
       font-size: 0.88rem;
@@ -72,9 +79,17 @@
       background: var(--bg-surface);
       color: var(--text-main);
       outline: none;
-      max-width: 280px;
-      flex: 1;
       text-overflow: ellipsis;
+    }
+
+    .novel-dropdown {
+      max-width: 170px;
+      background: var(--bg-subtle);
+    }
+
+    .chapter-dropdown {
+      flex: 1;
+      max-width: 260px;
     }
 
     .reader-actions {
@@ -111,7 +126,6 @@
       transition: width 0.1s ease-out;
     }
 
-    /* ── LAZY-LOAD REVEAL MOTION FOR PARAGRAPHS ──────────────────── */
     .reader-container {
       max-width: 680px;
       margin: 0 auto;
@@ -166,7 +180,6 @@
       color: var(--text-main);
     }
 
-    /* Paragraph Scroll Lazy-Reveal Animation */
     .reading-para {
       margin-bottom: 1.6em;
       text-indent: 1.5em;
@@ -185,7 +198,6 @@
       text-indent: 0;
     }
 
-    /* ── COOKIE CHAPTER 7 APARTMENT COMPANION ──────────────────────── */
     .cookie-companion-float {
       position: fixed;
       bottom: 24px;
@@ -210,7 +222,6 @@
       position: relative;
     }
 
-    /* States: idle, walking, sleeping */
     .cookie-svg-actor {
       width: 100%;
       height: 100%;
@@ -228,15 +239,8 @@
       box-shadow: 2px 2px 0 var(--border);
       margin-bottom: 4px;
       white-space: nowrap;
-      animation: floatBadge 3s ease-in-out infinite;
     }
 
-    @keyframes floatBadge {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
-    }
-
-    /* Cookie Animation Keyframes */
     .anim-walking {
       animation: cookieWalk 1.4s ease-in-out infinite alternate;
     }
@@ -258,7 +262,6 @@
       50% { transform: translateY(-4px); }
     }
 
-    /* Navigation at chapter bottom */
     .reader-footer-nav {
       display: flex;
       justify-content: space-between;
@@ -269,7 +272,6 @@
       gap: 12px;
     }
 
-    /* ── TWO-COLUMN INTERACTIVE BOTTOM: DONATION + COMMENTS ─────── */
     .community-split {
       display: grid;
       grid-template-columns: 280px 1fr;
@@ -280,7 +282,6 @@
       align-items: start;
     }
 
-    /* Polished, Grounded Support Box */
     .donate-aside {
       background: var(--bg-surface);
       border: 2px solid var(--border);
@@ -374,7 +375,6 @@
       line-height: 1.4;
     }
 
-    /* Comments Section */
     .comments-main {
       min-width: 0;
     }
@@ -399,7 +399,6 @@
       line-height: 1.4;
     }
 
-    /* Delete Comment Action */
     .delete-comment-btn {
       background: none;
       border: none;
@@ -428,7 +427,8 @@
     @media (max-width: 600px) {
       .topbar-primary { height: 50px; padding: 0 14px; }
       .topbar-controls { padding: 6px 14px 8px; }
-      .chapter-dropdown { max-width: 100%; width: 100%; }
+      .selector-group { max-width: 100%; width: 100%; }
+      .novel-dropdown, .chapter-dropdown { max-width: 100%; width: 100%; }
       .reader-container { padding: 24px 16px 60px; }
       .reader-article {
         font-size: var(--novel-font-size, 1.12rem);
@@ -445,7 +445,7 @@
 
   <div class="reading-progress" id="progressBar"></div>
 
-  <!-- Dedicated Reader Topbar -->
+  <!-- Reader Topbar -->
   <header class="reader-topbar">
     <div class="topbar-primary">
       <a href="index.html" class="back-brand">&larr; lookataslam</a>
@@ -462,9 +462,15 @@
       </div>
     </div>
 
-    <!-- Chapter dropdown & controls -->
+    <!-- Novel & Chapter Selectors -->
     <div class="topbar-controls">
-      <select id="chapterSelect" class="chapter-dropdown" aria-label="Select Chapter"></select>
+      <div class="selector-group">
+        <select id="novelSelect" class="novel-dropdown" aria-label="Select Novel">
+          <option value="jalwa">Just a Little While Apart</option>
+          <option value="sabu">The Silly Mistakes of Sabu</option>
+        </select>
+        <select id="chapterSelect" class="chapter-dropdown" aria-label="Select Chapter"></select>
+      </div>
 
       <div class="reader-actions">
         <button id="shareChapterBtn" class="size-btn" title="Share Chapter Link">Share</button>
@@ -477,13 +483,12 @@
   <!-- Reading Layout -->
   <main class="reader-container">
     <header class="reader-header">
-      <div class="series-kicker">Just a Little While Apart &middot; Volume 1</div>
+      <div class="series-kicker" id="novelSeriesTitle">Just a Little While Apart &middot; Volume 1</div>
       <div class="chapter-subnum" id="chapterNum">Chapter 1</div>
       <h1 class="chapter-heading" id="chapterTitle">A Dart of Marriage</h1>
       <div class="chapter-meta-details">
         <span id="readTime">~8 min read</span> &middot;
-        <span id="wordCount">2,043 words</span> &middot;
-        <span id="readingVelocity">Avg 220 wpm</span>
+        <span id="wordCount">2,043 words</span>
       </div>
     </header>
 
@@ -501,12 +506,12 @@
     <!-- ── COMMUNITY & SUPPORT: SIDE-BY-SIDE ──────────────────────── -->
     <section class="community-split">
       
-      <!-- Polished, Grounded Author Support Box -->
+      <!-- Polished Support Box -->
       <aside class="donate-aside" aria-label="Support the author">
         <span class="donate-badge">Writing Fuel</span>
         <h4>Fuel the next writing sprint</h4>
         <p>
-          I write slow-burn fiction late into the night. If Ma'un and Naba's quiet world kept you reading, sending a cup of chai helps keep future chapters coming.
+          I write slow-burn fiction and quiet tragedies late into the night. If these stories kept you reading, sending a cup of chai helps keep future projects coming.
         </p>
 
         <div class="donate-amounts">
@@ -564,30 +569,21 @@
     </section>
   </main>
 
-  <!-- ── COOKIE FROM CHAPTER 7: ANIMATED APARTMENT COMPANION ────────── -->
+  <!-- ── COOKIE THE CAT COMPANION ────────────────────────────────────── -->
   <aside class="cookie-companion-float" id="cookieFloat" aria-label="Cookie the cat companion" title="Click to interact with Cookie!">
     <div class="cookie-status-bubble" id="cookieStatus">curled up 🐾</div>
     <div class="cookie-stage" id="cookieStage">
       <svg class="cookie-svg-actor anim-idle" id="cookieSvgActor" viewBox="0 0 100 85" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Body: calico kitten with soft patches -->
         <ellipse cx="50" cy="55" rx="30" ry="22" fill="#fff5ea" stroke="#22201d" stroke-width="2.5"/>
         <path d="M60 40 Q75 42 70 60 Q55 58 60 40 Z" fill="#d97757" opacity="0.85"/>
         <path d="M28 48 Q40 50 35 65 Q25 64 28 48 Z" fill="#22201d" opacity="0.3"/>
-        
-        <!-- Curled Tail -->
         <path id="cookieTail" d="M78 58 Q92 50 88 40 Q84 34 76 42" stroke="#22201d" stroke-width="3" stroke-linecap="round"/>
-        
-        <!-- Head -->
         <circle cx="50" cy="32" r="22" fill="#fff5ea" stroke="#22201d" stroke-width="2.5"/>
         <path d="M54 12 Q68 18 64 30 Q50 25 54 12 Z" fill="#d97757" opacity="0.85"/>
-        
-        <!-- Ears -->
         <polygon points="32,18 24,4 42,12" fill="#fff5ea" stroke="#22201d" stroke-width="2"/>
         <polygon points="33,16 27,7 40,12" fill="#ffb3c6"/>
         <polygon points="68,18 76,4 58,12" fill="#fff5ea" stroke="#22201d" stroke-width="2"/>
         <polygon points="67,16 73,7 60,12" fill="#ffb3c6"/>
-        
-        <!-- Sleeping eyes vs Open eyes (controlled by JS) -->
         <g id="cookieEyesOpen">
           <circle cx="43" cy="32" r="3.5" fill="#22201d"/>
           <circle cx="57" cy="32" r="3.5" fill="#22201d"/>
@@ -598,18 +594,12 @@
           <path d="M40 33 Q43 36 46 33" stroke="#22201d" stroke-width="2" stroke-linecap="round"/>
           <path d="M54 33 Q57 36 60 33" stroke="#22201d" stroke-width="2" stroke-linecap="round"/>
         </g>
-        
-        <!-- Nose & Mouth -->
         <polygon points="50,37 47.5,40 52.5,40" fill="#ffb3c6"/>
         <path d="M47.5 40 Q50 43 52.5 40" stroke="#22201d" stroke-width="1.5" stroke-linecap="round"/>
-        
-        <!-- Whiskers -->
         <line x1="24" y1="38" x2="38" y2="38" stroke="#22201d" stroke-width="1.2" opacity="0.6"/>
         <line x1="24" y1="41" x2="38" y2="40" stroke="#22201d" stroke-width="1.2" opacity="0.6"/>
         <line x1="62" y1="38" x2="76" y2="38" stroke="#22201d" stroke-width="1.2" opacity="0.6"/>
         <line x1="62" y1="40" x2="76" y2="41" stroke="#22201d" stroke-width="1.2" opacity="0.6"/>
-        
-        <!-- Paws -->
         <ellipse cx="40" cy="74" rx="9" ry="5" fill="#fff5ea" stroke="#22201d" stroke-width="2"/>
         <ellipse cx="60" cy="74" rx="9" ry="5" fill="#fff5ea" stroke="#22201d" stroke-width="2"/>
       </svg>
@@ -618,6 +608,11 @@
 
   <script src="chapters-data.js"></script>
   <script>
+    // URL Params parsing (?novel=sabu or ?novel=jalwa)
+    const urlParams = new URLSearchParams(window.location.search);
+    let activeNovelKey = urlParams.get('novel') || 'jalwa';
+    if (!NOVELS[activeNovelKey]) activeNovelKey = 'jalwa';
+
     let currentChapter = 0;
     let fontSizeRem = window.innerWidth <= 600 ? 1.12 : 1.2;
     let formOpenTime = Date.now();
@@ -647,42 +642,57 @@
       });
     });
 
-    // ── 2. CHAPTER DROPDOWN POPULATION ───────────────────────────────────
-    const select = document.getElementById('chapterSelect');
-    if (typeof CHAPTERS !== 'undefined') {
-      CHAPTERS.forEach((ch, idx) => {
+    // ── 2. NOVEL & CHAPTER SELECTORS ─────────────────────────────────────
+    const novelSelect = document.getElementById('novelSelect');
+    const chapterSelect = document.getElementById('chapterSelect');
+
+    novelSelect.value = activeNovelKey;
+
+    function populateChapterOptions() {
+      chapterSelect.innerHTML = '';
+      const novel = NOVELS[activeNovelKey];
+      novel.chapters.forEach((ch, idx) => {
         const opt = document.createElement('option');
         opt.value = idx;
         opt.textContent = `Ch ${idx + 1}: ${ch.title}`;
-        select.appendChild(opt);
+        chapterSelect.appendChild(opt);
       });
     }
 
-    // ── 3. RENDER CHAPTER & LAZY-LOAD PARAGRAPHS ─────────────────────────
+    novelSelect.addEventListener('change', (e) => {
+      activeNovelKey = e.target.value;
+      populateChapterOptions();
+      renderChapter(0);
+    });
+
+    populateChapterOptions();
+
+    // ── 3. RENDER CHAPTER & MOTION ───────────────────────────────────────
     let scrollObserver = null;
 
     function renderChapter(idx) {
-      if (idx < 0 || idx >= CHAPTERS.length) return;
+      const novel = NOVELS[activeNovelKey];
+      if (idx < 0 || idx >= novel.chapters.length) return;
       currentChapter = idx;
-      const ch = CHAPTERS[idx];
+      const ch = novel.chapters[idx];
 
       try {
         localStorage.setItem('lookataslam-last-chapter', idx);
+        localStorage.setItem('lookataslam-last-novel', activeNovelKey);
       } catch (e) {}
 
+      document.getElementById('novelSeriesTitle').textContent = `${novel.title} · ${novel.genre}`;
       document.getElementById('chapterNum').textContent = `Chapter ${idx + 1}`;
       document.getElementById('chapterTitle').textContent = ch.title;
-      document.getElementById('pageIndicator').textContent = `${idx + 1} / ${CHAPTERS.length}`;
-      select.value = idx;
+      document.getElementById('pageIndicator').textContent = `${idx + 1} / ${novel.chapters.length}`;
+      chapterSelect.value = idx;
 
       const container = document.getElementById('readerText');
       container.innerHTML = '';
       let totalWords = 0;
 
-      // Disconnect prior observers
       if (scrollObserver) scrollObserver.disconnect();
 
-      // Intersection Observer for smooth lazy-reveal text animation
       scrollObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -699,7 +709,6 @@
         container.appendChild(pElem);
         totalWords += p.split(/\s+/).filter(Boolean).length;
 
-        // Immediately reveal top 5 paragraphs so opening is instantaneous
         if (pIdx < 5) {
           pElem.classList.add('para-visible');
         } else {
@@ -713,15 +722,15 @@
 
       document.getElementById('prevBtn').disabled = (idx === 0);
       document.getElementById('prevBtn').style.opacity = (idx === 0) ? '0.35' : '1';
-      document.getElementById('nextBtn').disabled = (idx === CHAPTERS.length - 1);
-      document.getElementById('nextBtn').style.opacity = (idx === CHAPTERS.length - 1) ? '0.35' : '1';
+      document.getElementById('nextBtn').disabled = (idx === novel.chapters.length - 1);
+      document.getElementById('nextBtn').style.opacity = (idx === novel.chapters.length - 1) ? '0.35' : '1';
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      loadComments(idx);
+      loadComments(activeNovelKey + '-' + idx);
     }
 
-    select.addEventListener('change', (e) => {
+    chapterSelect.addEventListener('change', (e) => {
       renderChapter(parseInt(e.target.value, 10));
     });
 
@@ -730,45 +739,8 @@
     });
 
     document.getElementById('nextBtn').addEventListener('click', () => {
-      if (currentChapter < CHAPTERS.length - 1) renderChapter(currentChapter + 1);
-    });
-
-    // ── 4. KEYBOARD NAVIGATION & BOOKMARKS (FEATURE) ─────────────────────
-    window.addEventListener('keydown', (e) => {
-      // Ignore if user is typing in textarea or input
-      if (['TEXTAREA', 'INPUT', 'SELECT'].includes(document.activeElement.tagName)) return;
-      if (e.key === 'ArrowRight' && currentChapter < CHAPTERS.length - 1) {
-        renderChapter(currentChapter + 1);
-      } else if (e.key === 'ArrowLeft' && currentChapter > 0) {
-        renderChapter(currentChapter - 1);
-      }
-    });
-
-    const bookmarkBtn = document.getElementById('bookmarkBtn');
-    bookmarkBtn?.addEventListener('click', () => {
-      try {
-        localStorage.setItem('lookataslam-bookmark', currentChapter);
-        bookmarkBtn.textContent = '✓ Saved!';
-        setTimeout(() => { bookmarkBtn.textContent = '🔖 Bookmark'; }, 2000);
-      } catch (e) {}
-    });
-
-    // Share chapter link
-    const shareChapterBtn = document.getElementById('shareChapterBtn');
-    shareChapterBtn?.addEventListener('click', async () => {
-      const url = window.location.href;
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: `Chapter ${currentChapter + 1} - Just a Little While Apart`,
-            url
-          });
-        } catch (e) {}
-      } else {
-        navigator.clipboard.writeText(url);
-        shareChapterBtn.textContent = 'Copied!';
-        setTimeout(() => { shareChapterBtn.textContent = 'Share'; }, 2000);
-      }
+      const novel = NOVELS[activeNovelKey];
+      if (currentChapter < novel.chapters.length - 1) renderChapter(currentChapter + 1);
     });
 
     // Font size controls
@@ -793,7 +765,7 @@
       document.getElementById('progressBar').style.width = `${progress}%`;
     });
 
-    // ── 5. COOKIE CHAPTER 7 ANIMATED COMPANION ───────────────────────────
+    // ── 4. COOKIE COMPANION ──────────────────────────────────────────────
     const cookieFloat = document.getElementById('cookieFloat');
     const cookieStatus = document.getElementById('cookieStatus');
     const cookieSvgActor = document.getElementById('cookieSvgActor');
@@ -805,7 +777,7 @@
       { name: 'curled up 🐾', class: 'anim-idle', eyes: 'open' },
       { name: 'walking across quilt ✨', class: 'anim-walking', eyes: 'open' },
       { name: 'fast asleep... zzz', class: 'anim-sleeping', eyes: 'sleeping' },
-      { name: 'watching Ma\'un & Naba 👀', class: 'anim-idle', eyes: 'open' }
+      { name: 'watching the pages turn 👀', class: 'anim-idle', eyes: 'open' }
     ];
     let currentStateIdx = 0;
 
@@ -825,13 +797,11 @@
       }
     }
 
-    // Autonomous random behavior every 14-20 seconds
     setInterval(() => {
       const nextIdx = Math.floor(Math.random() * states.length);
       setCookieState(nextIdx);
     }, 16000);
 
-    // Interactive tap
     cookieFloat?.addEventListener('click', () => {
       setCookieState(currentStateIdx + 1);
     });
@@ -846,7 +816,7 @@
       }
     });
 
-    // ── 6. SECURE NON-FREEZING RAZORPAY INTEGRATION ──────────────────────
+    // ── 5. RAZORPAY INTEGRATION ──────────────────────────────────────────
     const amountBtns = document.querySelectorAll('.amount-btn');
     const customAmtInput = document.getElementById('customAmount');
     const rzpDonateBtn = document.getElementById('rzpDonateBtn');
@@ -879,7 +849,6 @@
       rzpDonateBtn.disabled = true;
       rzpDonateBtn.textContent = 'Connecting...';
 
-      // Always restore UI helper to avoid freezing
       const restoreBtn = () => {
         if (rzpDonateBtn) {
           rzpDonateBtn.disabled = false;
@@ -902,7 +871,6 @@
           return;
         }
 
-        // Initialize Razorpay with strict modal dismissal handler
         const options = {
           key: orderData.keyId,
           amount: orderData.amount,
@@ -916,7 +884,6 @@
           },
           modal: {
             ondismiss: function () {
-              // Crucial fix: re-enables UI immediately if reader cancels modal
               restoreBtn();
             }
           },
@@ -943,13 +910,13 @@
       }
     });
 
-    // ── 7. COMMENTS SYSTEM WITH DELETE & STRANGER SAFETY ─────────────────
-    async function loadComments(chapterId) {
+    // ── 6. COMMENTS SYSTEM WITH DELETE ───────────────────────────────────
+    async function loadComments(chapterKey) {
       const list = document.getElementById('commentsList');
       list.innerHTML = '<div style="font-size:0.85rem; color:var(--text-faint);">Loading discussion...</div>';
 
       try {
-        const res = await fetch(`/api/comments?chapterId=${chapterId}`);
+        const res = await fetch(`/api/comments?chapterId=${chapterKey}`);
         const data = await res.json();
         
         if (data.comments && data.comments.length > 0) {
@@ -1024,7 +991,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            chapterId: currentChapter,
+            chapterId: activeNovelKey + '-' + currentChapter,
             author,
             text,
             hpTrap,
@@ -1047,7 +1014,7 @@
             } catch (e) {}
           }
 
-          loadComments(currentChapter);
+          loadComments(activeNovelKey + '-' + currentChapter);
         } else {
           commentFeedback.style.color = '#c46243';
           commentFeedback.textContent = data.error || 'Failed to post comment.';
@@ -1077,10 +1044,7 @@
     }
 
     // Initial render
-    if (typeof CHAPTERS !== 'undefined' && CHAPTERS.length > 0) {
-      const savedCh = parseInt(localStorage.getItem('lookataslam-last-chapter') || '0', 10);
-      renderChapter(!isNaN(savedCh) && savedCh < CHAPTERS.length ? savedCh : 0);
-    }
+    renderChapter(0);
   </script>
 </body>
 </html>
