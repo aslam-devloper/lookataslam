@@ -16,7 +16,8 @@ navMenu?.querySelectorAll('a').forEach(link => {
 
 // 2. Theme Switcher (Warm, Night, Sage)
 const themeButtons = document.querySelectorAll('[data-theme-btn]');
-const savedTheme = localStorage.getItem('lookataslam-theme') || 'warm';
+let savedTheme = localStorage.getItem('lookataslam-theme') || 'warm';
+if (savedTheme === 'sage') savedTheme = 'dusk';
 
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
@@ -35,32 +36,29 @@ themeButtons.forEach(btn => {
   });
 });
 
-// 3. Bookshelf Multi-Novel Selection (JALWA vs SABU)
-const spineJalwa = document.getElementById('spineJalwa');
-const spineSabu = document.getElementById('spineSabu');
-const drawerJalwa = document.getElementById('drawerJalwa');
-const drawerSabu = document.getElementById('drawerSabu');
+// 3. Editorial Library Novel Selection (JALWA vs SABU)
+const bookTabs = document.querySelectorAll('.book-tab');
+const spreadJalwa = document.getElementById('spreadJalwa');
+const spreadSabu = document.getElementById('spreadSabu');
 
-function selectNovel(novelKey) {
-  if (novelKey === 'jalwa') {
-    spineJalwa?.classList.add('active-shelf-book');
-    spineSabu?.classList.remove('active-shelf-book');
-    if (drawerJalwa) drawerJalwa.style.display = 'block';
-    if (drawerSabu) drawerSabu.style.display = 'none';
-    drawerJalwa?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  } else if (novelKey === 'sabu') {
-    spineSabu?.classList.add('active-shelf-book');
-    spineJalwa?.classList.remove('active-shelf-book');
-    if (drawerSabu) drawerSabu.style.display = 'block';
-    if (drawerJalwa) drawerJalwa.style.display = 'none';
-    drawerSabu?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-}
+bookTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const novel = tab.dataset.novel;
+    bookTabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    if (spreadJalwa) spreadJalwa.style.display = novel === 'jalwa' ? 'grid' : 'none';
+    if (spreadSabu) spreadSabu.style.display = novel === 'sabu' ? 'grid' : 'none';
+  });
+});
 
-// Volume switcher inside JALWA Book Drawer
+// Volume switcher inside JALWA Editorial Spread
 window.switchJalwaVol = function(vol) {
-  const btn1 = document.getElementById('tabBtnVol1');
-  const btn2 = document.getElementById('tabBtnVol2');
+  const btn1 = document.getElementById('volBtn1');
+  const btn2 = document.getElementById('volBtn2');
   const view1 = document.getElementById('jalwaVol1View');
   const view2 = document.getElementById('jalwaVol2View');
 
@@ -80,16 +78,6 @@ window.switchJalwaVol = function(vol) {
     if (view1) view1.style.display = 'none';
   }
 };
-
-spineJalwa?.addEventListener('click', () => selectNovel('jalwa'));
-spineSabu?.addEventListener('click', () => selectNovel('sabu'));
-
-spineJalwa?.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectNovel('jalwa'); }
-});
-spineSabu?.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectNovel('sabu'); }
-});
 
 // 4. Feature: Reading Resume Bar
 try {
@@ -139,15 +127,15 @@ subscribeForm?.addEventListener('submit', async (e) => {
 
     const data = await res.json();
     if (data.success) {
-      subFeedback.style.color = '#3d6a4a';
+      subFeedback.style.color = 'var(--accent)';
       subFeedback.textContent = data.message || "Subscribed successfully!";
       emailInput.value = '';
     } else {
-      subFeedback.style.color = '#c46243';
+      subFeedback.style.color = 'var(--accent-hover)';
       subFeedback.textContent = data.error || "Subscription error. Please try again.";
     }
   } catch (err) {
-    subFeedback.style.color = '#3d6a4a';
+    subFeedback.style.color = 'var(--accent)';
     subFeedback.textContent = "Thank you! You have been added to the notification list.";
     if (emailInput) emailInput.value = '';
   } finally {
@@ -176,4 +164,3 @@ cookieDeclineBtn?.addEventListener('click', () => {
   localStorage.setItem('lookataslam-cookie-consent', 'essential');
   if (cookieConsentBar) cookieConsentBar.style.display = 'none';
 });
-

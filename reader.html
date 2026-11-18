@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="transition.css"/>
 
   <style>
     .reader-topbar {
@@ -328,7 +329,7 @@
         <div class="theme-picker" role="radiogroup" aria-label="Theme selection">
           <button class="theme-pill active" data-theme-btn="warm">Warm</button>
           <button class="theme-pill" data-theme-btn="night">Night</button>
-          <button class="theme-pill" data-theme-btn="sage">Sage</button>
+          <button class="theme-pill" data-theme-btn="dusk">Dusk</button>
         </div>
       </div>
     </div>
@@ -410,6 +411,7 @@
   </aside>
 
   <script src="chapters-data.js"></script>
+  <script src="support.js"></script>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     let activeNovelKey = urlParams.get('novel') || 'jalwa';
@@ -555,7 +557,14 @@
       document.getElementById('readTime').textContent = '...';
 
       try {
-        const res = await fetch(`/api/chapter?novel=${encodeURIComponent(activeNovelKey)}&ch=${idx}`);
+        const bundleToken = localStorage.getItem('lookataslam_bundle_token') || '';
+        const isUnlocked = localStorage.getItem('lookataslam_unlocked_jalwa_v2') === 'true';
+        const reqHeaders = {};
+        if (bundleToken) reqHeaders['x-bundle-token'] = bundleToken;
+
+        const res = await fetch(`/api/chapter?novel=${encodeURIComponent(activeNovelKey)}&ch=${idx}${isUnlocked ? '&unlocked=true' : ''}`, {
+          headers: reqHeaders
+        });
         const data = await res.json();
 
         if (res.status === 402) {
@@ -565,7 +574,8 @@
               <h3>${numLabel}: ${ch.title}</h3>
               <p style="font-size:0.95rem; color:var(--text-muted); margin:12px auto 20px; line-height:1.6;">${data.error || 'This chapter is part of the complete Volume 2 paid bundle.'}</p>
               <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-                <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Launch Notification &rarr;</a>
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.unlockVolume2 ? window.unlockVolume2(() => renderChapter(currentChapterIndex)) : alert('Checkout loading...')">Unlock Volume 2 Bundle (₹99) &rarr;</button>
+                <a href="index.html#subscribe" class="btn btn-secondary btn-sm">Get Launch Notification</a>
                 <a href="index.html#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
               </div>
             </div>
@@ -713,5 +723,6 @@
       };
     })();
   </script>
+  <script src="transition.js"></script>
 </body>
 </html>

@@ -1,0 +1,308 @@
+/* ── CINEMATIC CLOUD & PAGE-TURN TRANSITIONS ─────────────────────────────── */
+:root {
+  --nt-bg: #faf7f2;
+  --nt-paper: #f4eee2;
+  --nt-paper-edge: rgba(40, 32, 24, 0.12);
+  --nt-cloud-deep: #e8dccb;
+  --nt-cloud-mid: #f3e9db;
+  --nt-cloud-fore: #faf5ed;
+  --nt-accent: #d97757;
+  --nt-text: #241d17;
+  --nt-text-sub: #7a6e63;
+}
+
+[data-theme="night"] {
+  --nt-bg: #151419;
+  --nt-paper: #1c1a24;
+  --nt-paper-edge: rgba(0, 0, 0, 0.45);
+  --nt-cloud-deep: #100f14;
+  --nt-cloud-mid: #1d1b26;
+  --nt-cloud-fore: #282535;
+  --nt-accent: #f08c65;
+  --nt-text: #f0ecf7;
+  --nt-text-sub: #9f98ad;
+}
+
+[data-theme="dusk"] {
+  --nt-bg: #121820;
+  --nt-paper: #17202c;
+  --nt-paper-edge: rgba(0, 0, 0, 0.45);
+  --nt-cloud-deep: #0c1117;
+  --nt-cloud-mid: #182230;
+  --nt-cloud-fore: #222f42;
+  --nt-accent: #e5a452;
+  --nt-text: #edf2f7;
+  --nt-text-sub: #94a5b8;
+}
+
+/* Master Overlay */
+.nt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  pointer-events: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  perspective: 1200px;
+}
+
+.nt-overlay.nt-active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── 1. The Page-Turn Sheet ──────────────────────────────────────────────── */
+.nt-page-leaf {
+  position: absolute;
+  inset: 0;
+  background: var(--nt-paper);
+  transform-origin: left center;
+  transform: translateX(105%) rotateY(25deg);
+  box-shadow: -15px 0 35px var(--nt-paper-edge);
+  transition: transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.nt-page-curl {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 70px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.12), transparent);
+  pointer-events: none;
+}
+
+/* ── 2. Layered Clouds System ────────────────────────────────────────────── */
+.nt-clouds-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nt-cloud-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48vh;
+  transform: translateY(-105%);
+  transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.nt-cloud-svg-top {
+  width: 100%;
+  height: 100%;
+  fill: var(--nt-cloud-mid);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.06));
+}
+
+.nt-cloud-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(105%);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.nt-cloud-deep {
+  height: 65vh;
+  z-index: 1;
+  transition-duration: 0.44s;
+}
+.nt-cloud-deep path { fill: var(--nt-cloud-deep); }
+
+.nt-cloud-mid {
+  height: 52vh;
+  z-index: 2;
+  transition-duration: 0.48s;
+}
+.nt-cloud-mid path { fill: var(--nt-cloud-mid); }
+
+.nt-cloud-fore {
+  height: 38vh;
+  z-index: 3;
+  transition-duration: 0.52s;
+}
+.nt-cloud-fore path {
+  fill: var(--nt-cloud-fore);
+  filter: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.05));
+}
+
+.nt-cloud-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── 3. Center Emblem: Book & Sparkles ───────────────────────────────────── */
+.nt-badge {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  transform: scale(0.92) translateY(12px);
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.2, 0, 0, 1) 0.12s,
+              transform 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+  user-select: none;
+}
+
+.nt-book-icon {
+  position: relative;
+  width: 54px;
+  height: 42px;
+  margin: 0 auto 12px;
+  color: var(--nt-accent);
+}
+
+.nt-book-spine {
+  opacity: 0.7;
+}
+
+.nt-book-leaf {
+  animation: ntLeafFlutter 1.4s ease-in-out infinite alternate;
+  transform-origin: 24px 18px;
+}
+
+@keyframes ntLeafFlutter {
+  0% { transform: scaleX(0.96) rotate(-2deg); }
+  100% { transform: scaleX(1.05) rotate(3deg); }
+}
+
+/* Sparkles */
+.nt-sparkle {
+  position: absolute;
+  color: var(--nt-accent);
+  line-height: 1;
+  pointer-events: none;
+  animation: ntTwinkle 1.6s ease-in-out infinite alternate;
+}
+.nt-sp-1 { top: -6px; left: -10px; font-size: 1.1rem; animation-delay: 0s; }
+.nt-sp-2 { top: 2px; right: -12px; font-size: 0.85rem; animation-delay: 0.35s; }
+.nt-sp-3 { bottom: -2px; left: 8px; font-size: 0.75rem; animation-delay: 0.7s; }
+
+@keyframes ntTwinkle {
+  0% { transform: scale(0.7) rotate(0deg); opacity: 0.4; }
+  50% { transform: scale(1.15) rotate(15deg); opacity: 1; }
+  100% { transform: scale(0.85) rotate(-10deg); opacity: 0.6; }
+}
+
+.nt-author {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: clamp(2rem, 5.5vw, 3.4rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--nt-text);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.nt-cue {
+  margin-top: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--nt-accent);
+  opacity: 0.9;
+}
+
+/* ── ANIMATION STATES ────────────────────────────────────────────────────── */
+
+/* Leaving current page: page turns and clouds roll in to cover viewport */
+.nt-overlay.is-leaving {
+  opacity: 1;
+}
+
+.nt-overlay.is-leaving .nt-page-leaf {
+  transform: translateX(0) rotateY(0deg);
+}
+
+.nt-overlay.is-leaving .nt-cloud-top {
+  transform: translateY(0);
+}
+
+.nt-overlay.is-leaving .nt-cloud-deep,
+.nt-overlay.is-leaving .nt-cloud-mid,
+.nt-overlay.is-leaving .nt-cloud-fore {
+  transform: translateY(0);
+}
+
+.nt-overlay.is-leaving .nt-badge {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Entering new page: begins fully covered, then parts away softly */
+.nt-overlay.is-entering {
+  opacity: 1;
+}
+
+.nt-overlay.is-entering .nt-page-leaf {
+  transform: translateX(0) rotateY(0deg);
+  transition: none;
+}
+
+.nt-overlay.is-entering .nt-cloud-top {
+  transform: translateY(0);
+  transition: none;
+}
+
+.nt-overlay.is-entering .nt-cloud-deep,
+.nt-overlay.is-entering .nt-cloud-mid,
+.nt-overlay.is-entering .nt-cloud-fore {
+  transform: translateY(0);
+  transition: none;
+}
+
+.nt-overlay.is-entering .nt-badge {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: none;
+}
+
+/* Clearing: clouds drift away and page turn sweeps off to reveal new page */
+.nt-overlay.is-clearing .nt-page-leaf {
+  transform: translateX(-105%) rotateY(-18deg);
+  transition: transform 0.44s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nt-overlay.is-clearing .nt-cloud-top {
+  transform: translateY(-110%);
+  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nt-overlay.is-clearing .nt-cloud-deep,
+.nt-overlay.is-clearing .nt-cloud-mid,
+.nt-overlay.is-clearing .nt-cloud-fore {
+  transform: translateY(110%);
+  transition: transform 0.44s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nt-overlay.is-clearing .nt-badge {
+  opacity: 0;
+  transform: scale(1.06) translateY(-8px);
+  transition: opacity 0.25s ease-out, transform 0.28s ease-out;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .nt-page-leaf,
+  .nt-cloud-layer,
+  .nt-cloud-top,
+  .nt-badge {
+    transition: opacity 0.25s linear !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

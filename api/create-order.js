@@ -20,14 +20,14 @@ export default async function handler(req, res) {
 
     // Strict validation: amount in INR (convert to paise)
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    let { amount, currency } = body || {};
+    let { amount = 99, currency, purpose, item } = body || {};
 
     amount = parseInt(amount, 10);
     // Sanity checks: Minimum ₹10, Maximum ₹50,000 to prevent fraud / test abuse
     if (isNaN(amount) || amount < 10 || amount > 50000) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid donation amount. Please choose an amount between ₹10 and ₹50,000.'
+        error: 'Invalid payment amount. Please choose an amount between ₹10 and ₹50,000.'
       });
     }
 
@@ -47,7 +47,8 @@ export default async function handler(req, res) {
           currency: currency || 'INR',
           receipt: `rcpt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
           notes: {
-            purpose: 'Author Donation / Tea Support',
+            purpose: purpose || 'Volume 2 Bundle / Author Support',
+            item: item || 'jalwa_v2',
             novel: 'Just a Little While Apart'
           }
         })
