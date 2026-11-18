@@ -79,24 +79,46 @@ window.switchJalwaVol = function(vol) {
   }
 };
 
-// 4. Feature: Reading Resume Bar
+// 4. Feature: Reading Resume Bar & Mobile Reading Dock
 try {
   const lastCh = localStorage.getItem('lookataslam-last-chapter');
   const resumeBar = document.getElementById('resumeBar');
   const resumeChapterName = document.getElementById('resumeChapterName');
   const dismissResume = document.getElementById('dismissResume');
+  const dockLink = document.getElementById('dockActionLink');
 
-  if (lastCh !== null && resumeBar && resumeChapterName) {
+  if (lastCh !== null) {
     const idx = parseInt(lastCh, 10);
     if (!isNaN(idx) && idx > 0) {
-      resumeChapterName.textContent = `Chapter ${idx + 1}`;
-      resumeBar.style.display = 'block';
+      if (resumeChapterName && resumeBar) {
+        resumeChapterName.textContent = `Chapter ${idx + 1}`;
+        resumeBar.style.display = 'block';
+      }
+      if (dockLink) {
+        dockLink.href = `reader.html?novel=jalwa&ch=${idx}`;
+        const dockText = dockLink.querySelector('.dock-text');
+        if (dockText) dockText.innerHTML = `<strong>Continue JALWA</strong> &middot; Chapter ${idx + 1}`;
+      }
     }
   }
 
   dismissResume?.addEventListener('click', () => {
     if (resumeBar) resumeBar.style.display = 'none';
   });
+
+  // Mobile Reading Dock visibility on scroll
+  const mobileDock = document.getElementById('mobileDock');
+  if (mobileDock) {
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const footerDist = document.body.offsetHeight - (scrollY + window.innerHeight);
+      if (scrollY > 180 && footerDist > 160) {
+        mobileDock.style.display = 'block';
+      } else {
+        mobileDock.style.display = 'none';
+      }
+    }, { passive: true });
+  }
 } catch (e) {}
 
 // 5. Feature: Newsletter Subscribe Form
