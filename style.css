@@ -885,31 +885,6 @@ a {
   margin: 0;
 }
 
-.footer-hanko {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.hanko-seal {
-  display: inline-block;
-  padding: 3px 7px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--accent);
-  border: 1.5px solid var(--accent);
-  border-radius: 4px;
-  letter-spacing: 0.08em;
-  line-height: 1.2;
-}
-
-.hanko-text {
-  font-size: 0.8rem;
-  color: var(--text-faint);
-  font-weight: 600;
-}
-
 .footer-note {
   font-size: 0.85rem;
   color: var(--text-faint);
