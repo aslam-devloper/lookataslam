@@ -994,97 +994,108 @@ a {
 }
 
 @media (max-width: 680px) {
-  .nav-menu {
-    display: none;
-  }
+  /* ── NAV ── */
+  .nav-menu { display: none; }
   .nav-menu.open {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 68px;
+    top: 60px;
     left: 0;
     right: 0;
     background: var(--bg-surface);
     border-bottom: 2px solid var(--border);
-    padding: 18px 24px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    padding: 14px 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     z-index: 200;
+    gap: 2px;
   }
-  .mobile-toggle {
+  .nav-menu.open a {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border-radius: 8px;
     display: block;
   }
+  .mobile-toggle { display: block; }
 
-  /* Hero Section: Mobile First */
+  /* Theme picker smaller pills so it fits nav row */
+  .theme-picker { gap: 2px; padding: 2px; }
+  .theme-pill { padding: 4px 7px; font-size: 0.68rem; }
+
+  /* ── HERO ── */
   .hero-editorial {
     min-height: auto;
-    padding: 48px 0 32px;
+    padding: 36px 0 28px;
   }
   .hero-headline {
-    font-size: clamp(2.2rem, 9.5vw, 3.2rem);
-    line-height: 1.1;
-    margin-bottom: 16px;
+    font-size: clamp(1.9rem, 8.5vw, 2.8rem);
+    line-height: 1.08;
+    margin-bottom: 14px;
+  }
+  .hero-subline {
+    font-size: 0.98rem;
+    margin-bottom: 22px;
   }
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 22px;
   }
-  
-  /* Bring back notification card on mobile with clean clay-shadow */
-  .hero-notif {
-    display: block;
-    width: 100%;
-    margin-top: 8px;
-  }
-  .notif-card {
-    padding: 20px 18px;
-    border-radius: var(--card-radius);
-  }
-
-  .hero-actions {
+  .hero-notif { display: block; width: 100%; margin-top: 4px; }
+  .notif-card { padding: 18px 16px; }
+  .hero-cta {
     flex-direction: column;
-    gap: 12px;
-    width: 100%;
+    gap: 10px;
   }
-  .hero-actions .btn {
+  .hero-cta .btn {
     width: 100%;
-    text-align: center;
     justify-content: center;
     min-height: 48px;
-    font-size: 0.95rem;
   }
 
-  /* Library book tabs: smooth touch scrolling */
-  .book-tabs {
+  /* ── LIBRARY ── */
+  .book-selector {
     display: flex;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding-bottom: 6px;
-    gap: 8px;
+    gap: 10px;
+    flex-wrap: nowrap;
   }
-  .book-tabs::-webkit-scrollbar {
-    display: none;
-  }
+  .book-selector::-webkit-scrollbar { display: none; }
   .book-tab {
     flex-shrink: 0;
     min-height: 44px;
-    padding: 10px 18px;
-    font-size: 0.9rem;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+
+  /* Vol toggle: fills width, stacked readable pills */
+  .vol-toggle {
+    display: flex;
+    width: 100%;
+    border-radius: 12px;
+  }
+  .vol-btn {
+    flex: 1;
+    padding: 10px 6px;
+    font-size: 0.78rem;
+    min-height: 42px;
+    text-align: center;
   }
 
   .edition-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 14px;
   }
   .edition-row .btn {
     width: 100%;
-    text-align: center;
     justify-content: center;
     min-height: 46px;
   }
 
-  /* Subscribe Section */
+  /* ── SUBSCRIBE ── */
   .subscribe-row {
     flex-direction: column;
     gap: 10px;
@@ -1095,7 +1106,7 @@ a {
     min-height: 48px;
   }
 
-  /* Footer on Mobile */
+  /* ── FOOTER ── */
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 28px;
@@ -1105,13 +1116,20 @@ a {
     align-items: flex-start;
     gap: 14px;
   }
-  .footer-nav-col ul {
+  .footer-nav-col ul { gap: 12px; }
+  .footer-nav-col a { padding: 6px 0; font-size: 0.95rem; }
+
+  /* ── COOKIE BAR ── */
+  .cookie-consent-bar {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 12px;
   }
-  .footer-nav-col a {
-    padding: 6px 0;
-    font-size: 0.95rem;
-  }
+  .cookie-consent-actions { width: 100%; justify-content: flex-end; }
 }
 
 /* ── COOKIE CONSENT BANNER ─────────────────────────────────────────────── */

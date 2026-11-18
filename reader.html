@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="transition.css"/>
+  <link rel="stylesheet" href="style.css?v=2"/>
+  <link rel="stylesheet" href="transition.css?v=2"/>
 
   <style>
     .reader-topbar {
@@ -297,15 +297,48 @@
     }
 
     @media (max-width: 600px) {
-      .topbar-primary { height: 50px; padding: 0 14px; }
-      .topbar-controls { padding: 6px 14px 8px; }
-      .selector-group { max-width: 100%; width: 100%; }
-      .novel-dropdown, .chapter-dropdown { max-width: 100%; width: 100%; }
-      .reader-container { padding: 24px 16px 60px; }
-      .reader-article {
-        font-size: var(--novel-font-size, 1.12rem);
-        line-height: 1.78;
+      .topbar-primary { height: 50px; padding: 0 12px; gap: 8px; }
+      .back-brand { font-size: 0.88rem; }
+      .topbar-right { gap: 6px; }
+      /* Hide bookmark + cat on smallest screens; keep theme picker */
+      #toggleCatBtn, #bookmarkBtn { display: none; }
+      .theme-picker { gap: 2px; padding: 2px; }
+      .theme-pill { padding: 4px 7px; font-size: 0.68rem; }
+      .topbar-controls {
+        padding: 6px 12px 10px;
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
       }
+      .selector-group {
+        max-width: 100%;
+        width: 100%;
+        flex-wrap: nowrap;
+        gap: 6px;
+      }
+      .novel-dropdown {
+        width: 44%;
+        max-width: 44%;
+        font-size: 0.82rem;
+        padding: 8px 10px;
+      }
+      .chapter-dropdown {
+        flex: 1;
+        max-width: none;
+        font-size: 0.82rem;
+        padding: 8px 10px;
+      }
+      .reader-actions {
+        justify-content: flex-end;
+        gap: 6px;
+      }
+      .size-btn, .action-pill-btn {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+        min-height: 36px;
+      }
+      .reader-container { padding: 24px 16px 60px; }
+      .reader-article { font-size: var(--novel-font-size, 1.1rem); line-height: 1.78; }
       .reading-para { margin-bottom: 1.4em; text-indent: 1.2em; }
       .reader-footer-nav { flex-direction: column; gap: 14px; }
       .reader-footer-nav .btn { width: 100%; }
@@ -723,6 +756,6 @@
       };
     })();
   </script>
-  <script src="transition.js"></script>
+  <script src="transition.js?v=2"></script>
 </body>
 </html>
