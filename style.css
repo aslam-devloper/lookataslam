@@ -967,68 +967,6 @@ a {
   box-shadow: 3px 3px 0 var(--border);
 }
 
-/* ── CREATIVE: MOBILE FLOATING NOVEL QUICK-DOCK ────────────────────────── */
-.mobile-reading-dock {
-  display: none;
-  position: fixed;
-  bottom: 18px;
-  left: 16px;
-  right: 16px;
-  max-width: 380px;
-  margin: 0 auto;
-  z-index: 9998;
-  animation: dockPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes dockPop {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.dock-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 12px 18px;
-  background: var(--bg-surface);
-  border: 2px solid var(--border);
-  border-radius: 999px;
-  box-shadow: var(--clay-shadow);
-  color: var(--text-main);
-  text-decoration: none;
-  font-size: 0.88rem;
-  min-height: 48px;
-  touch-action: manipulation;
-}
-
-.dock-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-  animation: pulseDot 2s infinite ease-in-out;
-}
-
-@keyframes pulseDot {
-  0%, 100% { opacity: 0.5; transform: scale(0.9); }
-  50% { opacity: 1; transform: scale(1.15); }
-}
-
-.dock-text {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dock-arrow {
-  font-weight: bold;
-  color: var(--accent);
-  font-size: 1.1rem;
-}
-
 /* ── RESPONSIVE & MOBILE-FIRST OVERHAUL ────────────────────────────────── */
 @media (max-width: 860px) {
   .footer-grid {
@@ -1056,11 +994,6 @@ a {
 }
 
 @media (max-width: 680px) {
-  /* Mobile Floating Dock active on phone */
-  .mobile-reading-dock {
-    display: block;
-  }
-
   .nav-menu {
     display: none;
   }
