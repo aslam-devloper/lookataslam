@@ -2,7 +2,6 @@ const CACHE = 'lks-v1';
 const SHELL = [
   '/',
   '/reader.html',
-  '/index.html',
   '/style.css',
   '/script.js',
   '/chapters-data.js',

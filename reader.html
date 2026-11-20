@@ -618,12 +618,14 @@
       document.getElementById('readTime').textContent = '...';
 
       try {
-        const bundleToken = localStorage.getItem('lookataslam_bundle_token') || '';
-        const isUnlocked = localStorage.getItem('lookataslam_unlocked_jalwa_v2') === 'true';
+        const bundleToken = localStorage.getItem(`lookataslam_bundle_token_${activeNovelKey}`) || localStorage.getItem('lookataslam_bundle_token') || '';
+        const paymentId = localStorage.getItem(`lookataslam_payment_id_${activeNovelKey}`) || localStorage.getItem('lookataslam_payment_id') || '';
+        const isUnlocked = localStorage.getItem(`lookataslam_unlocked_${activeNovelKey}`) === 'true' || localStorage.getItem('lookataslam_unlocked_jalwa_v2') === 'true';
         const reqHeaders = {};
         if (bundleToken) reqHeaders['x-bundle-token'] = bundleToken;
+        if (paymentId) reqHeaders['x-payment-id'] = paymentId;
 
-        const res = await fetch(`/api/chapter?novel=${encodeURIComponent(activeNovelKey)}&ch=${idx}${isUnlocked ? '&unlocked=true' : ''}`, {
+        const res = await fetch(`/api/chapter?novel=${encodeURIComponent(activeNovelKey)}&ch=${idx}${isUnlocked ? '&unlocked=true' : ''}${paymentId ? `&payment_id=${encodeURIComponent(paymentId)}` : ''}`, {
           headers: reqHeaders
         });
         const data = await res.json();
