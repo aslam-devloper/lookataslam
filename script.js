@@ -61,6 +61,7 @@ window.switchJalwaVol = function(vol) {
   const btn2 = document.getElementById('volBtn2');
   const view1 = document.getElementById('jalwaVol1View');
   const view2 = document.getElementById('jalwaVol2View');
+  const coverImg = document.getElementById('jalwaSpreadCover');
 
   if (vol === 'vol1') {
     btn1?.classList.add('active');
@@ -69,6 +70,7 @@ window.switchJalwaVol = function(vol) {
     btn2?.setAttribute('aria-selected', 'false');
     if (view1) view1.style.display = 'block';
     if (view2) view2.style.display = 'none';
+    if (coverImg) coverImg.src = 'assets/cover_revised.png';
   } else {
     btn2?.classList.add('active');
     btn2?.setAttribute('aria-selected', 'true');
@@ -76,6 +78,7 @@ window.switchJalwaVol = function(vol) {
     btn1?.setAttribute('aria-selected', 'false');
     if (view2) view2.style.display = 'block';
     if (view1) view1.style.display = 'none';
+    if (coverImg) coverImg.src = 'assets/volume_2_cover.jpg';
   }
 };
 

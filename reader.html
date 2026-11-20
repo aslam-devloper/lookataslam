@@ -538,6 +538,26 @@
             `;
             container.appendChild(hookBox);
           }
+
+          // Reader Donation Note at the end of every chapter
+          const donateBox = document.createElement('div');
+          donateBox.className = 'chapter-donate-box';
+          donateBox.style.cssText = 'margin:56px auto 32px; padding:28px 24px; max-width:540px; border:1px solid rgba(217,119,87,0.22); border-radius:18px; background:linear-gradient(180deg, var(--bg-surface) 0%, rgba(217,119,87,0.04) 100%); text-align:center; box-shadow:0 4px 20px -6px rgba(0,0,0,0.06);';
+          donateBox.innerHTML = `
+            <div style="font-size:1.25rem; margin-bottom:8px;">☕</div>
+            <h4 style="font-family:'EB Garamond', Georgia, serif; font-size:1.35rem; font-weight:500; margin:0 0 10px; color:var(--text-main);">A small note between friends</h4>
+            <p style="font-size:0.95rem; line-height:1.7; color:var(--text-muted); margin:0 0 20px; font-style:normal;">
+              Writing these chapters quietly in the early mornings means everything to me. If these characters and their quiet moments brought peace, comfort, or a smile to your day, and you would like to help keep this world alive, any small support means the world. Never feel pressured—just having you here reading is a gift.
+            </p>
+            <div style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;">
+              <a href="https://razorpay.me/@mohammadibraheem" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="background:#d97757; border-color:#d97757; color:#fff; display:inline-flex; align-items:center; gap:8px; font-weight:500; padding:10px 22px; border-radius:999px; text-decoration:none; box-shadow:0 2px 8px rgba(217,119,87,0.28);">
+                <span>Support the Author</span>
+                <span style="font-size:0.85em; opacity:0.9;">&rarr;</span>
+              </a>
+            </div>
+            <p style="font-size:0.78rem; color:var(--text-muted); opacity:0.75; margin:14px 0 0;">Secure reader support powered by Razorpay</p>
+          `;
+          container.appendChild(donateBox);
         } else {
           container.innerHTML = '<p style="color:var(--text-muted);">Chapter content unavailable.</p>';
         }

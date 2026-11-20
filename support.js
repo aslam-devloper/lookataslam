@@ -137,6 +137,7 @@
   };
 
   // Helper for reader support / tip
+  window.openDonation = function() { window.open('https://razorpay.me/@mohammadibraheem', '_blank'); };
   window.tipAuthor = function(amount = 49) {
     window.payWithRazorpay({
       amount,
