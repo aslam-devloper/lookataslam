@@ -282,6 +282,19 @@
       .reader-footer-nav { flex-direction: column; gap: 12px; }
       .reader-footer-nav .btn { width: 100%; }
     }
+
+    /* Focus mode */
+    body.focus-mode .reader-topbar { opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    body.focus-mode .reader-container { max-width: 760px; }
+    body.focus-mode #focusModeBtn { opacity: 1 !important; }
+    .reader-topbar { transition: opacity 0.25s; }
+
+    /* Chapter complete badge in dropdown */
+    .chapter-dropdown option.ch-done::before { content: "✓ "; }
+
+    /* Back to top */
+    #backToTop:hover { filter: brightness(1.1); }
+
   </style>
 </head>
 <body>
@@ -326,11 +339,12 @@
   </script>
 
   <div class="reading-progress" id="progressBar"></div>
+  <button id="backToTop" aria-label="Back to top" style="display:none; position:fixed; bottom:24px; right:20px; z-index:200; background:var(--accent); color:#fff; border:none; border-radius:50%; width:42px; height:42px; font-size:1.1rem; cursor:pointer; box-shadow:2px 2px 0 rgba(0,0,0,0.18); line-height:1;">↑</button>
 
   <!-- Reader Topbar -->
   <header class="reader-topbar">
     <div class="topbar-primary">
-      <a href="index.html" class="back-brand">&larr; lookataslam</a>
+      <a href="/" class="back-brand">&larr; lookataslam</a>
 
       <div class="topbar-right">
         <div class="theme-picker" role="radiogroup" aria-label="Theme selection">
@@ -361,6 +375,7 @@
       </div>
 
       <div class="reader-actions">
+        <button id="focusModeBtn" class="size-btn" title="Focus mode (F)" aria-label="Toggle focus mode">Focus</button>
         <button id="shareChapterBtn" class="size-btn" title="Share Chapter Link">Share</button>
         <button id="fontDown" class="size-btn" aria-label="Decrease font size">A&minus;</button>
         <button id="fontUp" class="size-btn" aria-label="Increase font size">A&#43;</button>
@@ -399,6 +414,7 @@
     let activeNovelKey = urlParams.get('novel') || 'jalwa';
     if (!NOVELS[activeNovelKey]) activeNovelKey = 'jalwa';
 
+    const chParam = parseInt(urlParams.get('ch') || '0', 10);
     let currentChapter = 0;
     let fontSizeRem = window.innerWidth <= 600 ? 1.12 : 1.2;
 
@@ -568,7 +584,7 @@
               <h3>${numLabel}: ${ch.title}</h3>
               <p>Chapter 11 will be <strong>free to read for 24 hours on launch day (Dec 10)</strong> so you can dive right back in with Ma'un and Naba.</p>
               <p style="font-size:0.9rem; color:var(--text-muted); margin:12px auto 20px;">The complete Volume 2 bundle (Chapters 11–20) releases on December 10.</p>
-              <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get an email on Dec 10 &rarr;</a>
+              <a href="/#subscribe" class="btn btn-primary btn-sm">Get an email on Dec 10 &rarr;</a>
             </div>
           `;
         } else if (activeNovelKey === 'jalwa_v2') {
@@ -578,7 +594,7 @@
               <h3>${numLabel}: ${ch.title}</h3>
               <p>Chapters 12 through 20 will be available on <strong>December 10, 2026</strong> as a complete paid bundle.</p>
               <p style="font-size:0.9rem; color:var(--text-muted); margin:12px auto 20px;">Chapter 11 will be free for 24 hours on launch day so you can read the opening before deciding on the rest of the volume.</p>
-              <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get notified when it drops &rarr;</a>
+              <a href="/#subscribe" class="btn btn-primary btn-sm">Get notified when it drops &rarr;</a>
             </div>
           `;
         } else {
@@ -587,7 +603,7 @@
               <span class="series-kicker" style="color: var(--accent);">Scheduled Release</span>
               <h3>${numLabel}: ${ch.title}</h3>
               <p>This chapter officially goes live on <strong>${ch.releaseDisplay}</strong>.</p>
-              <a href="index.html#subscribe" class="btn btn-primary btn-sm">Get Email Notification &rarr;</a>
+              <a href="/#subscribe" class="btn btn-primary btn-sm">Get Email Notification &rarr;</a>
             </div>
           `;
         }
@@ -620,8 +636,8 @@
               <p style="font-size:0.95rem; color:var(--text-muted); margin:12px auto 20px; line-height:1.6;">${data.error || 'This chapter is part of the complete Volume 2 paid bundle.'}</p>
               <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
                 <button type="button" class="btn btn-primary btn-sm" onclick="window.unlockVolume2 ? window.unlockVolume2(() => renderChapter(currentChapterIndex)) : alert('Checkout loading...')">Unlock Volume 2 Bundle (₹99) &rarr;</button>
-                <a href="index.html#subscribe" class="btn btn-secondary btn-sm">Get Launch Notification</a>
-                <a href="index.html#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
+                <a href="/#subscribe" class="btn btn-secondary btn-sm">Get Launch Notification</a>
+                <a href="/#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
               </div>
             </div>
           `;
@@ -647,8 +663,8 @@
                 Hope you enjoyed stepping back into the apartment with them. Chapters 12 through 20 are releasing together on December 10 as a paid bundle so you can read their whole next chapter without waiting.
               </p>
               <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-                <a href="index.html#subscribe" class="btn btn-primary btn-sm">Email me on Dec 10 &rarr;</a>
-                <a href="index.html#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
+                <a href="/#subscribe" class="btn btn-primary btn-sm">Email me on Dec 10 &rarr;</a>
+                <a href="/#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
               </div>
             `;
             container.appendChild(hookBox);
@@ -691,16 +707,16 @@
     }
 
     chapterSelect.addEventListener('change', (e) => {
-      renderChapter(parseInt(e.target.value, 10));
+      navToChapter(parseInt(e.target.value, 10));
     });
 
     document.getElementById('prevBtn').addEventListener('click', () => {
-      if (currentChapter > 0) renderChapter(currentChapter - 1);
+      if (currentChapter > 0) navToChapter(currentChapter - 1);
     });
 
     document.getElementById('nextBtn').addEventListener('click', () => {
       const novel = NOVELS[activeNovelKey];
-      if (currentChapter < novel.chapters.length - 1) renderChapter(currentChapter + 1);
+      if (currentChapter < novel.chapters.length - 1) navToChapter(currentChapter + 1);
     });
 
     // Font size controls
@@ -725,7 +741,100 @@
       document.getElementById('progressBar').style.width = `${progress}%`;
     });
 
-    renderChapter(0);
+    // ── FEATURE: Resume reading ───────────────────────────────────────────────
+    const resumeKey = `lks-resume-${activeNovelKey}`;
+    const savedChapter = parseInt(localStorage.getItem(resumeKey) || '0', 10);
+    const startChapter = !isNaN(chParam) && chParam > 0 ? chParam : (savedChapter > 0 && savedChapter < NOVELS[activeNovelKey].chapters.length ? savedChapter : 0);
+    renderChapter(startChapter);
+
+    // Save position after render
+    const _origRender = renderChapter;
+    // Patch: save chapter on nav (after renderChapter calls)
+    function navToChapter(idx) {
+      renderChapter(idx);
+      localStorage.setItem(resumeKey, idx);
+    }
+
+    // ── FEATURE: Completed chapters set ──────────────────────────────────────
+    const doneKey = `lks-done-${activeNovelKey}`;
+    function getCompleted() { try { return JSON.parse(localStorage.getItem(doneKey) || '[]'); } catch { return []; } }
+    function markDone(idx) {
+      const done = getCompleted();
+      if (!done.includes(idx)) { done.push(idx); localStorage.setItem(doneKey, JSON.stringify(done)); }
+      // Update dropdown
+      const opts = chapterSelect.options;
+      done.forEach(i => { if (opts[i]) opts[i].className = 'ch-done'; });
+    }
+
+    // Mark done when user scrolls to 85%+
+    window.addEventListener('scroll', () => {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollHeight > 0 && window.scrollY / scrollHeight > 0.85) markDone(currentChapter);
+    });
+
+    // ── FEATURE: Keyboard navigation ─────────────────────────────────────────
+    document.addEventListener('keydown', (e) => {
+      if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        const novel = NOVELS[activeNovelKey];
+        if (currentChapter < novel.chapters.length - 1) navToChapter(currentChapter + 1);
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        if (currentChapter > 0) navToChapter(currentChapter - 1);
+      }
+      if (e.key.toLowerCase() === 'f') {
+        document.body.classList.toggle('focus-mode');
+      }
+    });
+
+    // ── FEATURE: Swipe left/right on mobile ───────────────────────────────────
+    let _tx = 0;
+    document.addEventListener('touchstart', (e) => { _tx = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - _tx;
+      if (Math.abs(dx) < 60) return; // too short
+      const novel = NOVELS[activeNovelKey];
+      if (dx < 0 && currentChapter < novel.chapters.length - 1) navToChapter(currentChapter + 1); // swipe left = next
+      if (dx > 0 && currentChapter > 0) navToChapter(currentChapter - 1); // swipe right = prev
+    }, { passive: true });
+
+    // ── FEATURE: Back to top button ───────────────────────────────────────────
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      btt.style.display = window.scrollY > 400 ? 'block' : 'none';
+    });
+    btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ── FEATURE: Focus mode toggle button ─────────────────────────────────────
+    document.getElementById('focusModeBtn').addEventListener('click', () => {
+      document.body.classList.toggle('focus-mode');
+    });
+    // Show topbar on mouse move near top (focus mode UX)
+    document.addEventListener('mousemove', (e) => {
+      if (document.body.classList.contains('focus-mode')) {
+        document.querySelector('.reader-topbar').style.opacity = e.clientY < 80 ? '1' : '0';
+        document.querySelector('.reader-topbar').style.pointerEvents = e.clientY < 80 ? 'all' : 'none';
+      }
+    });
+
+    // ── FEATURE: Dark mode auto-detect on first visit ─────────────────────────
+    if (!localStorage.getItem('lookataslam-theme')) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) applyTheme('night');
+    }
+
+    // ── FEATURE: Share button ─────────────────────────────────────────────────
+    document.getElementById('shareChapterBtn').addEventListener('click', async () => {
+      const url = `${location.origin}/reader?novel=${activeNovelKey}&ch=${currentChapter}`;
+      if (navigator.share) {
+        navigator.share({ title: document.getElementById('chapterTitle').textContent, url });
+      } else {
+        await navigator.clipboard.writeText(url).catch(() => {});
+        document.getElementById('shareChapterBtn').textContent = 'Copied!';
+        setTimeout(() => { document.getElementById('shareChapterBtn').textContent = 'Share'; }, 1800);
+      }
+    });
+
 
     // ── COPY PROTECTION ──────────────────────────────────────────────────────
     // Allow selection (highlight) but block all copy mechanisms
