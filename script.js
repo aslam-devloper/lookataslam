@@ -169,3 +169,54 @@ cookieDeclineBtn?.addEventListener('click', () => {
   localStorage.setItem('lookataslam-cookie-consent', 'essential');
   if (cookieConsentBar) cookieConsentBar.style.display = 'none';
 });
+
+// Restore Purchase / Switch Device Handler
+const restoreForm = document.getElementById('restoreFormIndex');
+const restoreInput = document.getElementById('restoreInputIndex');
+const restoreBtn = document.getElementById('restoreBtnIndex');
+const restoreMsg = document.getElementById('restoreMsgIndex');
+
+restoreForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const pid = restoreInput?.value.trim();
+  if (!pid) return;
+
+  restoreBtn.disabled = true;
+  restoreBtn.textContent = 'Verifying...';
+  restoreMsg.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/restore-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ payment_id: pid })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      localStorage.setItem('lookataslam_unlocked_jalwa_v2', 'true');
+      localStorage.setItem('lookataslam_payment_id', data.paymentId);
+      localStorage.setItem('lookataslam_payment_id_jalwa_v2', data.paymentId);
+      if (data.sessionId) localStorage.setItem('lookataslam_session', data.sessionId);
+
+      restoreMsg.style.display = 'block';
+      restoreMsg.style.color = '#38a169';
+      restoreMsg.textContent = 'Access verified! Opening Volume 2...';
+      setTimeout(() => {
+        window.location.href = 'reader.html?novel=jalwa_v2&ch=0';
+      }, 900);
+    } else {
+      restoreMsg.style.display = 'block';
+      restoreMsg.style.color = '#e53e3e';
+      restoreMsg.textContent = data.error || 'Payment ID could not be verified.';
+      restoreBtn.disabled = false;
+      restoreBtn.textContent = 'Restore Access';
+    }
+  } catch (err) {
+    restoreMsg.style.display = 'block';
+    restoreMsg.style.color = '#e53e3e';
+    restoreMsg.textContent = 'Connection error. Please try again.';
+    restoreBtn.disabled = false;
+    restoreBtn.textContent = 'Restore Access';
+  }
+});
+

@@ -526,6 +526,24 @@
 
     let scrollObserver = null;
 
+    
+    // ── Screen Watermark Renderer ─────────────────────────────────────────────
+    function updateScreenWatermark(wm) {
+      let layer = document.getElementById('screenWatermarkLayer');
+      if (!wm) {
+        if (layer) layer.remove();
+        return;
+      }
+      if (!layer) {
+        layer = document.createElement('div');
+        layer.id = 'screenWatermarkLayer';
+        layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden;opacity:0.038;display:flex;flex-wrap:wrap;align-content:space-around;justify-content:space-around;user-select:none;font-family:sans-serif;font-weight:700;font-size:12px;color:var(--text-main);line-height:1;transform:rotate(-18deg) scale(1.15);';
+        document.body.appendChild(layer);
+      }
+      const tag = `${wm.orderId} &middot; ${wm.maskedEmail}`;
+      layer.innerHTML = new Array(28).fill(`<span style="margin:24px 36px;display:inline-block;white-space:nowrap;">${tag}</span>`).join('');
+    }
+
     function renderParagraphs(paragraphs, container) {
       let totalWords = 0;
       if (scrollObserver) scrollObserver.disconnect();
@@ -620,29 +638,91 @@
       try {
         const bundleToken = localStorage.getItem(`lookataslam_bundle_token_${activeNovelKey}`) || localStorage.getItem('lookataslam_bundle_token') || '';
         const paymentId = localStorage.getItem(`lookataslam_payment_id_${activeNovelKey}`) || localStorage.getItem('lookataslam_payment_id') || '';
+        const sessionId = localStorage.getItem('lookataslam_session') || '';
         const isUnlocked = localStorage.getItem(`lookataslam_unlocked_${activeNovelKey}`) === 'true' || localStorage.getItem('lookataslam_unlocked_jalwa_v2') === 'true';
         const reqHeaders = {};
         if (bundleToken) reqHeaders['x-bundle-token'] = bundleToken;
         if (paymentId) reqHeaders['x-payment-id'] = paymentId;
+        if (sessionId) reqHeaders['x-session-id'] = sessionId;
 
         const res = await fetch(`/api/chapter?novel=${encodeURIComponent(activeNovelKey)}&ch=${idx}${isUnlocked ? '&unlocked=true' : ''}${paymentId ? `&payment_id=${encodeURIComponent(paymentId)}` : ''}`, {
-          headers: reqHeaders
+          headers: reqHeaders,
+          credentials: 'include'
         });
         const data = await res.json();
 
         if (res.status === 402) {
+          updateScreenWatermark(null);
           container.innerHTML = `
             <div class="scheduled-lock-card">
               <span class="series-kicker" style="color: var(--accent);">Volume 2 &middot; Paid Bundle</span>
               <h3>${numLabel}: ${ch.title}</h3>
               <p style="font-size:0.95rem; color:var(--text-muted); margin:12px auto 20px; line-height:1.6;">${data.error || 'This chapter is part of the complete Volume 2 paid bundle.'}</p>
-              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-                <button type="button" class="btn btn-primary btn-sm" onclick="window.unlockVolume2 ? window.unlockVolume2(() => renderChapter(currentChapterIndex)) : alert('Checkout loading...')">Unlock Volume 2 Bundle (₹99) &rarr;</button>
+              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:22px;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.unlockVolume2 ? window.unlockVolume2(() => renderChapter(currentChapter)) : alert('Checkout loading...')">Unlock Volume 2 Bundle (₹99) &rarr;</button>
                 <a href="/#subscribe" class="btn btn-secondary btn-sm">Get Launch Notification</a>
                 <a href="/#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
               </div>
+
+              <!-- In-Reader Restore Box -->
+              <div style="margin-top:20px; padding:16px 20px; border:1.5px dashed var(--border); border-radius:14px; background:var(--bg-subtle); max-width:440px; margin-left:auto; margin-right:auto; text-align:left;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <span style="font-weight:700; font-size:0.86rem; color:var(--text-main);">Already purchased?</span>
+                  <span style="font-size:0.75rem; color:var(--accent); font-weight:700;">Switch Device</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin:0 0 10px; line-height:1.45;">Paste your <code>pay_...</code> ID from your email receipt to restore access on this device.</p>
+                <div style="display:flex; gap:8px;">
+                  <input type="text" id="readerRestoreInput" placeholder="pay_XXXXXXXXXXXXXX" style="flex:1; padding:8px 12px; font-size:0.84rem; border:1.5px solid var(--border); border-radius:var(--btn-radius,10px); background:var(--bg-surface); color:var(--text-main); outline:none;">
+                  <button type="button" id="readerRestoreBtn" class="btn btn-sm" style="padding:8px 16px; font-weight:700; font-size:0.84rem;">Restore</button>
+                </div>
+                <div id="readerRestoreMsg" style="font-size:0.78rem; margin-top:8px; display:none;"></div>
+              </div>
             </div>
           `;
+
+          // Attach listener to in-reader restore button
+          const rBtn = document.getElementById('readerRestoreBtn');
+          const rInp = document.getElementById('readerRestoreInput');
+          const rMsg = document.getElementById('readerRestoreMsg');
+          rBtn?.addEventListener('click', async () => {
+            const pid = rInp?.value.trim();
+            if (!pid) return;
+            rBtn.disabled = true;
+            rBtn.textContent = 'Verifying...';
+            rMsg.style.display = 'none';
+            try {
+              const rRes = await fetch('/api/restore-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ payment_id: pid }),
+                credentials: 'include'
+              });
+              const rData = await rRes.json();
+              if (rRes.ok && rData.success) {
+                localStorage.setItem('lookataslam_unlocked_jalwa_v2', 'true');
+                localStorage.setItem('lookataslam_payment_id', rData.paymentId);
+                localStorage.setItem('lookataslam_payment_id_jalwa_v2', rData.paymentId);
+                if (rData.sessionId) localStorage.setItem('lookataslam_session', rData.sessionId);
+                rMsg.style.display = 'block';
+                rMsg.style.color = '#38a169';
+                rMsg.textContent = 'Access verified! Loading chapter...';
+                setTimeout(() => renderChapter(currentChapter), 600);
+              } else {
+                rMsg.style.display = 'block';
+                rMsg.style.color = '#e53e3e';
+                rMsg.textContent = rData.error || 'Verification failed.';
+                rBtn.disabled = false;
+                rBtn.textContent = 'Restore';
+              }
+            } catch (err) {
+              rMsg.style.display = 'block';
+              rMsg.style.color = '#e53e3e';
+              rMsg.textContent = 'Connection error.';
+              rBtn.disabled = false;
+              rBtn.textContent = 'Restore';
+            }
+          });
+
           document.getElementById('wordCount').textContent = 'Bundle';
           document.getElementById('readTime').textContent = 'Paid Edition';
           return;
@@ -652,6 +732,7 @@
 
         container.innerHTML = '';
         if (data.paragraphs && data.paragraphs.length > 0) {
+          updateScreenWatermark(data.watermark);
           renderParagraphs(data.paragraphs, container);
 
           // If reading Chapter 11 of Volume 2 (free hook), append the author note right below the final line
