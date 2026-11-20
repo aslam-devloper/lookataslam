@@ -300,11 +300,19 @@
     <!-- Novel & Chapter Selectors -->
     <div class="topbar-controls">
       <div class="selector-group">
-        <select id="novelSelect" class="novel-dropdown" aria-label="Select Novel">
-          <option value="jalwa">JALWA (Vol. 1)</option>
-          <option value="jalwa_v2">JALWA (Vol. 2 · Dec 10)</option>
-          <option value="sabu">The Silly Mistakes of Sabu</option>
-        </select>
+        <div id="novelPickerWrap" style="position:relative;">
+          <button id="novelPickerBtn" class="novel-dropdown" aria-haspopup="listbox" aria-expanded="false" style="cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:170px; max-width:220px;">
+            <span id="novelPickerLabel">JALWA (Vol. 1)</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style="flex-shrink:0;opacity:0.6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+          <div id="novelPickerMenu" role="listbox" aria-label="Select Novel" style="display:none; position:absolute; top:calc(100% + 6px); left:0; min-width:240px; max-width:320px; max-height:320px; overflow-y:auto; background:var(--bg-surface); border:1.5px solid var(--border); border-radius:12px; box-shadow:4px 4px 0 var(--border); z-index:200; padding:6px 0;">
+            <div style="padding:6px 10px 4px;">
+              <input id="novelSearch" type="text" placeholder="search novels..." autocomplete="off"
+                style="width:100%; box-sizing:border-box; font-family:inherit; font-size:0.82rem; padding:5px 10px; border:1px solid var(--border-subtle); border-radius:7px; background:var(--bg-subtle); color:var(--text-main); outline:none;">
+            </div>
+            <ul id="novelPickerList" style="list-style:none; margin:4px 0 0; padding:0;"></ul>
+          </div>
+        </div>
         <select id="chapterSelect" class="chapter-dropdown" aria-label="Select Chapter"></select>
       </div>
 
@@ -368,10 +376,79 @@
       });
     });
 
-    const novelSelect = document.getElementById('novelSelect');
     const chapterSelect = document.getElementById('chapterSelect');
 
-    novelSelect.value = activeNovelKey;
+    // ── Custom novel picker (scales to 100+ novels) ──────────────────────────
+    const pickerBtn   = document.getElementById('novelPickerBtn');
+    const pickerLabel = document.getElementById('novelPickerLabel');
+    const pickerMenu  = document.getElementById('novelPickerMenu');
+    const pickerList  = document.getElementById('novelPickerList');
+    const novelSearch = document.getElementById('novelSearch');
+
+    // Build list items from NOVELS registry
+    function buildNovelList(filter) {
+      pickerList.innerHTML = '';
+      Object.keys(NOVELS).forEach(key => {
+        const label = NOVELS[key].label || key;
+        if (filter && !label.toLowerCase().includes(filter.toLowerCase())) return;
+        const li = document.createElement('li');
+        li.setAttribute('role', 'option');
+        li.setAttribute('data-key', key);
+        li.setAttribute('aria-selected', key === activeNovelKey ? 'true' : 'false');
+        li.style.cssText = 'padding:8px 16px; font-size:0.88rem; cursor:pointer; color:var(--text-main); transition:background 0.1s;';
+        if (key === activeNovelKey) {
+          li.style.background = 'var(--bg-subtle)';
+          li.style.fontWeight = '700';
+        }
+        li.textContent = label;
+        li.addEventListener('mouseenter', () => { li.style.background = 'var(--bg-subtle)'; });
+        li.addEventListener('mouseleave', () => { li.style.background = key === activeNovelKey ? 'var(--bg-subtle)' : ''; });
+        li.addEventListener('click', () => {
+          activeNovelKey = key;
+          pickerLabel.textContent = label;
+          closeNovelPicker();
+          populateChapterOptions();
+          renderChapter(0);
+        });
+        pickerList.appendChild(li);
+      });
+    }
+
+    function openNovelPicker() {
+      pickerMenu.style.display = 'block';
+      pickerBtn.setAttribute('aria-expanded', 'true');
+      novelSearch.value = '';
+      buildNovelList('');
+      novelSearch.focus();
+    }
+
+    function closeNovelPicker() {
+      pickerMenu.style.display = 'none';
+      pickerBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    pickerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      pickerMenu.style.display === 'none' ? openNovelPicker() : closeNovelPicker();
+    });
+
+    novelSearch.addEventListener('input', () => buildNovelList(novelSearch.value));
+    novelSearch.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeNovelPicker();
+      if (e.key === 'Enter') {
+        const first = pickerList.querySelector('li');
+        if (first) first.click();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('novelPickerWrap').contains(e.target)) closeNovelPicker();
+    });
+
+    // Set initial label
+    pickerLabel.textContent = NOVELS[activeNovelKey]?.label || activeNovelKey;
+    buildNovelList('');
+    // ─────────────────────────────────────────────────────────────────────────
 
     function populateChapterOptions() {
       chapterSelect.innerHTML = '';
@@ -384,12 +461,6 @@
         chapterSelect.appendChild(opt);
       });
     }
-
-    novelSelect.addEventListener('change', (e) => {
-      activeNovelKey = e.target.value;
-      populateChapterOptions();
-      renderChapter(0);
-    });
 
     populateChapterOptions();
 
@@ -544,18 +615,18 @@
           donateBox.className = 'chapter-donate-box';
           donateBox.style.cssText = 'margin:56px auto 32px; padding:28px 24px; max-width:540px; border:1px solid rgba(217,119,87,0.22); border-radius:18px; background:linear-gradient(180deg, var(--bg-surface) 0%, rgba(217,119,87,0.04) 100%); text-align:center; box-shadow:0 4px 20px -6px rgba(0,0,0,0.06);';
           donateBox.innerHTML = `
-            <div style="font-size:1.25rem; margin-bottom:8px;">☕</div>
-            <h4 style="font-family:'EB Garamond', Georgia, serif; font-size:1.35rem; font-weight:500; margin:0 0 10px; color:var(--text-main);">A small note between friends</h4>
+            
+            <h4 style="font-family:'Plus Jakarta Sans', sans-serif; font-size:0.95rem; font-weight:700; margin:0 0 8px; color:var(--text-main); text-transform:lowercase; letter-spacing:0.01em;">enjoyed the chapter?</h4>
             <p style="font-size:0.95rem; line-height:1.7; color:var(--text-muted); margin:0 0 20px; font-style:normal;">
-              Writing these chapters quietly in the early mornings means everything to me. If these characters and their quiet moments brought peace, comfort, or a smile to your day, and you would like to help keep this world alive, any small support means the world. Never feel pressured—just having you here reading is a gift.
+              i write these between work and sleep. if something landed — a line, a moment, anything — and you feel like buying me a tea, it genuinely helps me keep going. no pressure at all.
             </p>
             <div style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;">
               <a href="https://razorpay.me/@mohammadibraheem" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="background:#d97757; border-color:#d97757; color:#fff; display:inline-flex; align-items:center; gap:8px; font-weight:500; padding:10px 22px; border-radius:999px; text-decoration:none; box-shadow:0 2px 8px rgba(217,119,87,0.28);">
-                <span>Support the Author</span>
+                <span>buy me a tea ☕</span>
                 <span style="font-size:0.85em; opacity:0.9;">&rarr;</span>
               </a>
             </div>
-            <p style="font-size:0.78rem; color:var(--text-muted); opacity:0.75; margin:14px 0 0;">Secure reader support powered by Razorpay</p>
+            <p style="font-size:0.78rem; color:var(--text-muted); opacity:0.75; margin:14px 0 0;">via Razorpay · safe &amp; quick</p>
           `;
           container.appendChild(donateBox);
         } else {

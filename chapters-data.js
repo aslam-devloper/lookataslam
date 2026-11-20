@@ -1,6 +1,7 @@
 const NOVELS = {
   "jalwa": {
     "id": "jalwa",
+    "label": "JALWA — Vol. 1 (Free)",
     "title": "Just a Little While Apart",
     "tagline": "Two strangers. An arranged nikah. The slow, clumsy reality of becoming a home for each other.",
     "genre": "Romance · Slice of Life · Healing",
@@ -41,6 +42,7 @@ const NOVELS = {
   },
   "sabu": {
     "id": "sabu",
+    "label": "The Silly Mistakes of Sabu",
     "title": "The Silly Mistakes of Sabu",
     "tagline": "An archive clerk works forty hours of overtime to protect his family, only to learn that small shortcuts can destroy everything.",
     "genre": "Psychological Tragedy · Complete Story",
@@ -72,6 +74,7 @@ const NOVELS = {
   },
   "jalwa_v2": {
     "id": "jalwa_v2",
+    "label": "JALWA — Vol. 2 · Paid (Dec 10)",
     "title": "Just a Little While Apart (Vol. 2: The World of Two)",
     "tagline": "The morning after. Learning each other’s rhythms, habits, and building a marriage in the quiet spaces.",
     "genre": "Romance · Domestic Life · Emotional Bonding",
