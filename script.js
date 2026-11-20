@@ -133,7 +133,8 @@ subscribeForm?.addEventListener('submit', async (e) => {
     const data = await res.json();
     if (data.success) {
       subFeedback.style.color = 'var(--accent)';
-      subFeedback.textContent = data.message || "Subscribed successfully!";
+      subFeedback.style.color = "#38a169";
+      subFeedback.innerHTML = data.message || "You are on the release alert list for Volume 2 (Dec 10).";
       emailInput.value = '';
     } else {
       subFeedback.style.color = 'var(--accent-hover)';
@@ -141,7 +142,8 @@ subscribeForm?.addEventListener('submit', async (e) => {
     }
   } catch (err) {
     subFeedback.style.color = 'var(--accent)';
-    subFeedback.textContent = "Thank you! You have been added to the notification list.";
+    subFeedback.style.color = "#38a169";
+    subFeedback.innerHTML = "You are on the release alert list for Volume 2 (Dec 10).";
     if (emailInput) emailInput.value = '';
   } finally {
     if (subBtn) {
