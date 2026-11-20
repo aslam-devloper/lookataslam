@@ -222,3 +222,20 @@ restoreForm?.addEventListener('submit', async (e) => {
   }
 });
 
+
+// Geo-Detected Regional Pricing (1.5% International Buffer)
+(async function initGeoPricing() {
+  const note = document.getElementById('vol2PricingNote');
+  if (!note) return;
+  try {
+    const res = await fetch('/api/geo-pricing');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.geo && data.geo.currency !== 'INR') {
+      const g = data.geo;
+      note.innerHTML = `Standard: ₹99 (~${g.symbol}${g.standard.toFixed(2)}) &middot; Supporter: ₹149 (~${g.symbol}${g.supporter.toFixed(2)}) &middot; Upgrade: ₹50`;
+    }
+  } catch (e) {
+    // Graceful fallback to default INR display
+  }
+})();

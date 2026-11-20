@@ -9,7 +9,7 @@ const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
 const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 
 // Dedicated Author Master Mock ID (accessible to author only — unlocks all books & tiers)
-const AUTHOR_MASTER_ID = (process.env.AUTHOR_MASTER_KEY || 'pay_AslamMaster2026').trim();
+const AUTHOR_MASTER_ID = (process.env.AUTHOR_MASTER_KEY || 'pay_Aslam@1029').trim();
 
 // Local fallback store (/tmp persists for the lifetime of serverless container)
 const TMP_FILE = path.join('/tmp', 'lks_purchases.json');

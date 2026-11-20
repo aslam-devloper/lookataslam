@@ -659,8 +659,8 @@
               <h3>${numLabel}: ${ch.title}</h3>
               <p style="font-size:0.95rem; color:var(--text-muted); margin:12px auto 20px; line-height:1.6;">${data.error || 'This chapter is part of the complete Volume 2 paid bundle.'}</p>
               <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:22px;">
-                <button type="button" class="btn btn-primary btn-sm" onclick="window.unlockVolume2 ? window.unlockVolume2(() => renderChapter(currentChapter)) : alert('Checkout loading...')">Unlock Volume 2 Bundle (₹99) &rarr;</button>
-                <a href="/#subscribe" class="btn btn-secondary btn-sm">Get Launch Notification</a>
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.unlockVolume2 ? window.unlockVolume2(() => renderChapter(currentChapter)) : alert('Checkout loading...')">Standard Edition (₹99) &rarr;</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="window.unlockVolume2Supporter ? window.unlockVolume2Supporter(() => renderChapter(currentChapter)) : alert('Checkout loading...')">Supporter Edition (₹149) &rarr;</button>
                 <a href="/#shelf" class="btn btn-secondary btn-sm">Back to Library</a>
               </div>
 
@@ -734,6 +734,23 @@
         if (data.paragraphs && data.paragraphs.length > 0) {
           updateScreenWatermark(data.watermark);
           renderParagraphs(data.paragraphs, container);
+
+          // Reader Gratitude Card for licensed patrons
+          if (data.watermark && isPaidNovel) {
+            const gratitudeBox = document.createElement('div');
+            gratitudeBox.style.cssText = 'margin:40px auto 16px; padding:20px 24px; max-width:540px; border-radius:16px; background:var(--bg-subtle); border:1.5px solid var(--border-subtle); text-align:center; font-family:inherit;';
+            const isStandard = (data.watermark.tier || '').includes('99');
+            gratitudeBox.innerHTML = `
+              <div style="font-size:0.75rem; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:6px;">
+                Patron License &middot; ${data.watermark.tier || 'Supporter'}
+              </div>
+              <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6; margin:0 0 ${isStandard ? '12px' : '0'};">
+                A quiet thank you for supporting this book. Every hour spent crafting the silences and conversations between Ma’un and Naba was made possible by your patronage.
+              </p>
+              ${isStandard ? '<button type="button" onclick="window.upgradeToSupporter && window.upgradeToSupporter(\'jalwa_v2\', () => renderChapter(currentChapter))" style="background:var(--accent); color:#fff; border:none; border-radius:8px; padding:6px 14px; font-weight:700; font-size:0.8rem; cursor:pointer;">Upgrade to Supporter Tier (+₹50) &rarr;</button>' : ''}
+            `;
+            container.appendChild(gratitudeBox);
+          }
 
           // If reading Chapter 11 of Volume 2 (free hook), append the author note right below the final line
           if (activeNovelKey === 'jalwa_v2' && (ch.chapterNumber === 11 || idx === 0)) {
