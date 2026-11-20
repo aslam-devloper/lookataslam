@@ -1,15 +1,11 @@
 {
   "version": 2,
   "name": "lookataslam",
-  "routes": [
-    {
-      "src": "/api/_data(\\.js)?",
-      "dest": "/404.html",
-      "status": 404
-    }
-  ],
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/_data(.*)", "destination": "/404.html" }
+  ],
   "headers": [
     {
       "source": "/(.*\\.html)",
