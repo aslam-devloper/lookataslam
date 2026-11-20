@@ -1,4 +1,6 @@
-// Vercel Serverless Function: Real Email Dispatcher via Resend
+// api/subscribe.js — Vercel Serverless Function: Email Dispatcher (Brevo + Resend)
+// Supports Brevo (Sendinblue v3 REST API) & Resend with automatic fallback.
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -23,17 +25,13 @@ export default async function handler(req, res) {
     }
 
     const cleanEmail = email.toLowerCase().trim();
-    const apiKey = (process.env.RESEND_API_KEY || process.env.RESEND_APIKEY || process.env.RESEND_KEY || '').trim();
-    const fromAddress = (process.env.RESEND_FROM || 'Mohammad Aslam <onboarding@resend.dev>').trim();
-    const authorEmail = (process.env.AUTHOR_EMAIL || 'indedevaslam@outlook.com').trim();
 
-    if (!apiKey) {
-      console.warn("RESEND_API_KEY is not configured in Vercel environment.");
-      return res.status(200).json({
-        success: true,
-        message: "Thank you for subscribing! You're on the list."
-      });
-    }
+    // Provider API Keys & Settings
+    const brevoApiKey = (process.env.BREVO_API_KEY || '').trim();
+    const resendApiKey = (process.env.RESEND_API_KEY || process.env.RESEND_APIKEY || process.env.RESEND_KEY || '').trim();
+    const senderEmail = (process.env.BREVO_SENDER_EMAIL || 'indiedevaslam@outlook.com').trim();
+    const senderName = (process.env.BREVO_SENDER_NAME || 'Mohammad Aslam').trim();
+    const authorEmail = (process.env.AUTHOR_EMAIL || 'indiedevaslam@outlook.com').trim();
 
     const emailSubject = "A quiet hello from Mohammad Aslam (lookataslam)";
     const emailHtml = `
@@ -55,7 +53,7 @@ export default async function handler(req, res) {
           <p style="margin: 0 0 12px; font-size: 0.95rem; color: #6b645c;">
             Two strangers, an arranged nikah, and an apartment where neither knows what to do with their hands. All 10 chapters are completely free forever.
           </p>
-          <a href="https://lookataslam.com/reader.html?novel=jalwa" style="display: inline-block; background: #d97757; color: #ffffff; padding: 8px 18px; text-decoration: none; border-radius: 999px; font-weight: bold; font-size: 0.88rem; border: 1.5px solid #22201d;">Read Volume 1 Free &rarr;</a>
+          <a href="https://lookataslam.vercel.app/reader.html?novel=jalwa" style="display: inline-block; background: #d97757; color: #ffffff; padding: 8px 18px; text-decoration: none; border-radius: 999px; font-weight: bold; font-size: 0.88rem; border: 1.5px solid #22201d;">Read Volume 1 Free &rarr;</a>
         </div>
 
         <div style="background: #f4f6f8; border: 1.5px solid #232d39; border-radius: 12px; padding: 20px; margin: 24px 0;">
@@ -63,7 +61,7 @@ export default async function handler(req, res) {
           <p style="margin: 0 0 12px; font-size: 0.95rem; color: #486581;">
             A psychological tragedy about an archive clerk who works 40 hours of overtime to protect his family, only to learn that small everyday shortcuts can cost everything. (6 chapters, full ending).
           </p>
-          <a href="https://lookataslam.com/reader.html?novel=sabu" style="display: inline-block; background: #334e68; color: #ffffff; padding: 8px 18px; text-decoration: none; border-radius: 999px; font-weight: bold; font-size: 0.88rem; border: 1.5px solid #232d39;">Read Sabu Free &rarr;</a>
+          <a href="https://lookataslam.vercel.app/reader.html?novel=sabu" style="display: inline-block; background: #334e68; color: #ffffff; padding: 8px 18px; text-decoration: none; border-radius: 999px; font-weight: bold; font-size: 0.88rem; border: 1.5px solid #232d39;">Read Sabu Free &rarr;</a>
         </div>
 
         <p style="background: #fdf6ec; border-left: 4px solid #d97757; padding: 14px; border-radius: 4px; font-size: 0.95rem; color: #7a4a10;">
@@ -75,51 +73,102 @@ export default async function handler(req, res) {
         <p style="margin-top: 36px; line-height: 1.6;">
           Warmly,<br/>
           <strong>Mohammad Aslam</strong><br/>
-          <span style="font-size: 0.88rem; color: #888;">indedevaslam@outlook.com &middot; lookataslam.com</span>
+          <span style="font-size: 0.88rem; color: #888;">indedevaslam@outlook.com &middot; lookataslam.vercel.app</span>
         </p>
       </div>
     `;
 
-    // Dispatch welcome email to reader
-    const sendSubscriber = fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: fromAddress,
-        to: [cleanEmail],
-        subject: emailSubject,
-        html: emailHtml
-      })
-    });
+    // ── 1. Brevo v3 REST Dispatcher (Priority) ──────────────────────────────
+    if (brevoApiKey) {
+      try {
+        const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'api-key': brevoApiKey,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            sender: { name: senderName, email: senderEmail },
+            to: [{ email: cleanEmail }],
+            subject: emailSubject,
+            htmlContent: emailHtml
+          })
+        });
 
-    // Dispatch instant notification to author
-    const sendAuthor = fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: fromAddress,
-        to: [authorEmail],
-        subject: `New Chapter Subscriber: ${cleanEmail}`,
-        html: `<p>New subscriber joined chapter alerts:</p><p style="font-size:1.1rem; font-weight:bold;">${cleanEmail}</p><p>Timestamp: ${new Date().toUTCString()}</p>`
-      })
-    });
+        // Notify author
+        fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'api-key': brevoApiKey,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            sender: { name: senderName, email: senderEmail },
+            to: [{ email: authorEmail }],
+            subject: `New Chapter Subscriber: ${cleanEmail}`,
+            htmlContent: `<p>New subscriber joined chapter alerts:</p><p style="font-size:1.1rem; font-weight:bold;">${cleanEmail}</p><p>Timestamp: ${new Date().toUTCString()}</p>`
+          })
+        }).catch(() => {});
 
-    const [subRes, authorRes] = await Promise.allSettled([sendSubscriber, sendAuthor]);
-
-    if (subRes.status === 'fulfilled' && !subRes.value.ok) {
-      const errData = await subRes.value.json().catch(() => ({}));
-      console.error('Resend subscriber delivery notice:', errData);
+        if (brevoRes.ok) {
+          return res.status(200).json({
+            success: true,
+            provider: 'brevo',
+            message: "Thank you for subscribing! A welcome email is on its way."
+          });
+        }
+      } catch (brevoErr) {
+        console.error('Brevo dispatch error:', brevoErr);
+      }
     }
 
+    // ── 2. Resend Fallback ──────────────────────────────────────────────────
+    if (resendApiKey) {
+      const fromAddress = (process.env.RESEND_FROM || 'Mohammad Aslam <onboarding@resend.dev>').trim();
+      const sendSubscriber = fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: fromAddress,
+          to: [cleanEmail],
+          subject: emailSubject,
+          html: emailHtml
+        })
+      });
+
+      const sendAuthor = fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: fromAddress,
+          to: [authorEmail],
+          subject: `New Chapter Subscriber: ${cleanEmail}`,
+          html: `<p>New subscriber joined chapter alerts:</p><p style="font-size:1.1rem; font-weight:bold;">${cleanEmail}</p><p>Timestamp: ${new Date().toUTCString()}</p>`
+        })
+      });
+
+      await Promise.allSettled([sendSubscriber, sendAuthor]);
+
+      return res.status(200).json({
+        success: true,
+        provider: 'resend',
+        message: "Thank you for subscribing! A welcome email is on its way."
+      });
+    }
+
+    // ── 3. Placeholder / Mock mode when API key is not yet set in Vercel ─────
+    console.warn("Neither BREVO_API_KEY nor RESEND_API_KEY is configured in Vercel environment.");
     return res.status(200).json({
       success: true,
-      message: "Thank you for subscribing! A welcome email is on its way."
+      message: "Thank you for subscribing! You're on the list."
     });
 
   } catch (err) {

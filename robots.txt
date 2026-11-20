@@ -1,0 +1,11 @@
+# robots.txt for lookataslam
+User-agent: *
+Allow: /
+Allow: /reader.html*
+Allow: /shelf.html
+Allow: /rights.html
+Allow: /terms.html
+Allow: /privacy.html
+Disallow: /api/
+
+Sitemap: https://lookataslam.vercel.app/sitemap.xml

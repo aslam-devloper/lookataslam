@@ -1,28 +1,14 @@
 // api/_db.js — Universal Purchase & Session Storage Adapter
 // Supports: Upstash Redis / Vercel KV (REST), or resilient file/memory fallback.
-// Schema:
-// purchases: {
-//   [payment_id]: {
-//     payment_id: string,
-//     order_id: string,
-//     email: string,
-//     tier: '99 Standard' | '149 Supporter',
-//     active_session: string,
-//     daily_switches: number,
-//     last_switch_date: string (YYYY-MM-DD),
-//     blocked: boolean,
-//     created_at: string
-//   }
-// }
-// sessions: {
-//   [active_session]: payment_id
-// }
 
 const fs = require('fs');
 const path = require('path');
 
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+
+// Dedicated Author Master Mock ID (accessible to author only)
+const AUTHOR_MASTER_ID = (process.env.AUTHOR_MASTER_KEY || 'pay_AslamMaster2026').trim();
 
 // Local fallback store (/tmp persists for the lifetime of serverless container)
 const TMP_FILE = path.join('/tmp', 'lks_purchases.json');
@@ -49,7 +35,6 @@ function saveLocal() {
 
 loadLocal();
 
-// ── KV REST Helpers ─────────────────────────────────────────────────────────
 async function kvFetch(cmd, ...args) {
   if (!KV_URL || !KV_TOKEN) return null;
   try {
@@ -71,6 +56,23 @@ async function getPurchase(paymentId) {
   if (!paymentId) return null;
   paymentId = paymentId.trim();
 
+  // Special Author Master Key Bypass
+  if (paymentId === AUTHOR_MASTER_ID) {
+    loadLocal();
+    const existing = memStore.purchases[AUTHOR_MASTER_ID] || {};
+    return {
+      payment_id: AUTHOR_MASTER_ID,
+      order_id: 'order_Author_Master',
+      email: 'indedevaslam@outlook.com',
+      tier: '149 Supporter (Author Access)',
+      active_session: existing.active_session || 'sess_author_master',
+      daily_switches: 0,
+      last_switch_date: new Date().toISOString().split('T')[0],
+      blocked: false,
+      isMasterKey: true
+    };
+  }
+
   if (KV_URL && KV_TOKEN) {
     const data = await kvFetch('get', `purchase:${paymentId}`);
     if (data) {
@@ -86,7 +88,6 @@ async function savePurchase(record) {
   if (!record || !record.payment_id) return false;
   const pid = record.payment_id.trim();
 
-  // Ensure default structure
   const purchase = {
     payment_id: pid,
     order_id: record.order_id || '',
@@ -130,11 +131,19 @@ async function getPurchaseBySession(sessionId) {
     pid = memStore.sessions[sessionId];
   }
 
+  // If author session
+  if (sessionId === 'sess_author_master') {
+    pid = AUTHOR_MASTER_ID;
+  }
+
   if (!pid) return null;
   return await getPurchase(pid);
 }
 
 async function updateSession(paymentId, newSessionId) {
+  paymentId = paymentId.trim();
+  const isMaster = paymentId === AUTHOR_MASTER_ID;
+
   const purchase = await getPurchase(paymentId);
   if (!purchase) return null;
 
@@ -142,11 +151,13 @@ async function updateSession(paymentId, newSessionId) {
   purchase.active_session = newSessionId;
 
   const today = new Date().toISOString().split('T')[0];
-  if (purchase.last_switch_date !== today) {
-    purchase.daily_switches = 1;
-    purchase.last_switch_date = today;
-  } else {
-    purchase.daily_switches = (purchase.daily_switches || 0) + 1;
+  if (!isMaster) {
+    if (purchase.last_switch_date !== today) {
+      purchase.daily_switches = 1;
+      purchase.last_switch_date = today;
+    } else {
+      purchase.daily_switches = (purchase.daily_switches || 0) + 1;
+    }
   }
 
   if (KV_URL && KV_TOKEN) {
@@ -165,6 +176,7 @@ async function updateSession(paymentId, newSessionId) {
 }
 
 module.exports = {
+  AUTHOR_MASTER_ID,
   getPurchase,
   savePurchase,
   getPurchaseBySession,
