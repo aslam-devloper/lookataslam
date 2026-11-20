@@ -1,7 +1,7 @@
 // api/chapter.js — Vercel Serverless Function
 // Serves ONE chapter at a time from private backend data (_data.js).
-// Verifies active device session in DB for paid chapters (Ch 12-20).
-// Injects invisible forensic text watermark + provides visual screen watermark metadata.
+// Verifies active device session in DB, enforces per-book license scope (no cross-book reuse),
+// validates tier permissions (99 Standard vs 149 Supporter), and applies dual watermarks.
 
 const CONTENT = require('./_data.js');
 const { getPurchaseBySession, getPurchase } = require('./_db.js');
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
   history.push(now);
   rateMap.set(ip, history);
 
-  const novelKey = String(req.query.novel || 'jalwa').replace(/[^a-z0-9_]/gi, '');
+  const novelKey = String(req.query.novel || 'jalwa').replace(/[^a-z0-9_]/gi, '').toLowerCase();
   const chIdx    = parseInt(req.query.ch ?? '0', 10);
 
   const novelContent = CONTENT[novelKey];
@@ -91,7 +91,7 @@ export default async function handler(req, res) {
   const LAUNCH_DATE_MS    = new Date('2026-12-10T18:00:00+05:30').getTime();
   const LAUNCH_DAY_24H_END = LAUNCH_DATE_MS + 86400000;
 
-  // Paid volume check: Vol 2, 3, 4, 5 etc.
+  // Paid volume classification: Vol 2, 3, 4, 5 etc.
   const isPaidNovel = novelKey === 'jalwa_v2' || novelKey.includes('_v2') || novelKey.includes('_v3') || novelKey.includes('_v4') || novelKey.includes('_v5');
 
   // Extract session ID
@@ -113,6 +113,7 @@ export default async function handler(req, res) {
     }
   }
 
+  // ── Paid Access & Cross-Book Replay Verification ──────────────────────────
   if (novelKey === 'jalwa_v2') {
     if (now < LAUNCH_DATE_MS) {
       return res.status(403).json({ error: 'Volume 2 officially releases December 10, 2026 at 6:00 PM IST.', releaseDate: '2026-12-10T18:00:00+05:30' });
@@ -140,6 +141,16 @@ export default async function handler(req, res) {
         return res.status(403).json({
           error: 'This license has been suspended due to copyright or policy violations.',
           blocked: true
+        });
+      }
+
+      // ── Cross-Book Security Check ──
+      // Ensure license was purchased specifically for this novel/bundle
+      if (purchase.item && purchase.item !== novelKey && !purchase.isMasterKey) {
+        return res.status(403).json({
+          error: `Cross-Book Replay Blocked: Your receipt is for "${purchase.item.toUpperCase()}", not "${novelKey.toUpperCase()}". Each book bundle requires its own separate license.`,
+          crossBookReplay: true,
+          bundleRequired: true
         });
       }
     }

@@ -694,7 +694,7 @@
               const rRes = await fetch('/api/restore-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ payment_id: pid }),
+                body: JSON.stringify({ payment_id: pid, novel: activeNovelKey }),
                 credentials: 'include'
               });
               const rData = await rRes.json();

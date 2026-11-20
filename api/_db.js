@@ -1,5 +1,6 @@
 // api/_db.js — Universal Purchase & Session Storage Adapter
-// Supports: Upstash Redis / Vercel KV (REST), or resilient file/memory fallback.
+// Schema includes: payment_id, order_id, email, item (novel key), amount, tier,
+// active_session, daily_switches, last_switch_date, blocked, created_at.
 
 const fs = require('fs');
 const path = require('path');
@@ -7,7 +8,7 @@ const path = require('path');
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 
-// Dedicated Author Master Mock ID (accessible to author only)
+// Dedicated Author Master Mock ID (accessible to author only — unlocks all books & tiers)
 const AUTHOR_MASTER_ID = (process.env.AUTHOR_MASTER_KEY || 'pay_AslamMaster2026').trim();
 
 // Local fallback store (/tmp persists for the lifetime of serverless container)
@@ -56,15 +57,17 @@ async function getPurchase(paymentId) {
   if (!paymentId) return null;
   paymentId = paymentId.trim();
 
-  // Special Author Master Key Bypass
+  // Author Master Key Bypass (universal access to all novels and tiers)
   if (paymentId === AUTHOR_MASTER_ID) {
     loadLocal();
     const existing = memStore.purchases[AUTHOR_MASTER_ID] || {};
     return {
       payment_id: AUTHOR_MASTER_ID,
       order_id: 'order_Author_Master',
-      email: 'indedevaslam@outlook.com',
-      tier: '149 Supporter (Author Access)',
+      email: 'indiedevaslam@outlook.com',
+      item: 'all_novels',
+      amount: 149,
+      tier: '149 Supporter',
       active_session: existing.active_session || 'sess_author_master',
       daily_switches: 0,
       last_switch_date: new Date().toISOString().split('T')[0],
@@ -92,6 +95,8 @@ async function savePurchase(record) {
     payment_id: pid,
     order_id: record.order_id || '',
     email: (record.email || '').trim().toLowerCase(),
+    item: (record.item || 'jalwa_v2').trim().toLowerCase(), // Binds license to specific novel
+    amount: parseInt(record.amount || 99, 10),
     tier: record.tier || (record.amount >= 149 ? '149 Supporter' : '99 Standard'),
     active_session: record.active_session || '',
     daily_switches: record.daily_switches ?? 0,
@@ -131,7 +136,6 @@ async function getPurchaseBySession(sessionId) {
     pid = memStore.sessions[sessionId];
   }
 
-  // If author session
   if (sessionId === 'sess_author_master') {
     pid = AUTHOR_MASTER_ID;
   }

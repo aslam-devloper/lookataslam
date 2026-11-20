@@ -191,7 +191,7 @@ restoreForm?.addEventListener('submit', async (e) => {
     const res = await fetch('/api/restore-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ payment_id: pid })
+      body: JSON.stringify({ payment_id: pid, novel: "jalwa_v2" })
     });
     const data = await res.json();
     if (res.ok && data.success) {
